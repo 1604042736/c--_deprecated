@@ -1,0 +1,15 @@
+function abs(n):
+    if n>=0:
+        return n
+    else:
+        return 0-n
+
+function max(a,b):
+    if a>=b:
+        return a
+    return b
+
+function min(a,b):
+    if a<=b:
+        return a
+    return b
