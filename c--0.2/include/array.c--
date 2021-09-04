@@ -1,0 +1,33 @@
+void inputarray(int a[],int size)
+{
+	for(int i=0;i<size;i=i+1)input(a[i]);
+}
+
+void printarray(int a[],int size)
+{
+	for(int i=0;i<size;i=i+1)print(a[i]);
+}
+
+void initarray(int a[],int b,int size)
+{
+	for(int i=0;i<size;i=i+1)a[i]=b;
+}
+
+void sort(int a[],int size,int cmp(int one,int two))
+{
+	for(int i=size-1;i>=1;i=i-1)
+	{
+		for(int j=0;j<i;j=j+1)
+		{
+			int x=a[j];
+			int y=a[j+1];
+			int fd=cmp(x,y);
+			if(fd==1)
+			{
+				int temp=a[j];
+				a[j]=a[j+1];
+				a[j+1]=temp;
+			}
+		}
+	}
+}

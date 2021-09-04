@@ -1,0 +1,39 @@
+int abs(int n)
+{
+	if(n>=0)return n;
+	else return 0-n;
+}
+
+int max(int a,int b)
+{
+	if(a>=b)return a;
+	else return b;
+}
+
+int min(int a,int b)
+{
+	if(a<=b)return a;
+	else return b;
+}
+
+int pow(int a,int b)
+{
+	int j=1;
+	while(b>0)
+	{
+		j=j*a;
+		b=b-1;
+	}
+	return j;
+}
+
+int log(int a,int b)
+{
+	int j=0;
+	while(b!=1)
+	{
+		b=b/a;
+		j=j+1;
+	}
+	return j;
+}

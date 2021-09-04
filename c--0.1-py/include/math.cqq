@@ -1,0 +1,63 @@
+func abs(a)
+{
+	if(a>=0)
+	{
+		return a;
+	}
+	else
+	{
+		return 0-a;
+	}
+}
+
+func pow(a,b)
+{
+	j=1;
+	while(b>0)
+	{
+		j=j*a;
+		b=b-1;
+	}
+	return j;
+}
+
+func max(a,b)
+{
+	if(a>=b)
+	{
+		return a;
+	}
+	if(b>=a)
+	{
+		return b;
+	}
+}
+
+func min(a,b)
+{
+	if(a<=b)
+	{
+		return a;
+	}
+	if(a>=b)
+	{
+		return b;
+	}
+}
+
+func log(a,b)
+{
+	j=0;
+	while(b!=1)
+	{
+		b=b/a;
+		j=j+1;
+	}
+	return j;
+}
+
+func divi(a,b)
+{
+	c=a%b;
+	return (a-c)/b;
+}

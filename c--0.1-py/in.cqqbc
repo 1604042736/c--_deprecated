@@ -1,0 +1,131 @@
+* TINY Compilation to TM Code
+* File: in.cqqbc
+* Standard prelude:
+  0:     LD  6,0(0) 	load maxaddress from location 0
+  1:     ST  0,0(0) 	clear location 0
+* End of standard prelude.
+* -> func
+  3:     IN  0,0,0 	input integer value
+  4:     ST  0,1(5) 	input: store value
+* -> call
+* -> CallParam
+* -> Id
+  5:     LD  0,1(5) 	load id value
+* <- Id
+  6:    STP  0,0(0) 	store param
+* <- CallParam
+* <- call
+  8:    OUT  0,0,0 	print ac
+* -> return
+* -> Const
+  9:    LDC  0,0(0) 	load const
+* <- Const
+ 10:    RET  7,0(0) 	return
+* <- return
+ 11:    RET  7,0(0) 	return func
+  2:    LDA  7,9(7) 	jmp to end
+* <- func
+  7:   CALL  7,13(7) 	jmp to func
+* -> func
+* -> Param
+ 13:    LDP  0,0(5) 	ld param
+* <- Param
+* -> if
+* -> Op
+* -> Op
+* -> Id
+ 14:    LDP  0,0(5) 	ld param
+* <- Id
+ 15:     ST  0,0(6) 	op: push left
+* -> Const
+ 16:    LDC  0,1(0) 	load const
+* <- Const
+ 17:     LD  1,0(6) 	op: load left
+ 18:    SUB  0,1,0 	op ==
+ 19:    JEQ  0,2(7) 	br if true
+ 20:    LDC  0,0(0) 	false case
+ 21:    LDA  7,1(7) 	unconditional jmp
+ 22:    LDC  0,1(0) 	true case
+* <- Op
+ 23:     ST  0,0(6) 	op: push left
+* -> Op
+* -> Id
+ 24:    LDP  0,0(5) 	ld param
+* <- Id
+ 25:     ST  0,-1(6) 	op: push left
+* -> Const
+ 26:    LDC  0,2(0) 	load const
+* <- Const
+ 27:     LD  1,-1(6) 	op: load left
+ 28:    SUB  0,1,0 	op ==
+ 29:    JEQ  0,2(7) 	br if true
+ 30:    LDC  0,0(0) 	false case
+ 31:    LDA  7,1(7) 	unconditional jmp
+ 32:    LDC  0,1(0) 	true case
+* <- Op
+ 33:     LD  1,0(6) 	op: load left
+ 34:    SUB  0,1,0 	op ||
+ 35:     OR  0,2(7) 	br if true
+ 36:    LDC  0,0(0) 	false case
+ 37:    LDA  7,1(7) 	unconditional jmp
+ 38:    LDC  0,1(0) 	true case
+* <- Op
+* if: jump to else belongs here
+* -> return
+* -> Const
+ 40:    LDC  0,1(0) 	load const
+* <- Const
+ 41:    RET  7,1(0) 	return
+* <- return
+* if: jump to end belongs here
+ 39:    JEQ  0,3(7) 	if: jump to else
+ 42:    LDA  7,0(7) 	jmp to end
+* <- if
+* -> return
+* -> Op
+* -> call
+* -> CallParam
+* -> Op
+* -> Id
+ 43:    LDP  0,0(5) 	ld param
+* <- Id
+ 44:     ST  0,0(6) 	op: push left
+* -> Const
+ 45:    LDC  0,1(0) 	load const
+* <- Const
+ 46:     LD  1,0(6) 	op: load left
+ 47:    SUB  0,1,0 	op -
+* <- Op
+ 48:    STP  0,0(0) 	store param
+* <- CallParam
+ 49:   CALL  7,13(7) 	jmp to func
+* <- call
+ 50:     ST  0,0(6) 	op: push left
+* -> call
+* -> CallParam
+* -> Op
+* -> Id
+ 51:    LDP  0,0(5) 	ld param
+* <- Id
+ 52:     ST  0,-1(6) 	op: push left
+* -> Const
+ 53:    LDC  0,2(0) 	load const
+* <- Const
+ 54:     LD  1,-1(6) 	op: load left
+ 55:    SUB  0,1,0 	op -
+* <- Op
+ 56:    STP  0,0(0) 	store param
+* <- CallParam
+ 57:   CALL  7,13(7) 	jmp to func
+* <- call
+ 58:     LD  1,0(6) 	op: load left
+ 59:    ADD  0,1,0 	op +
+* <- Op
+ 60:    RET  7,1(0) 	return
+* <- return
+ 61:    RET  7,1(0) 	return func
+ 12:    LDA  7,49(7) 	jmp to end
+* <- func
+ 62:   CALL  7,3(7) 	jmp to func
+* End of execution.
+ 63:   HALT  0,0,0 	
