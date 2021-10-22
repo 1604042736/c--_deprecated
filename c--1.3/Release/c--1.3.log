@@ -1,0 +1,14 @@
+﻿  eval.cpp
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.3\eval.cpp(18,18): warning C4018: “<”: 有符号/无符号不匹配
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.3\eval.cpp(275,21): warning C4018: “<”: 有符号/无符号不匹配
+  main.cpp
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.3\Include\lexer.h(11,1): warning C4005: “isName”: 宏重定义
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.3\Include\preprocessor.h(13): message : 参见“isName”的前一个定义
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.3\main.cpp(24,20): warning C4018: “<”: 有符号/无符号不匹配
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.3\main.cpp(41,11): warning C4018: “<”: 有符号/无符号不匹配
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.3\main.cpp(152,20): warning C4018: “<”: 有符号/无符号不匹配
+  正在生成代码
+  Previous IOBJ not found, fall back to full compilation.
+  All 849 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  c--1.3.vcxproj -> E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.3\Release\c--1.3.exe
