@@ -13,6 +13,13 @@ string preprocessor(Preprocessor* prep,string content)
 	int i = 0;
 	while (i < content.size())
 	{
+		if (!prep->casesensitive)
+		{
+			if (content[i] >= 'A' && content[i] <= 'Z')
+			{
+				content[i] = content[i] - 'A' + 'a';
+			}
+		}
 		string define_name = search_define(content[i]);
 		if (content[i] == '"')	//字符串不进行任何操作
 		{
@@ -238,6 +245,18 @@ string dealprecode(Preprocessor* prep,string& result, string content, int& p,str
 		else if (arg2 == "end")
 		{
 			prep->blockstyle = END;
+		}
+	}
+	else if (arg1 == "casesensitive")
+	{
+		string arg2 = getnextprediv(precode, pos);
+		if (arg2 == "true")
+		{
+			prep->casesensitive = 1;
+		}
+		else if (arg2 == "false")
+		{
+			prep->casesensitive = 0;
 		}
 	}
 	if (replace)

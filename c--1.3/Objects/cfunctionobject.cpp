@@ -5,8 +5,8 @@ Object* CFunctionObject_New(Object* name, CFunction func)
 	CFunctionObject* cfuncobj = new CFunctionObject;
 	cfuncobj->name = name;
 	cfuncobj->func = func;
-	cfuncobj->objattr = ObjectAttr_New("CFunction");
-	cfuncobj->objattr->obj_print = CFunctionObject_Print;
+	cfuncobj->self = NULL;
+	cfuncobj->objattr = &CFunctionObjectAttr;
 	return (Object*)cfuncobj;
 }
 

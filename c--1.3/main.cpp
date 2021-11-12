@@ -145,6 +145,28 @@ void printcodeobj(CodeObject* codeobj)
 			cout << arg->val << endl;
 			break;
 		}
+
+		case POP_TOP:
+		{
+			cout << "POP_TOP\n";
+			break;
+		}
+		case LOAD_ATTR:
+		{
+			cout << "LOAD_ATTR ";
+			i++;
+			IntObject* arg = ((IntObject*)codelist->list[i]);
+			cout << arg->val << endl;
+			break;
+		}
+		case STORE_ATTR:
+		{
+			cout << "STORE_ATTR ";
+			i++;
+			IntObject* arg = ((IntObject*)codelist->list[i]);
+			cout << arg->val << endl;
+			break;
+		}
 		}
 		i++;
 	}
@@ -180,7 +202,6 @@ int main(int argc,char* argv[])
 #ifndef NDEBUG
 	syntaxtree_print(syntaxtree, 0);
 #endif
-
 	Object* codeobj = CodeObject_New();
 	generator(codeobj, syntaxtree);
 	((CodeObject*)codeobj)->code->objattr->obj_additem(((CodeObject*)codeobj)->code, IntObject_NewFromInt(LOAD_VALUE));
@@ -189,8 +210,7 @@ int main(int argc,char* argv[])
 #ifndef NDEBUG
 	printcodeobj((CodeObject*)codeobj);
 #endif
-
-	Object* frameobj = FrameObject_NewFrameCodeObject(codeobj);
+	Object* frameobj = FrameObject_NewFrameCodeObject(codeobj,builtins_init());
 	frame_eval(frameobj);
 
 	t.close();

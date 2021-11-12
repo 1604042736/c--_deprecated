@@ -15,6 +15,7 @@ using namespace std;
 struct Preprocessor
 {
 	BlockStyle blockstyle;
+	int casesensitive;	//区分大小写
 };
 
 static map<string, string> define;

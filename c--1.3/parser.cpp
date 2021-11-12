@@ -63,6 +63,9 @@ void syntaxtree_print(SyntaxTree* syntaxtree, int space)
 		case NT_LIST:
 			cout << "List" << endl;
 			break;
+		case NT_ATTRIBUTE:
+			cout << "Attribute" << endl;
+			break;
 		}
 		map<string, SyntaxTree*>::iterator iter;
 		iter = syntaxtree->child.begin();
@@ -393,6 +396,47 @@ SyntaxTree* parser_exp_primary(Parser* parser)
 		t->child["mode"] = syntaxtree_init(NT_NULL, AT_STRING, parser->lexer->lineno, parser->lexer->linepos);
 		t->child["mode"]->str = "load";
 		parser_match(parser, parser->lexer->token);
+
+		while (parser->lexer->token == TK_POINT)
+		{
+			parser_match(parser, parser->lexer->token);
+			SyntaxTree* p = syntaxtree_init(NT_ATTRIBUTE, AT_SYNTAXTREE, parser->lexer->lineno, parser->lexer->linepos);
+			p->child["value"] = t;
+			p->child["attr"] = syntaxtree_init(NT_NULL, AT_STRING, parser->lexer->lineno, parser->lexer->linepos);
+			p->child["attr"]->str = parser->lexer->tokenstr;
+			p->child["mode"] = syntaxtree_init(NT_NULL, AT_STRING, parser->lexer->lineno, parser->lexer->linepos);
+			p->child["mode"]->str = "load";
+			parser_match(parser, parser->lexer->token);
+			t = p;
+
+			if (parser->lexer->token == TK_LMIDDLE)
+			{
+				while (parser->lexer->token == TK_LMIDDLE)
+				{
+					parser_match(parser, TK_LMIDDLE);
+					SyntaxTree* p = syntaxtree_init(NT_SUBSCRIPT, AT_SYNTAXTREE, parser->lexer->lineno, parser->lexer->linepos);
+					p->child["value"] = t;
+					p->child["slice"] = parser_exp(parser);
+					p->child["mode"] = syntaxtree_init(NT_NULL, AT_STRING, parser->lexer->lineno, parser->lexer->linepos);
+					p->child["mode"]->str = "load";
+					t = p;
+					parser_match(parser, TK_RMIDDLE);
+				}
+			}
+			if (parser->lexer->token == TK_LLITTLE)
+			{
+				while (parser->lexer->token == TK_LLITTLE)
+				{
+					SyntaxTree* p = syntaxtree_init(NT_CALL, AT_SYNTAXTREE, parser->lexer->lineno, parser->lexer->linepos);
+					p->child["func"] = t;
+					p->child["args"] = parser_args(parser);
+					p->child["mode"] = syntaxtree_init(NT_NULL, AT_STRING, parser->lexer->lineno, parser->lexer->linepos);
+					p->child["mode"]->str = "exp";
+					t = p;
+				}
+			}
+		}
+
 		if (parser->lexer->token == TK_LMIDDLE)
 		{
 			while (parser->lexer->token == TK_LMIDDLE)
@@ -414,6 +458,8 @@ SyntaxTree* parser_exp_primary(Parser* parser)
 				SyntaxTree* p = syntaxtree_init(NT_CALL, AT_SYNTAXTREE, parser->lexer->lineno, parser->lexer->linepos);
 				p->child["func"] = t;
 				p->child["args"] = parser_args(parser);
+				p->child["mode"] = syntaxtree_init(NT_NULL, AT_STRING, parser->lexer->lineno, parser->lexer->linepos);
+				p->child["mode"]->str = "exp";
 				t = p;
 			}
 		}
@@ -495,6 +541,47 @@ SyntaxTree* parser_assign(Parser* parser)
 	t->child["mode"] = syntaxtree_init(NT_NULL, AT_STRING, parser->lexer->lineno, parser->lexer->linepos);
 	t->child["mode"]->str = "load";
 	parser_match(parser, TK_NAME);
+
+	while (parser->lexer->token == TK_POINT)
+	{
+		parser_match(parser, parser->lexer->token);
+		SyntaxTree* p= syntaxtree_init(NT_ATTRIBUTE, AT_SYNTAXTREE, parser->lexer->lineno, parser->lexer->linepos);
+		p->child["value"] = t;
+		p->child["attr"]= syntaxtree_init(NT_NULL, AT_STRING, parser->lexer->lineno, parser->lexer->linepos);
+		p->child["attr"]->str = parser->lexer->tokenstr;
+		p->child["mode"] = syntaxtree_init(NT_NULL, AT_STRING, parser->lexer->lineno, parser->lexer->linepos);
+		p->child["mode"]->str = "load";
+		parser_match(parser, parser->lexer->token);
+		t = p;
+
+		if (parser->lexer->token == TK_LMIDDLE)
+		{
+			while (parser->lexer->token == TK_LMIDDLE)
+			{
+				parser_match(parser, TK_LMIDDLE);
+				SyntaxTree* p = syntaxtree_init(NT_SUBSCRIPT, AT_SYNTAXTREE, parser->lexer->lineno, parser->lexer->linepos);
+				p->child["value"] = t;
+				p->child["slice"] = parser_exp(parser);
+				p->child["mode"] = syntaxtree_init(NT_NULL, AT_STRING, parser->lexer->lineno, parser->lexer->linepos);
+				p->child["mode"]->str = "load";
+				t = p;
+				parser_match(parser, TK_RMIDDLE);
+			}
+		}
+		if (parser->lexer->token == TK_LLITTLE)
+		{
+			while (parser->lexer->token == TK_LLITTLE)
+			{
+				SyntaxTree* p = syntaxtree_init(NT_CALL, AT_SYNTAXTREE, parser->lexer->lineno, parser->lexer->linepos);
+				p->child["func"] = t;
+				p->child["args"] = parser_args(parser);
+				p->child["mode"] = syntaxtree_init(NT_NULL, AT_STRING, parser->lexer->lineno, parser->lexer->linepos);
+				p->child["mode"]->str = "sentence";
+				t = p;
+			}
+		}
+	}
+
 	if (parser->lexer->token==TK_LMIDDLE)
 	{
 		while (parser->lexer->token == TK_LMIDDLE)
@@ -516,6 +603,8 @@ SyntaxTree* parser_assign(Parser* parser)
 			SyntaxTree* p = syntaxtree_init(NT_CALL, AT_SYNTAXTREE, parser->lexer->lineno, parser->lexer->linepos);
 			p->child["func"] = t;
 			p->child["args"] = parser_args(parser);
+			p->child["mode"]= syntaxtree_init(NT_NULL, AT_STRING, parser->lexer->lineno, parser->lexer->linepos);
+			p->child["mode"]->str = "sentence";
 			t = p;
 		}
 	}

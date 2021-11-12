@@ -302,6 +302,22 @@ void lexer_getstring(Lexer* lexer, char end)
 	lexer->tokenstr = "";
 	while (lexer->ch != EOF && lexer->ch != end)
 	{
+		if (lexer->ch == '\\')
+		{
+			lexer_getch(lexer);
+			switch (lexer->ch)
+			{
+			case 'n':
+				lexer->ch = '\n';
+				break;
+			case 't':
+				lexer->ch = '\t';
+				break;
+			case 'r':
+				lexer->ch = '\r';
+				break;
+			}
+		}
 		lexer->tokenstr += lexer->ch;
 		lexer_getch(lexer);
 	}

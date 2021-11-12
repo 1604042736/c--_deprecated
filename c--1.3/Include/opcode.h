@@ -25,3 +25,6 @@
 #define LEQ 22
 #define NEQ 23
 #define AND 24
+#define POP_TOP 25
+#define LOAD_ATTR 26
+#define STORE_ATTR 27

@@ -14,26 +14,31 @@ Object* frame_eval(Object* obj)
 	ListObject* code = (ListObject*)codeobj->code;
 	ListObject* names = (ListObject*)codeobj->names;
 	ListObject* consts = (ListObject*)codeobj->consts;
+
+	Object* result;
+	Object* arg;
+	IntObject* op;
 	int code_pos = 0;	//代码所在位置
-	while (code_pos < code->list.size())
+	int codesize = code->list.size();
+	while (code_pos < codesize)
 	{
-		IntObject* op = (IntObject*)code->list[code_pos];
+		op = (IntObject*)code->list[code_pos];
 		switch (op->val)
 		{
 		case LOAD_NAME:
 		{
-			Object* arg = code->list[++code_pos];
-			Object* name = codeobj->names->objattr->obj_getitem(codeobj->names, arg);
+			arg = code->list[++code_pos];
+			Object* name = ListObject_GetItem(codeobj->names, arg);
 			/*先到local中查找*/
-			Object* val = frameobj->locals->objattr->obj_getitem(frameobj->locals, name);
+			Object* val = DictObject_GetItem(frameobj->locals, name);
 			if (val == NULL)
 			{
 				/*到global中查找*/
-				val = frameobj->globals->objattr->obj_getitem(frameobj->globals, name);
+				val = DictObject_GetItem(frameobj->globals, name);
 				if (val == NULL)
 				{
 					/*到builtins中查找*/
-					val = frameobj->builtins->objattr->obj_getitem(frameobj->builtins, name);
+					val = DictObject_GetItem(frameobj->builtins, name);
 					if (val == NULL)
 					{
 						//TODO 抛出异常
@@ -48,105 +53,138 @@ Object* frame_eval(Object* obj)
 		}
 		case LOAD_CONST:
 		{
-			Object* arg = code->list[++code_pos];
+			arg = code->list[++code_pos];
 			PUSHCONST(frameobj, arg);
 			break;
 		}
 		case STORE_NAME:
 		{
-			Object* arg = code->list[++code_pos];
+			arg = code->list[++code_pos];
 			TOP(name, frameobj->stack);
-			frameobj->locals->objattr->obj_dictadditem(frameobj->locals, names->objattr->obj_getitem(codeobj->names, arg), name);
+			DictObject_DictAddItem(frameobj->locals, ListObject_GetItem(codeobj->names, arg), name);
 			break;
 		}
 		case ADD:
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			PUSH(frameobj, one->objattr->obj_add(one, two));
+			if (one->objattr->obj_add)
+			{
+				PUSH(frameobj, one->objattr->obj_add(one, two));
+			}
 			break;
 		}
 		case SUB:
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			PUSH(frameobj, one->objattr->obj_sub(one, two));
+			if (one->objattr->obj_sub)
+			{
+				PUSH(frameobj, one->objattr->obj_sub(one, two));
+			}
 			break;
 		}
 		case MUL:
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			PUSH(frameobj, one->objattr->obj_mul(one, two));
+			if(one->objattr->obj_mul)
+			{
+				PUSH(frameobj, one->objattr->obj_mul(one, two));
+			}
 			break;
 		}
 		case DIV:
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			PUSH(frameobj, one->objattr->obj_div(one, two));
+			if(one->objattr->obj_div)
+			{
+				PUSH(frameobj, one->objattr->obj_div(one, two));
+			}
 			break;
 		}
 		case MOD:
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			PUSH(frameobj, one->objattr->obj_mod(one, two));
+			if(one->objattr->obj_mod)
+			{
+				PUSH(frameobj, one->objattr->obj_mod(one, two));
+			}
 			break;
 		}
 		case EQ:
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			Object* result = IntObject_NewFromInt(one->objattr->obj_eq(one, two));
-			PUSH(frameobj, result);
+			if(one->objattr->obj_eq)
+			{
+				result = IntObject_NewFromInt(one->objattr->obj_eq(one, two));
+				PUSH(frameobj, result);
+			}
 			break;
 		}
 		case OR :
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			Object* result = IntObject_NewFromInt(one->objattr->obj_or(one, two));
-			PUSH(frameobj, result);
+			if (one->objattr->obj_or)
+			{
+				result = IntObject_NewFromInt(one->objattr->obj_or(one, two));
+				PUSH(frameobj, result);
+			}
 			break;
 		}
 		case GT:
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			Object* result = IntObject_NewFromInt(one->objattr->obj_gt(one, two));
-			PUSH(frameobj, result);
+			if (one->objattr->obj_gt)
+			{
+				result = IntObject_NewFromInt(one->objattr->obj_gt(one, two));
+				PUSH(frameobj, result);
+			}
 			break;
 		}
 		case GEQ:
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			Object* result = IntObject_NewFromInt(one->objattr->obj_geq(one, two));
-			PUSH(frameobj, result);
+			if (one->objattr->obj_geq)
+			{
+				result = IntObject_NewFromInt(one->objattr->obj_geq(one, two));
+				PUSH(frameobj, result);
+			}
 			break;
 		}
 		case LT:
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			Object* result = IntObject_NewFromInt(one->objattr->obj_lt(one, two));
-			PUSH(frameobj, result);
+			if (one->objattr->obj_lt)
+			{
+				result = IntObject_NewFromInt(one->objattr->obj_lt(one, two));
+				PUSH(frameobj, result);
+			}
 			break;
 		}
 		case LEQ:
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			Object* result = IntObject_NewFromInt(one->objattr->obj_leq(one, two));
-			PUSH(frameobj, result);
+			if (one->objattr->obj_leq)
+			{
+				result = IntObject_NewFromInt(one->objattr->obj_leq(one, two));
+				PUSH(frameobj, result);
+			}
 			break;
 		}
 		case NEQ:
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			Object* result = IntObject_NewFromInt(one->objattr->obj_neq(one, two));
+			result = IntObject_NewFromInt(one->objattr->obj_neq(one, two));
 			PUSH(frameobj, result);
 			break;
 		}
@@ -154,15 +192,18 @@ Object* frame_eval(Object* obj)
 		{
 			TOP(two, frameobj->stack);
 			TOP(one, frameobj->stack);
-			Object* result = IntObject_NewFromInt(one->objattr->obj_and(one, two));
-			PUSH(frameobj, result);
+			if (one->objattr->obj_and)
+			{
+				result = IntObject_NewFromInt(one->objattr->obj_and(one, two));
+				PUSH(frameobj, result);
+			}
 			break;
 		}
 		case IFJMP:
 		{
-			Object* arg = code->list[++code_pos];
+			arg = code->list[++code_pos];
 			TOP(val, frameobj->stack);
-			if (!val->objattr->obj_bool(val))
+			if (val->objattr->obj_bool&&!val->objattr->obj_bool(val))
 			{
 				code_pos += ((IntObject*)arg)->val;
 			}
@@ -170,13 +211,13 @@ Object* frame_eval(Object* obj)
 		}
 		case JMP:
 		{
-			Object* arg = code->list[++code_pos];
+			arg = code->list[++code_pos];
 			code_pos += ((IntObject*)arg)->val;
 			break;
 		}
 		case LOAD_VALUE:
 		{
-			Object* arg = code->list[++code_pos];
+			arg = code->list[++code_pos];
 			PUSH(frameobj, arg);
 			break;
 		}
@@ -187,7 +228,7 @@ Object* frame_eval(Object* obj)
 		}
 		case MAKE_FUNCTION:
 		{
-			Object* arg = code->list[++code_pos];
+			arg = code->list[++code_pos];
 			TOP(name, frameobj->stack);
 			TOP(funccodeobj, frameobj->stack);
 			Object* funcargname = ListObject_New();
@@ -202,7 +243,7 @@ Object* frame_eval(Object* obj)
 		}
 		case CALL:
 		{
-			Object* arg = code->list[++code_pos];
+			arg = code->list[++code_pos];
 			TOP(funcobj, frameobj->stack);
 			Object* funcargs = ListObject_New();
 			for (int i = 0; i < ((IntObject*)arg)->val; i++)
@@ -216,7 +257,7 @@ Object* frame_eval(Object* obj)
 		}
 		case BUILD_LIST:
 		{
-			Object* arg = code->list[++code_pos];
+			arg = code->list[++code_pos];
 			ListObject* list = (ListObject*)ListObject_New();
 			for (int i = 0; i < ((IntObject*)arg)->val; i++)
 			{
@@ -242,11 +283,35 @@ Object* frame_eval(Object* obj)
 			val->objattr->obj_setitem(val, slice,assignval);
 			break;
 		}
+		case POP_TOP:
+		{
+			TOP(val, frameobj->stack);
+			break;
 		}
+		case LOAD_ATTR:
+		{
+			arg = code->list[++code_pos];
+			Object* attr=ListObject_GetItem(codeobj->consts, arg);
+			TOP(value, frameobj->stack);
+			PUSH(frameobj, DictObject_GetItem(value->objattr->dict,attr));
+			break;
+		}
+		case STORE_ATTR:
+		{
+			arg = code->list[++code_pos];
+			Object* attr = ListObject_GetItem(codeobj->consts, arg);
+			TOP(value, frameobj->stack);
+			TOP(assignvalue, frameobj->stack);
+			DictObject_DictAddItem(value->objattr->dict, attr, assignvalue);
+			break;
+		}
+		}
+#ifndef NDEBUG
 		cout << op->val;
 		print(frameobj->stack);
 		print(frameobj->locals);
 		cout << endl;
+#endif
 		code_pos++;
 	}
 	return NULL;
@@ -256,7 +321,7 @@ Object* make_function(Object* frameobj, Object* name, Object* funccodeobj,Object
 {
 	FunctionObject* funcobj = (FunctionObject*)FunctionObject_New();
 	funcobj->name = name;
-	funcobj->frame = FrameObject_NewFrameCodeObject(funccodeobj);
+	funcobj->frame = FrameObject_NewFrameCodeObject(funccodeobj,((FrameObject*)frameobj)->builtins);
 	((FrameObject*)funcobj->frame)->globals = ((FrameObject*)frameobj)->locals;
 	funcobj->argnames = funcargnames;
 	return (Object*)funcobj;
@@ -270,9 +335,10 @@ Object* call_function(Object* frameobj, Object* obj, Object* args)
 		FunctionObject* funcobj = (FunctionObject*)obj->objattr->obj_copy(obj);
 		ListObject* argslist = (ListObject*)args;
 		ListObject* argnamelist = (ListObject*)funcobj->argnames;
-		for (int i = 0; i < argslist->list.size(); i++)
+		int listsize = argslist->list.size();
+		for (int i = 0; i < listsize; i++)
 		{
-			((FrameObject*)funcobj->frame)->locals->objattr->obj_dictadditem(((FrameObject*)funcobj->frame)->locals, argnamelist->list[i], argslist->list[i]);
+			DictObject_DictAddItem(((FrameObject*)funcobj->frame)->locals, argnamelist->list[i], argslist->list[i]);
 		}
 		Object* val = frame_eval(funcobj->frame);
 		return val;
@@ -280,6 +346,10 @@ Object* call_function(Object* frameobj, Object* obj, Object* args)
 	else if (obj->objattr->obj_name == "CFunction")
 	{
 		CFunctionObject* cfuncobj = (CFunctionObject*)obj;
+		if (cfuncobj->self != NULL)
+		{
+			ListObject_InsertItem(args, IntObject_NewFromInt(0), cfuncobj->self);
+		}
 		return cfuncobj->func(args);
 	}
 	return IntObject_NewFromInt(0);

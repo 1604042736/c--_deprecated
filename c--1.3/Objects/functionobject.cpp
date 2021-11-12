@@ -4,9 +4,7 @@
 Object* FunctionObject_New()
 {
 	FunctionObject* funcobj = new FunctionObject;
-	funcobj->objattr = ObjectAttr_New("Function");
-	funcobj->objattr->obj_print = FunctionObject_Print;
-	funcobj->objattr->obj_copy = FunctionObject_Copy;
+	funcobj->objattr = &FunctionObjectAttr;
 	return (Object*)funcobj;
 }
 

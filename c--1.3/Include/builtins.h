@@ -7,7 +7,8 @@
 #include "listobject.h"
 #include "intobject.h"
 
-#define NORMALRETURN return IntObject_NewFromInt(0);
-
 Object* builtins_init();
 Object* builtins_print(Object*);
+Object* builtins_memory(Object*);
+Object* builtins_max(Object*);
+Object* builtins_min(Object*);

@@ -7,11 +7,10 @@
 Object* CodeObject_New()
 {
 	CodeObject* codeobj = new CodeObject;
-	codeobj->names = ListObject_New();
-	codeobj->consts = ListObject_New();
-	codeobj->code = ListObject_New();
-	codeobj->objattr = ObjectAttr_New("Code");
-	codeobj->objattr->obj_print = CodeObject_Print;
+	codeobj->names = ListObject_NewSimple();
+	codeobj->consts = ListObject_NewSimple();
+	codeobj->code = ListObject_NewSimple();
+	codeobj->objattr = &CodeObjectAttr;
 	return (Object*)codeobj;
 }
 

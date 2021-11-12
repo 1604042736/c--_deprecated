@@ -6,5 +6,5 @@ enum BlockStyle
 	INDENT,	//缩进
 	BEGINEND,	//begin end
 	BRACES,	//大括号
-	END	//类似与VB的end
+	END,	//类似与VB的end
 };

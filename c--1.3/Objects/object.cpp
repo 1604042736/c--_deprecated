@@ -1,6 +1,8 @@
 #include "object.h"
+#include "dictobject.h"
+#include "listobject.h"
 
-ObjectAttr* ObjectAttr_New(string name)
+/*ObjectAttr* ObjectAttr_New(string name)
 {
 	ObjectAttr* objattr = new ObjectAttr;
 	objattr->obj_name = name;
@@ -27,6 +29,13 @@ ObjectAttr* ObjectAttr_New(string name)
 	objattr->obj_neq = Object_Neq;
 	objattr->obj_and = Object_And;
 	return objattr;
+}
+
+Object* Object_New()
+{
+	Object* obj = new Object;
+	obj->objattr = ObjectAttr_New("object");
+	return obj;
 }
 
 void Object_Print(Object*)
@@ -138,6 +147,180 @@ bool Object_And(Object*, Object*)
 {
 	return false;
 }
+
+Object* ObjectDict_AddItem(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	Object_AddItem(arg1, arg2);
+	NORMALRETURN;
+}
+
+Object* ObjectDict_FindItem(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	Object* returnval = IntObject_NewFromInt(Object_FindItem(arg1, arg2));
+	return returnval;
+}
+
+Object* ObjectDict_GetItem(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return Object_GetItem(arg1, arg2);
+}
+
+Object* ObjectDict_Eq(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return IntObject_NewFromInt(Object_Eq(arg1, arg2));
+}
+
+Object* ObjectDict_DictAddItem(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	Object* arg3 = arglist->list[2];
+	Object_DictAddItem(arg1, arg2,arg3);
+	NORMALRETURN;
+}
+
+Object* ObjectDict_Add(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return Object_Add(arg1, arg2);
+}
+
+Object* ObjectDict_Sub(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return Object_Sub(arg1, arg2);
+}
+
+Object* ObjectDict_Mul(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return Object_Mul(arg1, arg2);
+}
+
+Object* ObjectDict_Div(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return Object_Div(arg1, arg2);
+}
+
+Object* ObjectDict_Mod(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return Object_Mod(arg1, arg2);
+}
+
+Object* ObjectDict_InsertItem(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	Object* arg3 = arglist->list[2];
+	Object_InsertItem(arg1, arg2,arg3);
+	NORMALRETURN;
+}
+
+Object* ObjectDict_Bool(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	return IntObject_NewFromInt(Object_Bool(arg1));
+}
+
+Object* ObjectDict_Copy(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	return Object_Copy(arg1);
+}
+
+Object* ObjectDict_Or(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return IntObject_NewFromInt(Object_Or(arg1, arg2));
+}
+
+Object* ObjectDict_SetItem(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	Object* arg3 = arglist->list[2];
+	Object_DictAddItem(arg1, arg2, arg3);
+	NORMALRETURN;
+}
+
+Object* ObjectDict_Gt(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return IntObject_NewFromInt(Object_Gt(arg1, arg2));
+}
+
+Object* ObjectDict_Geq(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return IntObject_NewFromInt(Object_Geq(arg1, arg2));
+}
+
+Object* ObjectDict_Lt(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return IntObject_NewFromInt(Object_Lt(arg1, arg2));
+}
+
+Object* ObjectDict_Leq(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return IntObject_NewFromInt(Object_Leq(arg1, arg2));
+}
+
+Object* ObjectDict_Neq(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return IntObject_NewFromInt(Object_Neq(arg1, arg2));
+}
+
+Object* ObjectDict_And(Object* args)
+{
+	ListObject* arglist = (ListObject*)args;
+	Object* arg1 = arglist->list[0];
+	Object* arg2 = arglist->list[1];
+	return IntObject_NewFromInt(Object_And(arg1, arg2));
+}*/
 
 void print(Object* obj)
 {
