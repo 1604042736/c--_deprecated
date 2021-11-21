@@ -241,6 +241,21 @@ struct Object* ContinueASTObject_NewWithParser(struct Parser* parser)
 	return (struct Object*)astobject;
 }
 
+struct Object* ImportASTObject_New()
+{
+	struct ImportASTObject* astobject = (struct ImportASTObject*)malloc(sizeof(struct ImportASTObject));
+	astobject->objattr = &ImportASTObjectAttribute;
+	return (struct Object*)astobject;
+}
+
+struct Object* ImportASTObject_NewWithParser(struct Parser* parser)
+{
+	struct ImportASTObject* astobject = ImportASTObject_New();
+	astobject->lineno = parser->lexer->lineno;
+	astobject->linepos = parser->lexer->linepos;
+	return (struct Object*)astobject;
+}
+
 void printastobject(struct Object* obj,int space)
 {
 	if (obj == NULL)
@@ -456,5 +471,14 @@ void printastobject(struct Object* obj,int space)
 	else if (CHECK(obj, "Continue"))
 	{
 		printf("Continue\n");
+	}
+	else if (CHECK(obj, "Import"))
+	{
+		struct ImportASTObject* astobject = (struct ImportASTObject*)obj;
+		printf("Import\n");
+
+		printSpace(space + 1);
+		printf("name\n");
+		printastobject(astobject->name, space + 2);
 	}
 }

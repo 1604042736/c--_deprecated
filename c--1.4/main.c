@@ -6,6 +6,36 @@
 #include "frameobject.h"
 #include "eval.h"
 
+struct NamespaceObject* compiler(char* filename,char* namespacename)
+{
+	FILE* file = fopen(filename, "r");
+	if (file == NULL)
+	{
+		printf("无法打开:%s", filename);
+		exit(-1);
+	}
+
+	struct Preprocessor* preprocessor = Preprocessor_New(file);
+	Preprocessor_Preprocess(preprocessor);
+
+	struct Lexer* lexer = Lexer_New(preprocessor->result);
+
+	struct Parser* parser = Parser_New(lexer);
+	struct NameSpaceASTObject* astobject = Parser_Parse(parser);
+
+	struct Translater* translater = Translater_New();
+	Translater_Translate(translater, astobject);
+
+	struct NamespaceObject* namespaceobj = NamespaceObject_NewWithName(namespacename);
+	struct FrameObject* frameobj = FrameObject_NewWithByteCode(translater->bytecode);
+	frameobj->locals = namespaceobj->globals;
+	Eval(frameobj);
+
+	fclose(file);
+
+	return namespaceobj;
+}
+
 int main(int argc,char* argv[])
 {
 #ifndef NDEBUG
@@ -33,7 +63,7 @@ int main(int argc,char* argv[])
 	Lexer_Init();
 	struct Lexer* lexer = Lexer_New(preprocessor->result);
 
-	struct Parser* parser = Parser_New(lexer,preprocessor);
+	struct Parser* parser = Parser_New(lexer);
 	struct NameSpaceASTObject* astobject = Parser_Parse(parser);
 	printastobject((struct Object*)astobject,0);
 
@@ -42,7 +72,7 @@ int main(int argc,char* argv[])
 	Translater_Translate(translater, astobject);
 	ByteCodeObject_Print2(translater->bytecode);
 
-	struct NamespaceObject* namespaceobj = NamespaceObject_New();
+	struct NamespaceObject* namespaceobj = NamespaceObject_NewWithName("main");
 	struct FrameObject* frameobj = FrameObject_NewWithByteCode(translater->bytecode);
 	frameobj->locals = namespaceobj->globals;
 	Eval(frameobj);

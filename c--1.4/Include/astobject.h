@@ -532,4 +532,38 @@ static struct ObjectAttribute ContinueASTObjectAttribute = {
 	NULL,	//obj_sub
 };
 
+struct ImportASTObject
+{
+	ASTOBJECT_HEAD;
+	struct Object* name;
+};
+
+struct Object* ImportASTObject_New();
+struct Object* ImportASTObject_NewWithParser(struct Parser*);
+
+static struct ObjectAttribute ImportASTObjectAttribute = {
+	(char*)"Import",
+	NULL,	//obj_add
+	NULL,	//obj_and
+	NULL,	//obj_bool
+	NULL,	//obj_div
+	NULL,	//obj_eq
+	NULL,	//obj_getattr
+	NULL,	//obj_getitem
+	NULL,	//obj_geq
+	NULL,	//obj_gt
+	NULL,	//obj_insertitem
+	NULL,	//obj_leq
+	NULL,	//obj_lt
+	NULL,	//obj_mod
+	NULL,	//obj_mul
+	NULL,	//obj_neq
+	ImportASTObject_New,	//obj_new
+	NULL,	//obj_or
+	NULL,	//obj_print
+	NULL,	//obj_setattr
+	NULL,	//obj_setitem
+	NULL,	//obj_sub
+};
+
 void printastobject(struct Object*,int);

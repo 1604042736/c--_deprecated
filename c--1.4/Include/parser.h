@@ -14,9 +14,10 @@ struct Parser
 {
 	struct Lexer* lexer;
 	enum BlockStyle blockstyle;
+	int importmode;
 };
 
-struct Parser* Parser_New(struct Lexer*,struct Preprocessor*);
+struct Parser* Parser_New(struct Lexer*);
 struct Object* Parser_Parse(struct Parser*);
 struct Object* Parser_body(struct Parser*,char*,int);
 struct Object* Parser_sentence(struct Parser*);
@@ -35,3 +36,5 @@ struct Object* Parser_exp_argument(struct Parser*);
 struct Object* Parser_jump(struct Parser*);
 struct Object* Parser_functiondef(struct Parser*);
 struct Object* Parser_while(struct Parser*);
+void Parser_preprocess(struct Parser*);
+struct Object* Parser_import(struct Parser*);

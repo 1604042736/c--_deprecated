@@ -19,15 +19,16 @@
 #define OP_LOAD_SUB		15
 #define OP_STORE_SUB	16
 #define OP_GET_TEMP		17
-#define OP_SET_TEMP		28
-#define OP_POP_TOP		29
-#define OP_NEW_BLOCK	30
-#define OP_DEL_BLOCK	31
+#define OP_SET_TEMP		18
+#define OP_POP_TOP		19
+#define OP_NEW_BLOCK	20
+#define OP_DEL_BLOCK	21
 
-#define OP_GOTO_FLAG	115
-#define OP_ADD_FLAG		116
-#define OP_LOAD_ATTR	117
-#define OP_STORE_ATTR	118
+#define OP_LOAD_NAMESPACE	114
+#define OP_GOTO_FLAG		115
+#define OP_ADD_FLAG			116
+#define OP_LOAD_ATTR		117
+#define OP_STORE_ATTR		118
 #define OP_BUILD_LIST		119
 #define OP_STORE_ARG		120
 #define OP_MAKE_FUNCTION	121

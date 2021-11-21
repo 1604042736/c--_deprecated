@@ -1,6 +1,6 @@
 #include "parser.h"
 
-struct Parser* Parser_New(struct Lexer* lexer, struct Preprocessor* preprocessor)
+struct Parser* Parser_New(struct Lexer* lexer)
 {
 	struct Parser* parser = (struct Parser*)malloc(sizeof(struct Parser));
 	if (parser == NULL)
@@ -9,7 +9,8 @@ struct Parser* Parser_New(struct Lexer* lexer, struct Preprocessor* preprocessor
 		exit(-1);
 	}
 	parser->lexer = lexer;
-	parser->blockstyle = preprocessor->blockstyle;
+	parser->blockstyle = INDENT;
+	parser->importmode = 0;
 	return parser;
 }
 
@@ -116,6 +117,13 @@ struct Object* Parser_sentence(struct Parser* parser)
 	case TK_RETURN:
 	case TK_CONTINUE:
 		t = Parser_jump(parser);
+		break;
+	case TK_COMMENT:
+		Parser_preprocess(parser);
+		t = Parser_sentence(parser);
+		break;
+	case TK_IMPORT:
+		t = Parser_import(parser);
 		break;
 	default:
 		printf("%s不能作为语句", parser->lexer->tokenstr->string);
@@ -333,12 +341,20 @@ struct Object* Parser_exp_postfix(struct Parser* parser)
 		}
 		else if (parser->lexer->token == TK_POINT)
 		{
+			char* tokenstr = parser->lexer->tokenstr->string;
 			struct AttributeASTObject* p = AttributeASTObject_NewWithParser(parser);
 			p->value = t;
 			Parser_match(parser, TK_POINT);
 			p->attr = parser->lexer->tokenstr;
 			Parser_match(parser, parser->lexer->token);
-			p->mode = StringObject_NewWithString("load");
+			if (strcmp(tokenstr, "::"))
+			{
+				p->mode = StringObject_NewWithString("load");
+			}
+			else
+			{
+				p->mode= StringObject_NewWithString("namespace");
+			}
 			t = p;
 		}
 	}
@@ -352,7 +368,14 @@ struct Object* Parser_exp_primary(struct Parser* parser)
 	{
 		struct NameASTObject* p = NameASTObject_NewWithParser(parser);
 		p->id = parser->lexer->tokenstr;
-		p->mode = StringObject_NewWithString("load");
+		if (parser->importmode)
+		{
+			p->mode= StringObject_NewWithString("import");
+		}
+		else
+		{
+			p->mode = StringObject_NewWithString("load");
+		}
 		Parser_match(parser, parser->lexer->token);
 		t = p;
 	}
@@ -571,5 +594,44 @@ struct Object* Parser_while(struct Parser* parser)
 		struct Object* body = Parser_body(parser, "", TK_WHILE);
 		t->body = body;
 	}
+	return t;
+}
+
+void Parser_preprocess(struct Parser* parser)
+{
+	Parser_match(parser, TK_COMMENT);
+	if (!strcmp(parser->lexer->tokenstr->string, "blockstyle"))
+	{
+		Parser_match(parser, parser->lexer->token);
+		if (!strcmp(parser->lexer->tokenstr->string, "indent"))
+		{
+			parser->blockstyle = INDENT;
+		}
+		else if (!strcmp(parser->lexer->tokenstr->string, "braces"))
+		{
+			parser->blockstyle = BRACES;
+		}
+		else if (!strcmp(parser->lexer->tokenstr->string, "end"))
+		{
+			parser->blockstyle = END;
+		}
+		else if (!strcmp(parser->lexer->tokenstr->string, "endname"))
+		{
+			parser->blockstyle = ENDNAME;
+		}
+		else if (!strcmp(parser->lexer->tokenstr->string, "beginend"))
+		{
+			parser->blockstyle = BEGINEND;
+		}
+	}
+}
+
+struct Object* Parser_import(struct Parser* parser)
+{
+	struct ImportASTObject* t = ImportASTObject_NewWithParser(parser);
+	Parser_match(parser,TK_IMPORT);
+	parser->importmode = 1;
+	t->name = Parser_exp_postfix(parser);
+	parser->importmode = 0;
 	return t;
 }

@@ -1,0 +1,2 @@
+import fibi.f
+f(3)

@@ -90,6 +90,10 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		{
 			op = OP_STORE_ARG;
 		}
+		else if (!strcmp(astobject->mode->string, "import"))
+		{
+			op = OP_LOAD_NAMESPACE;
+		}
 		oparg = index;
 		APPENDOPCODE;
 	}
@@ -136,38 +140,47 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		if (CHECK(astobject->func, "Attribute"))
 		{
 			struct AttributeASTObject* func = (struct AttributeASTObject*)astobject->func;
-			Translater_Translate(translater, func->value);
-			op = OP_SET_TEMP;
-			APPENDOPCODE;
-			op = OP_GET_TEMP;
-			APPENDOPCODE;
+			if (strcmp(func->mode->string, "namespace"))
+			{
+				Translater_Translate(translater, func->value);
+				op = OP_SET_TEMP;
+				APPENDOPCODE;
+				op = OP_GET_TEMP;
+				APPENDOPCODE;
+			}
 		}
 		Translater_Translate(translater, astobject->args);
 		if (CHECK(astobject->func, "Attribute"))
 		{
 			struct AttributeASTObject* func = (struct AttributeASTObject*)astobject->func;
-
-			int index = ListObject_FindItem(translater->bytecode->consts, func->attr);
-			if (index == -1)
+			if (strcmp(func->mode->string, "namespace"))
 			{
-				index = translater->bytecode->consts->size;
-				ListObject_InsertItem(translater->bytecode->consts, translater->bytecode->consts->size, func->attr);
-			}
+				int index = ListObject_FindItem(translater->bytecode->consts, func->attr);
+				if (index == -1)
+				{
+					index = translater->bytecode->consts->size;
+					ListObject_InsertItem(translater->bytecode->consts, translater->bytecode->consts->size, func->attr);
+				}
 
-			op = OP_GET_TEMP;
-			APPENDOPCODE;
+				op = OP_GET_TEMP;
+				APPENDOPCODE;
 
-			if (!strcmp(func->mode->string, "load"))
-			{
-				op = OP_LOAD_ATTR;
+				if (!strcmp(func->mode->string, "load"))
+				{
+					op = OP_LOAD_ATTR;
+				}
+				else if (!strcmp(func->mode->string, "store"))
+				{
+					op = OP_STORE_ATTR;
+				}
+				oparg = index;
+				APPENDOPCODE;
+				oparg = astobject->args->size + 1;
 			}
-			else if (!strcmp(func->mode->string, "store"))
+			else
 			{
-				op = OP_STORE_ATTR;
+				Translater_Translate(translater, astobject->func);
 			}
-			oparg = index;
-			APPENDOPCODE;
-			oparg= astobject->args->size+1;
 		}
 		else
 		{
@@ -281,6 +294,10 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		{
 			op = OP_STORE_ATTR;
 		}
+		else if (!strcmp(astobject->mode->string, "namespace"))
+		{
+			op = OP_LOAD_ATTR;
+		}
 		oparg = index;
 		APPENDOPCODE;
 	}
@@ -296,6 +313,37 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		struct ContinueASTObject* astobject = (struct ContinueASTObject*)obj;
 		op = OP_GOTO_FLAG;
 		oparg = 1;
+		APPENDOPCODE;
+	}
+	else if (CHECK(obj, "Import"))
+	{
+		struct ImportASTObject* astobject = (struct ImportASTObject*)obj;
+		Translater_Translate(translater, astobject->name);
+
+		if (CHECK(astobject->name, "Name"))
+		{
+			struct NameASTObject* name = (struct NameASTObject*)astobject->name;
+			int index = ListObject_FindItem(translater->bytecode->consts, name->id);
+			if (index == -1)
+			{
+				index = translater->bytecode->consts->size;
+				ListObject_InsertItem(translater->bytecode->consts, translater->bytecode->consts->size, name->id);
+			}
+			oparg = index;
+		}
+		else if (CHECK(astobject->name, "Attribute"))
+		{
+			struct AttributeASTObject* at = (struct AttributeASTObject*)astobject->name;
+			int index = ListObject_FindItem(translater->bytecode->consts, at->attr);
+			if (index == -1)
+			{
+				index = translater->bytecode->consts->size;
+				ListObject_InsertItem(translater->bytecode->consts, translater->bytecode->consts->size, at->attr);
+			}
+			oparg = index;
+		}
+
+		op = OP_STORE_NAME;
 		APPENDOPCODE;
 	}
 }

@@ -12,7 +12,6 @@ struct Preprocessor* Preprocessor_New(FILE* file)
 	preprocessor->result = (struct StringObject*)StringObject_New();
 	preprocessor->definedict = DictObject_New();
 	preprocessor->defineflag = 0;
-	preprocessor->blockstyle = INDENT;
 	return preprocessor;
 }
 
@@ -151,30 +150,6 @@ struct StringObject* Preprocessor_Dealprecode(struct Preprocessor* preprocessor,
 	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("endif")))
 	{
 		preprocessor->defineflag = 0;
-	}
-	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("blockstyle")))
-	{
-		struct Object* name = list->item[1];
-		if (StringObject_Eq(name, StringObject_NewWithString("braces")))
-		{
-			preprocessor->blockstyle = BRACES;
-		}
-		else if (StringObject_Eq(name, StringObject_NewWithString("indent")))
-		{
-			preprocessor->blockstyle = INDENT;
-		}
-		else if (StringObject_Eq(name, StringObject_NewWithString("beginend")))
-		{
-			preprocessor->blockstyle = BEGINEND;
-		}
-		else if (StringObject_Eq(name, StringObject_NewWithString("endname")))
-		{
-			preprocessor->blockstyle = ENDNAME;
-		}
-		else if (StringObject_Eq(name, StringObject_NewWithString("end")))
-		{
-			preprocessor->blockstyle = END;
-		}
 	}
 	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("include")))
 	{

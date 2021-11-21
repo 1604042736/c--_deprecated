@@ -13,7 +13,6 @@ struct Preprocessor
 	char ch;
 	struct DictObject* definedict;
 	int defineflag;
-	enum BlockStyle blockstyle;
 };
 
 struct Preprocessor* Preprocessor_New(FILE*);

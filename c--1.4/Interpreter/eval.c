@@ -294,6 +294,13 @@ struct Object* Eval(struct FrameObject* frameobj)
 			i = ((struct IntObject*)block->flags->item[0])->value+((struct IntObject*)block->flags->item[oparg])->value;
 			break;
 		}
+		case OP_LOAD_NAMESPACE:
+		{
+			struct Object* name = BYTECODE->consts->item[oparg];
+			struct NamespaceObject* nt = load_namespace(name);
+			ListObject_InsertItem(STACK, STACK->size, nt);
+			break;
+		}
 		}
 #ifndef NDEBUG
 		printf("\n%d:", i);
@@ -350,4 +357,11 @@ struct Object* call(struct Object* f, struct ListObject* args)
 		return func->func(cfuncargs);
 	}
 	return IntObject_New();
+}
+
+struct NamespaceObject* load_namespace(struct StringObject* name)
+{
+	struct StringObject* filename = name;
+	filename = StringObject_Add(filename, StringObject_NewWithString(".c--"));
+	return compiler(filename->string,name->string);
 }

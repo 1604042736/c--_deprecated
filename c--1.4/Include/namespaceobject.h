@@ -6,10 +6,15 @@
 struct NamespaceObject
 {
 	OBJECT_HEAD;
+	char* name;
 	struct DictObject* globals;
 };
 
 struct Object* NamespaceObject_New();
+struct Object* NamespaceObject_NewWithName(char*);
+struct Object* NamespaceObject_GetAttr(struct Object*, struct Object*);
+void NamespaceObject_SetAttr(struct Object*, struct Object*,struct Object*);
+void NamespaceObject_Print(struct Object*);
 
 static struct ObjectAttribute NamespaceObjectAttribute = {
 	(char*)"namespace",	//obj_name
@@ -18,7 +23,7 @@ static struct ObjectAttribute NamespaceObjectAttribute = {
 	NULL,	//obj_bool
 	NULL,	//obj_div
 	NULL,	//obj_eq
-	NULL,	//obj_getattr
+	NamespaceObject_GetAttr,	//obj_getattr
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
@@ -30,8 +35,8 @@ static struct ObjectAttribute NamespaceObjectAttribute = {
 	NULL,	//obj_neq
 	NamespaceObject_New,	//obj_new
 	NULL,	//obj_or
-	NULL,	//obj_print
-	NULL,	//obj_setattr
+	NamespaceObject_Print,	//obj_print
+	NamespaceObject_SetAttr,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
 };

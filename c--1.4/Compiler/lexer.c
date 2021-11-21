@@ -14,6 +14,7 @@ void Lexer_Init()
 	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("while"), IntObject_NewWithValue(TK_WHILE));
 	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("break"), IntObject_NewWithValue(TK_BREAK));
 	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("continue"), IntObject_NewWithValue(TK_CONTINUE));
+	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("import"), IntObject_NewWithValue(TK_IMPORT));
 }
 
 struct Lexer* Lexer_New(struct StringObject* code)
@@ -192,9 +193,8 @@ void Lexer_gettoken(struct Lexer* lexer)
 			}
 			else if (lexer->ch == ':')
 			{
-				lexer->token = TK_COLON;
+				lexer->state = ST_NAMESPACEATTR;
 				flag = 1;
-				end = 1;
 			}
 			else if (lexer->ch == '.')
 			{
@@ -209,6 +209,26 @@ void Lexer_gettoken(struct Lexer* lexer)
 			else if (lexer->ch == '"')
 			{
 				lexer->state = ST_STRING2;
+			}
+			else if (lexer->ch == '#')
+			{
+				lexer->token = TK_COMMENT;
+				end = 1;
+				flag = 1;
+			}
+			break;
+		case ST_NAMESPACEATTR:
+			if (lexer->ch == ':')
+			{
+				lexer->token = TK_POINT;
+				end = 1;
+				flag = 1;
+			}
+			else
+			{
+				lexer->token = TK_COLON;
+				Lexer_ungetch(lexer);
+				end = 1;
 			}
 			break;
 		case ST_NAME:
