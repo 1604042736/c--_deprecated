@@ -94,6 +94,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -112,6 +113,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -150,10 +152,14 @@
     <ClCompile Include="Interpreter\eval.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Objects\astobject.c" />
+    <ClCompile Include="Objects\blockobject.c" />
     <ClCompile Include="Objects\bytecodeobject.c" />
+    <ClCompile Include="Objects\cfunctionobject.c" />
     <ClCompile Include="Objects\dictobject.c" />
+    <ClCompile Include="Objects\doubleobject.c" />
     <ClCompile Include="Objects\frameobject.c" />
     <ClCompile Include="Objects\functionobject.c" />
+    <ClCompile Include="Objects\initobjects.c" />
     <ClCompile Include="Objects\intobject.c" />
     <ClCompile Include="Objects\listobject.c" />
     <ClCompile Include="Objects\namespaceobject.c" />
@@ -163,8 +169,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\astobject.h" />
+    <ClInclude Include="Include\blockobject.h" />
     <ClInclude Include="Include\bytecodeobject.h" />
+    <ClInclude Include="Include\cfunctionobject.h" />
     <ClInclude Include="Include\dictobject.h" />
+    <ClInclude Include="Include\doubleobject.h" />
     <ClInclude Include="Include\eval.h" />
     <ClInclude Include="Include\frameobject.h" />
     <ClInclude Include="Include\functionobject.h" />

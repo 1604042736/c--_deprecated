@@ -11,13 +11,14 @@ struct Object* ListObject_New()
 	}
 	listobj->objattr = &ListObjectAttribute;
 	listobj->allocated = MAXALLOCATEDSIZE;
-	listobj->item = (struct Object**)malloc(sizeof(struct Object) * listobj->allocated);
+	listobj->item = (struct Object**)malloc(sizeof(struct Object*) * listobj->allocated);
 	if (listobj->item == NULL)
 	{
 		printf("创建list时list item分配内存失败");
 		exit(-1);
 	}
 	listobj->size = 0;
+	listobj->objattr->attr = listobjectattr;
 	return (struct Object*)listobj;
 }
 
@@ -49,17 +50,12 @@ void ListObject_InsertItem(struct Object* self, int index, struct Object* item)
 	}
 	if (selflist->size + 1 >= selflist->allocated)	//超出了已分配的范围
 	{
-		struct Object** copy = selflist->item;
 		selflist->allocated += MAXALLOCATEDSIZE;
-		selflist->item = (struct Object**)malloc(sizeof(struct Object) * selflist->allocated);
+		selflist->item = (struct Object**)realloc(selflist->item,sizeof(struct Object*) * selflist->allocated);
 		if (selflist->item == NULL)
 		{
 			printf("list item分配内存失败");
 			exit(-1);
-		}
-		for (int i = 0; i < selflist->size; i++)
-		{
-			selflist->item[i] = copy[i];
 		}
 	}
 	selflist->size += 1;
@@ -115,4 +111,55 @@ int ListObject_Bool(struct Object* self)
 {
 	struct ListObject* selflist = (struct ListObject*)self;
 	return selflist->size;
+}
+
+struct Object* ListObject_GetItem(struct Object* self, struct Object* index)
+{
+	struct ListObject* selflist = (struct ListObject*)self;
+	if (!CHECK(index, "int"))
+	{
+		//TODO
+		exit(-1);
+	}
+	struct IntObject* indexint = (struct IntObject*)index;
+	return selflist->item[indexint->value];
+}
+
+struct Object* ListObject_GetAttr(struct Object* self, struct Object* attr)
+{
+	if (!CHECK(attr, "string"))
+	{
+		//ERROR
+		exit(-1);
+	}
+	return DictObject_GetItem(self->objattr->attr, attr);
+}
+
+void ListObject_SetAttr(struct Object* self, struct Object* attr, struct Object* value)
+{
+
+}
+
+struct Object* ListObject_InsertItem2(struct Object* args)
+{
+	struct ListObject* argslist = (struct ListObject*)args;
+	if (!CHECK(argslist->item[1], "int"))
+	{
+		//ERROR
+		exit(-1);
+	}
+	ListObject_InsertItem(argslist->item[0], ((struct IntObject*)argslist->item[1])->value, argslist->item[2]);
+	NORMALRETURN
+}
+
+struct Object* ListObject_ListDelItem2(struct Object* args)
+{
+	struct ListObject* argslist = (struct ListObject*)args;
+	if (!CHECK(argslist->item[1], "int"))
+	{
+		//ERROR
+		exit(-1);
+	}
+	ListObject_ListDelItem(argslist->item[0], ((struct IntObject*)argslist->item[1])->value);
+	NORMALRETURN
 }

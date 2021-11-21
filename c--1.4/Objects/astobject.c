@@ -70,17 +70,16 @@ struct Object* NameASTObject_NewWithParser(struct Parser* parser)
 	return (struct Object*)astobject;
 }
 
-struct Object* NumASTObject_New()
+struct Object* ConstantASTObject_New()
 {
-	struct NumASTObject* astobject = (struct NumASTObject*)malloc(sizeof(struct NumASTObject));
-	astobject->objattr = &NumASTObjectAttribute;
-	astobject->value = IntObject_New();
+	struct ConstantASTObject* astobject = (struct ConstantASTObject*)malloc(sizeof(struct ConstantASTObject));
+	astobject->objattr = &ConstantASTObjectAttribute;
 	return (struct Object*)astobject;
 }
 
-struct Object* NumASTObject_NewWithParser(struct Parser* parser)
+struct Object* ConstantASTObject_NewWithParser(struct Parser* parser)
 {
-	struct NumASTObject* astobject = NumASTObject_New();
+	struct ConstantASTObject* astobject = ConstantASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
 	return (struct Object*)astobject;
@@ -165,6 +164,83 @@ struct Object* FunctionDefASTObject_NewWithParser(struct Parser* parser)
 	return (struct Object*)astobject;
 }
 
+struct Object* WhileASTObject_New()
+{
+	struct WhileASTObject* astobject = (struct WhileASTObject*)malloc(sizeof(struct WhileASTObject));
+	astobject->objattr = &WhileASTObjectAttribute;
+	astobject->body = ListObject_New();
+	return (struct Object*)astobject;
+}
+
+struct Object* WhileASTObject_NewWithParser(struct Parser* parser)
+{
+	struct WhileASTObject* astobject = WhileASTObject_New();
+	astobject->lineno = parser->lexer->lineno;
+	astobject->linepos = parser->lexer->linepos;
+	return (struct Object*)astobject;
+}
+
+struct Object* ListASTObject_New()
+{
+	struct ListASTObject* astobject = (struct ListASTObject*)malloc(sizeof(struct ListASTObject));
+	astobject->objattr = &ListASTObjectAttribute;
+	astobject->list = ListObject_New();
+	return (struct Object*)astobject;
+}
+
+struct Object* ListASTObject_NewWithParser(struct Parser* parser)
+{
+	struct ListASTObject* astobject = ListASTObject_New();
+	astobject->lineno = parser->lexer->lineno;
+	astobject->linepos = parser->lexer->linepos;
+	return (struct Object*)astobject;
+}
+
+struct Object* AttributeASTObject_New()
+{
+	struct AttributeASTObject* astobject = (struct AttributeASTObject*)malloc(sizeof(struct AttributeASTObject));
+	astobject->objattr = &AttributeASTObjectAttribute;
+	return (struct Object*)astobject;
+}
+
+struct Object* AttributeASTObject_NewWithParser(struct Parser* parser)
+{
+	struct AttributeASTObject* astobject = AttributeASTObject_New();
+	astobject->lineno = parser->lexer->lineno;
+	astobject->linepos = parser->lexer->linepos;
+	return (struct Object*)astobject;
+}
+
+struct Object* BreakASTObject_New()
+{
+	struct BreakASTObject* astobject = (struct BreakASTObject*)malloc(sizeof(struct BreakASTObject));
+	astobject->objattr = &BreakASTObjectAttribute;
+	return (struct Object*)astobject;
+}
+
+struct Object* BreakASTObject_NewWithParser(struct Parser* parser)
+{
+	struct BreakASTObject* astobject = BreakASTObject_New();
+	astobject->lineno = parser->lexer->lineno;
+	astobject->linepos = parser->lexer->linepos;
+	return (struct Object*)astobject;
+}
+
+struct Object* ContinueASTObject_New()
+{
+	struct ContinueASTObject* astobject = (struct ContinueASTObject*)malloc(sizeof(struct ContinueASTObject));
+	astobject->objattr = &ContinueASTObjectAttribute;
+	return (struct Object*)astobject;
+}
+
+struct Object* ContinueASTObject_NewWithParser(struct Parser* parser)
+{
+	struct ContinueASTObject* astobject = ContinueASTObject_New();
+	astobject->lineno = parser->lexer->lineno;
+	astobject->linepos = parser->lexer->linepos;
+	return (struct Object*)astobject;
+}
+
 void printastobject(struct Object* obj,int space)
 {
 	if (obj == NULL)
@@ -237,14 +313,15 @@ void printastobject(struct Object* obj,int space)
 		printf("mode: ");
 		printf("%s\n", astobject->mode->string);
 	}
-	else if (CHECK(obj, "Num"))
+	else if (CHECK(obj, "Constant"))
 	{
-		struct NumASTObject* astobject = (struct NumASTObject*)obj;
-		printf("Num\n");
+		struct ConstantASTObject* astobject = (struct ConstantASTObject*)obj;
+		printf("Constant\n");
 
 		printSpace(space + 1);
 		printf("value: ");
-		printf("%d\n", astobject->value->value);
+		astobject->value->objattr->obj_print(astobject->value);
+		printf("\n");
 	}
 	else if (CHECK(obj, "Assign"))
 	{
@@ -326,5 +403,58 @@ void printastobject(struct Object* obj,int space)
 		{
 			printastobject(astobject->body->item[i], space + 2);
 		}
+	}
+	else if (CHECK(obj, "While"))
+	{
+		struct WhileASTObject* astobject = (struct WhileASTObject*)obj;
+		printf("While\n");
+
+		printSpace(space + 1);
+		printf("exp\n");
+		printastobject(astobject->exp, space + 2);
+
+		printSpace(space + 1);
+		printf("body\n");
+		for (int i = 0; i < astobject->body->size; i++)
+		{
+			printastobject(astobject->body->item[i], space + 2);
+		}
+	}
+	else if (CHECK(obj, "List"))
+	{
+		struct ListASTObject* astobject = (struct ListASTObject*)obj;
+		printf("List\n");
+
+		printSpace(space + 1);
+		printf("list\n");
+		for (int i = 0; i < astobject->list->size; i++)
+		{
+			printastobject(astobject->list->item[i], space + 2);
+		}
+	}
+	else if (CHECK(obj, "Attribute"))
+	{
+		struct AttributeASTObject* astobject = (struct AttributeASTObject*)obj;
+		printf("Attribute\n");
+
+		printSpace(space + 1);
+		printf("value\n");
+		printastobject(astobject->value, space + 2);
+
+		printSpace(space + 1);
+		printf("attr: ");
+		printf("%s\n", astobject->attr->string);
+
+		printSpace(space + 1);
+		printf("mode: ");
+		printf("%s\n", astobject->mode->string);
+	}
+	else if (CHECK(obj, "Break"))
+	{
+		printf("Break\n");
+	}
+	else if (CHECK(obj, "Continue"))
+	{
+		printf("Continue\n");
 	}
 }

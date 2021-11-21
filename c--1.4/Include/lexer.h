@@ -39,10 +39,16 @@
 #define TK_COLON	30
 #define TK_BEGIN	31
 #define TK_END		32
+#define TK_WHILE	33
+#define TK_POINT	34
+#define TK_STRING	35
+#define TK_DOUBLE	36
+#define TK_BREAK	37
+#define TK_CONTINUE	38
 
 enum State
 {
-	ST_START,ST_NAME,ST_EQ,ST_GT,ST_LT,ST_NOT,ST_NUM,ST_INDENT
+	ST_START,ST_NAME,ST_EQ,ST_GT,ST_LT,ST_NOT,ST_NUM,ST_INDENT,ST_STRING1,ST_STRING2,ST_DOUBLE
 };
 
 struct Lexer
@@ -64,3 +70,4 @@ struct Lexer* Lexer_New(struct StringObject*);
 void Lexer_gettoken(struct Lexer*);
 void Lexer_getch(struct Lexer*);
 void Lexer_ungetch(struct Lexer*);
+void Lexer_escape(struct Lexer*);

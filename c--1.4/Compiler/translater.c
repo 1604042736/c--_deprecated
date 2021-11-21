@@ -30,8 +30,7 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 #define APPENDOPCODE		ListObject_InsertItem(translater->bytecode->code, translater->bytecode->code->size, OpCodeObject_NewWithOpCodeAndLine(op, oparg, astobject->lineno, astobject->linepos))
 #define INSERTOPCODE(INDEX)	ListObject_InsertItem(translater->bytecode->code, INDEX, OpCodeObject_NewWithOpCodeAndLine(op, oparg, astobject->lineno, astobject->linepos))
 	if (obj == NULL)return;
-	unsigned short op;
-	short oparg = 0;
+	opcodetype op, oparg=0;
 	if (CHECK(obj, "list"))
 	{
 		struct ListObject* list = (struct ListObject*)obj;
@@ -94,9 +93,9 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		oparg = index;
 		APPENDOPCODE;
 	}
-	else if (CHECK(obj, "Num"))
+	else if (CHECK(obj, "Constant"))
 	{
-		struct NumASTObject* astobject = (struct NumASTObject*)obj;
+		struct ConstantASTObject* astobject = (struct ConstantASTObject*)obj;
 		int index = ListObject_FindItem(translater->bytecode->consts, astobject->value);
 		if (index == -1)
 		{
@@ -116,16 +115,72 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 	else if (CHECK(obj, "Subscript"))
 	{
 		struct SubscriptASTObject* astobject = (struct SubscriptASTObject*)obj;
-		
+		Translater_Translate(translater, astobject->slice);
+		Translater_Translate(translater, astobject->value);
+
+		if (!strcmp(astobject->mode->string, "load"))
+		{
+			op = OP_LOAD_SUB;
+		}
+		else
+		{
+			op = OP_STORE_SUB;
+		}
+		APPENDOPCODE;
 	}
 	else if (CHECK(obj, "Call"))
 	{
 		struct CallASTObject* astobject = (struct CallASTObject*)obj;
-		Translater_Translate(translater, astobject->args);
-		Translater_Translate(translater, astobject->func);
-		op = OP_CALL;
 		oparg = astobject->args->size;
+		//TODO 改进
+		if (CHECK(astobject->func, "Attribute"))
+		{
+			struct AttributeASTObject* func = (struct AttributeASTObject*)astobject->func;
+			Translater_Translate(translater, func->value);
+			op = OP_SET_TEMP;
+			APPENDOPCODE;
+			op = OP_GET_TEMP;
+			APPENDOPCODE;
+		}
+		Translater_Translate(translater, astobject->args);
+		if (CHECK(astobject->func, "Attribute"))
+		{
+			struct AttributeASTObject* func = (struct AttributeASTObject*)astobject->func;
+
+			int index = ListObject_FindItem(translater->bytecode->consts, func->attr);
+			if (index == -1)
+			{
+				index = translater->bytecode->consts->size;
+				ListObject_InsertItem(translater->bytecode->consts, translater->bytecode->consts->size, func->attr);
+			}
+
+			op = OP_GET_TEMP;
+			APPENDOPCODE;
+
+			if (!strcmp(func->mode->string, "load"))
+			{
+				op = OP_LOAD_ATTR;
+			}
+			else if (!strcmp(func->mode->string, "store"))
+			{
+				op = OP_STORE_ATTR;
+			}
+			oparg = index;
+			APPENDOPCODE;
+			oparg= astobject->args->size+1;
+		}
+		else
+		{
+			Translater_Translate(translater, astobject->func);
+		}
+		op = OP_CALL;
 		APPENDOPCODE;
+
+		if (!strcmp(astobject->mode->string, "sentence"))
+		{
+			op = OP_POP_TOP;
+			APPENDOPCODE;
+		}
 	}
 	else if (CHECK(obj, "Return"))
 	{
@@ -162,6 +217,85 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 
 		op = OP_STORE_NAME;
 		oparg = index;
+		APPENDOPCODE;
+	}
+	else if (CHECK(obj, "While"))
+	{
+		struct WhileASTObject* astobject = (struct WhileASTObject*)obj;
+		op = OP_NEW_BLOCK;
+		APPENDOPCODE;
+		op = OP_ADD_FLAG;
+		/*设置continue的flag(while开始的地方)*/
+		oparg= 2;
+		APPENDOPCODE;
+		int blockbackindex = translater->bytecode->code->size;
+
+		int jmpindex = translater->bytecode->code->size;
+		Translater_Translate(translater,astobject->exp);
+		int backindex = translater->bytecode->code->size;
+		Translater_Translate(translater, astobject->body);
+		/*跳过body*/
+		op = OP_IFJMP;
+		oparg = translater->bytecode->code->size - backindex + 1;
+		INSERTOPCODE(backindex);
+
+		/*设置break的flag(while结束的地方)*/
+		op = OP_ADD_FLAG;
+		oparg= translater->bytecode->code->size - blockbackindex + 3;
+		INSERTOPCODE(blockbackindex);
+		/*回到exp*/
+		op = OP_JMP;
+		oparg = jmpindex - translater->bytecode->code->size - 1;
+		APPENDOPCODE;
+
+		op = OP_DEL_BLOCK;
+		APPENDOPCODE;
+	}
+	else if (CHECK(obj, "List"))
+	{
+		struct ListASTObject* astobject = (struct ListASTObject*)obj;
+		Translater_Translate(translater, astobject->list);
+
+		op = OP_BUILD_LIST;
+		oparg = astobject->list->size;
+		APPENDOPCODE;
+	}
+	else if (CHECK(obj, "Attribute"))
+	{
+		struct AttributeASTObject* astobject = (struct AttributeASTObject*)obj;
+
+		int index = ListObject_FindItem(translater->bytecode->consts, astobject->attr);
+		if (index == -1)
+		{
+			index = translater->bytecode->consts->size;
+			ListObject_InsertItem(translater->bytecode->consts, translater->bytecode->consts->size, astobject->attr);
+		}
+
+		Translater_Translate(translater, astobject->value);
+
+		if (!strcmp(astobject->mode->string, "load"))
+		{
+			op = OP_LOAD_ATTR;
+		}
+		else if (!strcmp(astobject->mode->string, "store"))
+		{
+			op = OP_STORE_ATTR;
+		}
+		oparg = index;
+		APPENDOPCODE;
+	}
+	else if (CHECK(obj, "Break"))
+	{
+		struct BreakASTObject* astobject = (struct BreakASTObject*)obj;
+		op = OP_GOTO_FLAG;
+		oparg = 2;
+		APPENDOPCODE;
+	}
+	else if (CHECK(obj, "Continue"))
+	{
+		struct ContinueASTObject* astobject = (struct ContinueASTObject*)obj;
+		op = OP_GOTO_FLAG;
+		oparg = 1;
 		APPENDOPCODE;
 	}
 }

@@ -21,7 +21,31 @@ void Preprocessor_Preprocess(struct Preprocessor* preprocessor)
 	preprocessor->ch = getc(preprocessor->file);
 	while (preprocessor->ch != EOF)
 	{
-		if (preprocessor->ch == '#')
+		if (preprocessor->ch == '\'')
+		{
+			preprocessor->result = StringObject_Add(preprocessor->result, StringObject_NewWithChar(preprocessor->ch));
+			preprocessor->ch = getc(preprocessor->file);
+			while (preprocessor->ch != EOF && preprocessor->ch != '\'')
+			{
+				preprocessor->result = StringObject_Add(preprocessor->result, StringObject_NewWithChar(preprocessor->ch));
+				preprocessor->ch = getc(preprocessor->file);
+			}
+			preprocessor->result = StringObject_Add(preprocessor->result, StringObject_NewWithChar(preprocessor->ch));
+			preprocessor->ch = getc(preprocessor->file);
+		}
+		else if (preprocessor->ch == '"')
+		{
+			preprocessor->result = StringObject_Add(preprocessor->result, StringObject_NewWithChar(preprocessor->ch));
+			preprocessor->ch = getc(preprocessor->file);
+			while (preprocessor->ch != EOF && preprocessor->ch != '"')
+			{
+				preprocessor->result = StringObject_Add(preprocessor->result, StringObject_NewWithChar(preprocessor->ch));
+				preprocessor->ch = getc(preprocessor->file);
+			}
+			preprocessor->result = StringObject_Add(preprocessor->result, StringObject_NewWithChar(preprocessor->ch));
+			preprocessor->ch = getc(preprocessor->file);
+		}
+		else if (preprocessor->ch == '#')
 		{
 			struct StringObject* precode = StringObject_New();
 			preprocessor->ch = getc(preprocessor->file);
@@ -30,7 +54,11 @@ void Preprocessor_Preprocess(struct Preprocessor* preprocessor)
 				precode = StringObject_Add(precode, StringObject_NewWithChar(preprocessor->ch));
 				preprocessor->ch = getc(preprocessor->file);
 			}
-			Preprocessor_Dealprecode(preprocessor,precode);
+			struct StringObject* preresult=Preprocessor_Dealprecode(preprocessor,precode);
+			if (preresult != NULL)
+			{
+				preprocessor->result = StringObject_Add(preprocessor->result, preresult);
+			}
 		}
 		else if (isName(preprocessor->ch))
 		{
@@ -71,6 +99,11 @@ struct StringObject* Preprocessor_Dealprecode(struct Preprocessor* preprocessor,
 			value = list->item[2];
 		}
 		DictObject_SetItem(preprocessor->definedict, name, value);
+	}
+	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("undef")))
+	{
+		struct Object* name = list->item[1];
+		DictObject_DelItem(preprocessor->definedict, name);
 	}
 	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("ifdef")))
 	{
@@ -142,6 +175,44 @@ struct StringObject* Preprocessor_Dealprecode(struct Preprocessor* preprocessor,
 		{
 			preprocessor->blockstyle = END;
 		}
+	}
+	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("include")))
+	{
+		struct Object* arg = list->item[1];
+		char* filename = ((struct StringObject*)arg)->string;
+		FILE* f = fopen(filename, "r");
+		if (f == NULL)
+		{
+			//从默认目录包含
+		}
+		struct Preprocessor* pre = Preprocessor_New(f);
+		Preprocessor_Preprocess(pre);
+
+		int i = preprocessor->result->size - 1;
+		/*回到预处理指令所在行的行首*/
+		while (i >= 0 && preprocessor->result->string[i] != '\n')
+		{
+			i--;
+		}
+		i++;
+		/*获取预处理器前的缩进*/
+		struct StringObject* indent = StringObject_New();
+		while (i < preprocessor->result->size && (preprocessor->result->string[i] == ' ' || preprocessor->result->string[i] == '\t'))
+		{
+			indent = StringObject_Add(indent, StringObject_NewWithChar(preprocessor->result->string[i]));
+			i++;
+		}
+		struct StringObject* pre_file = StringObject_New();
+		for (i = 0; i < pre->result->size; i++)
+		{
+			pre_file = StringObject_Add(pre_file, StringObject_NewWithChar(pre->result->string[i]));
+			if (pre->result->string[i] == '\n')
+			{
+				pre_file = StringObject_Add(pre_file, indent);
+			}
+		}
+		fclose(f);
+		return pre_file;
 	}
 	if (replace)
 	{

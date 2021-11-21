@@ -11,6 +11,9 @@ void Lexer_Init()
 	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("return"), IntObject_NewWithValue(TK_RETURN));
 	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("begin"), IntObject_NewWithValue(TK_BEGIN));
 	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("end"), IntObject_NewWithValue(TK_END));
+	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("while"), IntObject_NewWithValue(TK_WHILE));
+	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("break"), IntObject_NewWithValue(TK_BREAK));
+	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("continue"), IntObject_NewWithValue(TK_CONTINUE));
 }
 
 struct Lexer* Lexer_New(struct StringObject* code)
@@ -193,6 +196,20 @@ void Lexer_gettoken(struct Lexer* lexer)
 				flag = 1;
 				end = 1;
 			}
+			else if (lexer->ch == '.')
+			{
+				lexer->token = TK_POINT;
+				flag = 1;
+				end = 1;
+			}
+			else if (lexer->ch == '\'')
+			{
+				lexer->state = ST_STRING1;
+			}
+			else if (lexer->ch == '"')
+			{
+				lexer->state = ST_STRING2;
+			}
 			break;
 		case ST_NAME:
 			if (isName(lexer->ch))
@@ -216,10 +233,27 @@ void Lexer_gettoken(struct Lexer* lexer)
 			{
 				flag = 1;
 			}
+			else if (lexer->ch == '.')
+			{
+				flag = 1;
+				lexer->state = ST_DOUBLE;
+			}
 			else
 			{
 				Lexer_ungetch(lexer);
 				lexer->token = TK_NUM;
+				end = 1;
+			}
+			break;
+		case ST_DOUBLE:
+			if (isNum(lexer->ch))
+			{
+				flag = 1;
+			}
+			else
+			{
+				Lexer_ungetch(lexer);
+				lexer->token = TK_DOUBLE;
 				end = 1;
 			}
 			break;
@@ -295,6 +329,40 @@ void Lexer_gettoken(struct Lexer* lexer)
 				end = 1;
 			}
 			break;
+		case ST_STRING1:
+			if (lexer->ch == '\'')
+			{
+				end = 1;
+				lexer->token = TK_STRING;
+			}
+			else if (lexer->ch == '\\')
+			{
+				Lexer_getch(lexer);
+				Lexer_escape(lexer);
+				flag = 1;
+			}
+			else
+			{
+				flag = 1;
+			}
+			break;
+		case ST_STRING2:
+			if (lexer->ch == '"')
+			{
+				end = 1;
+				lexer->token = TK_STRING;
+			}
+			else if (lexer->ch == '\\')
+			{
+				Lexer_getch(lexer);
+				Lexer_escape(lexer);
+				flag = 1;
+			}
+			else
+			{
+				flag = 1;
+			}
+			break;
 		}
 		if (flag)
 		{
@@ -309,5 +377,24 @@ void Lexer_gettoken(struct Lexer* lexer)
 	if (lexer->token == TK_INDENT)
 	{
 		Lexer_gettoken(lexer);
+	}
+}
+
+void Lexer_escape(struct Lexer* lexer)
+{
+	switch (lexer->ch)
+	{
+	case 'n':
+		lexer->ch = '\n';
+		break;
+	case 'r':
+		lexer->ch = '\r';
+		break;
+	case '\\':
+		lexer->ch = '\\';
+		break;
+	case 'b':
+		lexer->ch = '\b';
+		break;
 	}
 }

@@ -23,6 +23,8 @@ static struct ObjectAttribute ByteCodeObjectAttribute = {
 	NULL,	//obj_bool
 	NULL,	//obj_div
 	NULL,	//obj_eq
+	NULL,	//obj_getattr
+	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
 	NULL,	//obj_insertitem
@@ -34,6 +36,7 @@ static struct ObjectAttribute ByteCodeObjectAttribute = {
 	ByteCodeObject_New,	//obj_new
 	NULL,	//obj_or
 	ByteCodeObject_Print,	//obj_print
+	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
 };

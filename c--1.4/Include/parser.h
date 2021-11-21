@@ -2,6 +2,7 @@
 
 #include "lexer.h"
 #include "astobject.h"
+#include "doubleobject.h"
 #include "preprocessor.h"
 
 enum BlockStyle
@@ -33,3 +34,4 @@ struct Object* Parser_assignment(struct Parser*);
 struct Object* Parser_exp_argument(struct Parser*);
 struct Object* Parser_jump(struct Parser*);
 struct Object* Parser_functiondef(struct Parser*);
+struct Object* Parser_while(struct Parser*);

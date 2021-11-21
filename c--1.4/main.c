@@ -25,6 +25,7 @@ int main(int argc,char* argv[])
 		printf("无法打开:%s", filename);
 		return 1;
 	}
+	Object_Init();
 
 	struct Preprocessor* preprocessor = Preprocessor_New(file);
 	Preprocessor_Preprocess(preprocessor);

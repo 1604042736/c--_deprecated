@@ -34,6 +34,8 @@ static struct ObjectAttribute IntObjectAttribute = {
 	IntObject_Bool,	//obj_bool
 	IntObject_Div,	//obj_div
 	IntObject_Eq,	//obj_eq
+	NULL,	//obj_getattr
+	NULL,	//obj_getitem
 	IntObject_Geq,	//obj_geq
 	IntObject_Gt,	//obj_gt
 	NULL,	//obj_insertitem
@@ -45,6 +47,7 @@ static struct ObjectAttribute IntObjectAttribute = {
 	IntObject_New,	//obj_new
 	IntObject_Or,	//obj_or
 	IntObject_Print,	//obj_print
+	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	IntObject_Sub,	//obj_sub
 };

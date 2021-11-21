@@ -7,6 +7,8 @@ struct Object* Eval(struct FrameObject* frameobj)
 #define STACK		(frameobj->statck)
 	int i = 0,op,oparg,index;
 	int size = frameobj->bytecode->code->size;
+	struct Object* temp=Object_New();
+	struct ListObject* blocks = ListObject_New();
 	while (i < size)
 	{
 		op = ((struct OpCodeObject*)frameobj->bytecode->code->item[i])->op;
@@ -188,7 +190,7 @@ struct Object* Eval(struct FrameObject* frameobj)
 		}
 		case OP_CALL:
 		{
-			struct FunctionObject* func = STACK->item[STACK->size - 1];
+			struct Object* func = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct ListObject* args = ListObject_New();
 			for (int i = 0; i < oparg; i++)
@@ -205,14 +207,101 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			break;
 		}
+		case OP_BUILD_LIST:
+		{
+			struct ListObject* list = ListObject_New();
+			for (int i = 0; i < oparg; i++)
+			{
+				ListObject_InsertItem(list, 0, STACK->item[STACK->size - 1]);
+				ListObject_ListDelItem(STACK, STACK->size - 1);
+			}
+			ListObject_InsertItem(STACK, STACK->size, list);
+			break;
+		}
+		case OP_LOAD_SUB:
+		{
+			struct Object* value = STACK->item[STACK->size - 1];
+			ListObject_ListDelItem(STACK, STACK->size - 1);
+			struct Object* slice= STACK->item[STACK->size - 1];
+			ListObject_ListDelItem(STACK, STACK->size - 1);
+			//TODO
+			ListObject_InsertItem(STACK, STACK->size, value->objattr->obj_getitem(value,slice));
+			break;
+		}
+		case OP_STORE_SUB:
+		{
+			struct Object* value = STACK->item[STACK->size - 1];
+			ListObject_ListDelItem(STACK, STACK->size - 1);
+			struct Object* slice = STACK->item[STACK->size - 1];
+			ListObject_ListDelItem(STACK, STACK->size - 1);
+			struct Object* setvalue = STACK->item[STACK->size - 1];
+			ListObject_ListDelItem(STACK, STACK->size - 1);
+			//TODO
+			value->objattr->obj_setitem(value, slice,setvalue);
+			break;
+		}
+		case OP_LOAD_ATTR:
+		{
+			struct Object* attr = BYTECODE->consts->item[oparg];
+			struct Object* value= STACK->item[STACK->size - 1];
+			ListObject_ListDelItem(STACK, STACK->size - 1);
+			ListObject_InsertItem(STACK, STACK->size, value->objattr->obj_getattr(value, attr));
+			break;
+		}
+		case OP_STORE_ATTR:
+		{
+			struct Object* attr = BYTECODE->consts->item[oparg];
+			struct Object* value = STACK->item[STACK->size - 1];
+			ListObject_ListDelItem(STACK, STACK->size - 1);
+			struct Object* setvalue = STACK->item[STACK->size - 1];
+			ListObject_ListDelItem(STACK, STACK->size - 1);
+			value->objattr->obj_setattr(value, attr, setvalue);
+			break;
+		}
+		case OP_SET_TEMP:
+		{
+			temp = STACK->item[STACK->size - 1];
+			ListObject_ListDelItem(STACK, STACK->size - 1);
+			break;
+		}
+		case OP_GET_TEMP:
+		{
+			ListObject_InsertItem(STACK, STACK->size,temp);
+			break;
+		}
+		case OP_POP_TOP:
+			ListObject_ListDelItem(STACK, STACK->size - 1);
+			break;
+		case OP_NEW_BLOCK:
+		{
+			ListObject_InsertItem(blocks, blocks->size, BlockObject_New());
+			struct BlockObject* block = blocks->item[blocks->size - 1];
+			ListObject_InsertItem(block->flags, block->flags->size, IntObject_NewWithValue(i));
+			break;
+		}
+		case OP_DEL_BLOCK:
+			ListObject_ListDelItem(blocks, blocks->size - 1);
+			break;
+		case OP_ADD_FLAG:
+		{
+			struct BlockObject* block = blocks->item[blocks->size - 1];
+			ListObject_InsertItem(block->flags, block->flags->size, IntObject_NewWithValue(oparg));
+			break;
+		}
+		case OP_GOTO_FLAG:
+		{
+			struct BlockObject* block = blocks->item[blocks->size - 1];
+			i = ((struct IntObject*)block->flags->item[0])->value+((struct IntObject*)block->flags->item[oparg])->value;
+			break;
+		}
 		}
 #ifndef NDEBUG
-		//printf("\n%d:", i);
-		//FrameObject_Print(frameobj);
+		printf("\n%d:", i);
+		FrameObject_Print(frameobj);
 #endif
 		i++;
 	}
-	return IntObject_New(0);
+	return IntObject_NewWithValue(0);
 }
 
 struct FunctionObject* make_function(struct FrameObject* frameobj,struct StringObject* name, struct ByteCodeObject* bytecode)
@@ -224,24 +313,41 @@ struct FunctionObject* make_function(struct FrameObject* frameobj,struct StringO
 	return func;
 }
 
-struct Object* call(struct FunctionObject* func, struct ListObject* args)
+struct Object* call(struct Object* f, struct ListObject* args)
 {
-	struct FrameObject* frameobj = FrameObject_NewWithByteCode(func->bytecode);
-	frameobj->argindex = args->size - 1;
-	for (int i = 0; i < args->size; i++)
+	if (CHECK(f, "function"))
 	{
-		ListObject_InsertItem(frameobj->statck, frameobj->statck->size, args->item[i]);
+		struct FunctionObject* func = (struct FunctionObject*)f;
+		struct FrameObject* frameobj = FrameObject_NewWithByteCode(func->bytecode);
+		frameobj->argindex = args->size - 1;
+		for (int i = 0; i < args->size; i++)
+		{
+			ListObject_InsertItem(frameobj->statck, frameobj->statck->size, args->item[i]);
+		}
+		struct DictObject* dict = DictObject_New();
+		struct FrameObject* frame = func->frame;
+		for (int i = 0; i < frame->globals->size; i++)
+		{
+			DictObject_SetItem(dict, frame->globals->item[i].key, frame->globals->item[i].value);
+		}
+		for (int i = 0; i < frame->locals->size; i++)
+		{
+			DictObject_SetItem(dict, frame->locals->item[i].key, frame->locals->item[i].value);
+		}
+		frameobj->globals = dict;
+		return Eval(frameobj);
 	}
-	struct DictObject* dict = DictObject_New();
-	struct FrameObject* frame = func->frame;
-	for (int i = 0; i < frame->globals->size; i++)
+	else if (CHECK(f, "cfunciton"))
 	{
-		DictObject_SetItem(dict, frame->globals->item[i].key, frame->globals->item[i].value);
+		struct CFunctionObject* func = (struct CFunctionObject*)f;
+		struct ListObject* cfuncargs = ListObject_New();
+
+		for (int i = 0; i < args->size; i++)
+		{
+			ListObject_InsertItem(cfuncargs, 0, args->item[i]);
+		}
+
+		return func->func(cfuncargs);
 	}
-	for (int i = 0; i < frame->locals->size; i++)
-	{
-		DictObject_SetItem(dict, frame->locals->item[i].key, frame->locals->item[i].value);
-	}
-	frameobj->globals = dict;
-	return Eval(frameobj);
+	return IntObject_New();
 }

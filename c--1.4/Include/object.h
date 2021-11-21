@@ -2,12 +2,14 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #pragma warning(disable:4996)
 
 #define OBJECT_HEAD struct ObjectAttribute* objattr
 #define MAXALLOCATEDSIZE 256
 #define CHECK(OBJ,TYPE) (!strcmp((OBJ)->objattr->obj_name,TYPE))
+#define NORMALRETURN	return IntObject_NewWithValue(0);
 
 struct Object;
 typedef struct Object*	(*Add)(struct Object*, struct Object*);
@@ -15,6 +17,8 @@ typedef struct Object*	(*And)(struct Object*, struct Object*);
 typedef int				(*Bool)(struct Object*);
 typedef struct Object*	(*Div)(struct Object*, struct Object*);
 typedef int				(*Eq)(struct Object*, struct Object*);
+typedef struct Object*	(*GetAttr)(struct Object*, struct Object*);
+typedef struct Object*	(*GetItem)(struct Object*, struct Object*);
 typedef struct Object*	(*Geq)(struct Oject*, struct Object*);
 typedef struct Object*	(*Gt)(struct Object*, struct Object*);
 typedef void			(*InsertItem)(struct Object*, int, struct Object*);
@@ -26,8 +30,11 @@ typedef struct Object*	(*Neq)(struct Object*, struct Object*);
 typedef struct Object*	(*New)();
 typedef struct Object*	(*Or)(struct Object*, struct Object*);
 typedef void			(*Print)(struct Object*);
+typedef void			(*SetAttr)(struct Object*, struct Object*, struct Object*);
 typedef void			(*SetItem)(struct Object*, struct Object*, struct Object*);
 typedef struct Object*	(*Sub)(struct Object*, struct Object*);
+
+typedef struct Object* (*CFunction)(struct Object*);
 
 struct ObjectAttribute
 {
@@ -37,6 +44,8 @@ struct ObjectAttribute
 	Bool		obj_bool;
 	Div			obj_div;
 	Eq			obj_eq;	//判断是否相等
+	GetAttr		obj_getattr;
+	GetItem		obj_getitem;
 	Geq			obj_geq;
 	Gt			obj_gt;
 	InsertItem	obj_insertitem;	//添加元素
@@ -48,14 +57,18 @@ struct ObjectAttribute
 	New			obj_new;	//对象创建
 	Or			obj_or;
 	Print		obj_print;	//对象输出
+	SetAttr		obj_setattr;
 	SetItem		obj_setitem;	//设置元素
 	Sub			obj_sub;
+	struct Object* attr;
 };
 
 struct Object
 {
 	OBJECT_HEAD;
 };
+
+void Object_Init();
 
 struct Object* Object_New();
 void Object_Print(struct Object*);
@@ -67,6 +80,8 @@ static struct ObjectAttribute ObjectObjectAttribute = {
 	NULL,	//obj_bool
 	NULL,	//obj_div
 	NULL,	//obj_eq
+	NULL,	//obj_getattr
+	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
 	NULL,	//obj_insertitem

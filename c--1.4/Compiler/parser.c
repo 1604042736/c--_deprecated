@@ -84,6 +84,9 @@ struct Object* Parser_sentence(struct Parser* parser)
 	case TK_IF:
 		t = Parser_if(parser);
 		break;
+	case TK_WHILE:
+		t = Parser_while(parser);
+		break;
 	case TK_LLARGE:
 		if (parser->blockstyle == BRACES)
 		{
@@ -100,18 +103,27 @@ struct Object* Parser_sentence(struct Parser* parser)
 			Parser_match(parser, TK_END);
 		}
 		break;
+	case TK_NUM:
+	case TK_STRING:
 	case TK_NAME:
+	case TK_DOUBLE:
 		t = Parser_exp(parser);
 		break;
 	case TK_DEF:
 		t = Parser_functiondef(parser);
 		break;
+	case TK_BREAK:
 	case TK_RETURN:
+	case TK_CONTINUE:
 		t = Parser_jump(parser);
 		break;
 	default:
 		printf("%s不能作为语句", parser->lexer->tokenstr->string);
 		exit(-1);
+	}
+	if (t!=NULL&&CHECK(t, "Call"))
+	{
+		((struct CallASTObject*)t)->mode = StringObject_NewWithString("sentence");
 	}
 	return t;
 }
@@ -145,7 +157,14 @@ struct Object* Parser_if(struct Parser* parser)
 		if (parser->lexer->token == TK_ELSE)
 		{
 			Parser_match(parser, TK_ELSE);
-			t->elses = Parser_sentence(parser);
+			body= Parser_sentence(parser);
+			if (!CHECK(body, "list"))
+			{
+				struct ListObject* p = ListObject_New();
+				ListObject_InsertItem(p, 0, body);
+				body = p;
+			}
+			t->elses = body;
 		}
 	}
 	else if (parser->blockstyle == INDENT)
@@ -173,7 +192,14 @@ struct Object* Parser_if(struct Parser* parser)
 		if (parser->lexer->token == TK_ELSE)
 		{
 			Parser_match(parser, TK_ELSE);
-			t->elses = Parser_sentence(parser);
+			body = Parser_sentence(parser);
+			if (!CHECK(body, "list"))
+			{
+				struct ListObject* p = ListObject_New();
+				ListObject_InsertItem(p, 0, body);
+				body = p;
+			}
+			t->elses = body;
 		}
 	}
 	else if (parser->blockstyle == END)
@@ -279,7 +305,8 @@ struct Object* Parser_exp_postfix(struct Parser* parser)
 {
 	struct Object* t = Parser_exp_primary(parser);
 	while (parser->lexer->token == TK_LMIDDLE||
-			parser->lexer->token==TK_LLITTLE)
+			parser->lexer->token==TK_LLITTLE||
+			parser->lexer->token==TK_POINT)
 	{
 		if (parser->lexer->token == TK_LMIDDLE)
 		{
@@ -301,6 +328,17 @@ struct Object* Parser_exp_postfix(struct Parser* parser)
 				p->args = Parser_exp_argument(parser);
 			}
 			Parser_match(parser, TK_RLITTLE);
+			p->mode = StringObject_NewWithString("exp");
+			t = p;
+		}
+		else if (parser->lexer->token == TK_POINT)
+		{
+			struct AttributeASTObject* p = AttributeASTObject_NewWithParser(parser);
+			p->value = t;
+			Parser_match(parser, TK_POINT);
+			p->attr = parser->lexer->tokenstr;
+			Parser_match(parser, parser->lexer->token);
+			p->mode = StringObject_NewWithString("load");
 			t = p;
 		}
 	}
@@ -320,8 +358,22 @@ struct Object* Parser_exp_primary(struct Parser* parser)
 	}
 	else if (parser->lexer->token == TK_NUM)
 	{
-		struct NumASTObject* p = NumASTObject_NewWithParser(parser);
+		struct ConstantASTObject* p = ConstantASTObject_NewWithParser(parser);
 		p->value = IntObject_NewWithValue(atoi(parser->lexer->tokenstr->string));
+		Parser_match(parser, parser->lexer->token);
+		t = p;
+	}
+	else if (parser->lexer->token == TK_STRING)
+	{
+		struct ConstantASTObject* p = ConstantASTObject_NewWithParser(parser);
+		p->value = parser->lexer->tokenstr;
+		Parser_match(parser, parser->lexer->token);
+		t = p;
+	}
+	else if (parser->lexer->token == TK_DOUBLE)
+	{
+		struct ConstantASTObject* p = ConstantASTObject_NewWithParser(parser);
+		p->value = DoubleObject_NewWithValue(atof(parser->lexer->tokenstr->string));
 		Parser_match(parser, parser->lexer->token);
 		t = p;
 	}
@@ -333,6 +385,22 @@ struct Object* Parser_exp_primary(struct Parser* parser)
 			t = Parser_exp(parser);
 		}
 		Parser_match(parser, TK_RLITTLE);
+	}
+	else if (parser->lexer->token == TK_LMIDDLE)
+	{
+		struct ListASTObject* p = ListASTObject_NewWithParser(parser);
+		Parser_match(parser, TK_LMIDDLE);
+		if (parser->lexer->token != TK_RMIDDLE)
+		{
+			ListObject_InsertItem(p->list, p->list->size, Parser_exp(parser));
+			while (parser->lexer->token == TK_COMMA)
+			{
+				Parser_match(parser, TK_COMMA);
+				ListObject_InsertItem(p->list, p->list->size, Parser_exp(parser));
+			}
+		}
+		Parser_match(parser, TK_RMIDDLE);
+		t = p;
 	}
 	return t;
 }
@@ -356,6 +424,10 @@ struct Object* Parser_assignment(struct Parser* parser)
 		else if (CHECK(t, "Subscript"))
 		{
 			((struct SubscriptASTObject*)t)->mode = StringObject_NewWithString("store");
+		}
+		else if (CHECK(t, "Attribute"))
+		{
+			((struct AttributeASTObject*)t)->mode = StringObject_NewWithString("store");
 		}
 		ListObject_InsertItem(p->targets, p->targets->size, t);
 		Parser_match(parser, TK_ASSIGN);
@@ -387,6 +459,18 @@ struct Object* Parser_jump(struct Parser* parser)
 		Parser_match(parser, TK_RETURN);
 		struct ReturnASTObject* p = ReturnASTObject_NewWithParser(parser);
 		p->value = Parser_exp(parser);
+		t = p;
+	}
+	else if (parser->lexer->token == TK_BREAK)
+	{
+		struct BreakASTObject* p = BreakASTObject_NewWithParser(parser);
+		Parser_match(parser, TK_BREAK);
+		t = p;
+	}
+	else if (parser->lexer->token == TK_CONTINUE)
+	{
+		struct ContinueASTObject* p = ContinueASTObject_NewWithParser(parser);
+		Parser_match(parser, TK_CONTINUE);
 		t = p;
 	}
 	return t;
@@ -441,6 +525,51 @@ struct Object* Parser_functiondef(struct Parser* parser)
 	else if (parser->blockstyle == ENDNAME)
 	{
 		t->body = Parser_body(parser, "", TK_DEF);
+	}
+	return t;
+}
+
+struct Object* Parser_while(struct Parser* parser)
+{
+	struct WhileASTObject* t = WhileASTObject_NewWithParser(parser);
+	Parser_match(parser, TK_WHILE);
+	t->exp = Parser_exp(parser);
+	if (parser->blockstyle == BRACES)
+	{
+		struct Object* body = Parser_sentence(parser);
+		if (!CHECK(body, "list"))
+		{
+			struct ListObject* p = ListObject_New();
+			ListObject_InsertItem(p, 0, body);
+			body = p;
+		}
+		t->body = body;
+	}
+	else if (parser->blockstyle == INDENT)
+	{
+		Parser_match(parser, TK_COLON);
+		t->body = Parser_body(parser, parser->lexer->indent->string, -1);
+	}
+	else if (parser->blockstyle == BEGINEND)
+	{
+		struct Object* body = Parser_sentence(parser);
+		if (!CHECK(body, "list"))
+		{
+			struct ListObject* p = ListObject_New();
+			ListObject_InsertItem(p, 0, body);
+			body = p;
+		}
+		t->body = body;
+	}
+	else if (parser->blockstyle == END)
+	{
+		struct Object* body = Parser_body(parser, "", -1);
+		t->body = body;
+	}
+	else if (parser->blockstyle == ENDNAME)
+	{
+		struct Object* body = Parser_body(parser, "", TK_WHILE);
+		t->body = body;
 	}
 	return t;
 }

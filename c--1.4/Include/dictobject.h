@@ -23,6 +23,7 @@ void DictObject_SetItem(struct Object*, struct Object*, struct Object*);
 int DictObject_FindItem(struct Object*, struct Object*);
 struct Object* DictObject_GetItem(struct Object*, struct Object*);
 int DictObject_Bool(struct Object*);
+void DictObject_DelItem(struct Object*, struct Object*);
 
 static struct ObjectAttribute DictObjectAttribute = {
 	(char*)"dict",	//obj_name
@@ -31,6 +32,8 @@ static struct ObjectAttribute DictObjectAttribute = {
 	DictObject_Bool,	//obj_bool
 	NULL,	//obj_div
 	NULL,	//obj_eq
+	NULL,	//obj_getattr
+	DictObject_GetItem,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
 	NULL,	//obj_insertitem
@@ -42,6 +45,7 @@ static struct ObjectAttribute DictObjectAttribute = {
 	DictObject_New,	//obj_new
 	NULL,	//obj_or
 	DictObject_Print,	//obj_print
+	NULL,	//obj_setattr
 	DictObject_SetItem,	//obj_setitem
 	NULL,	//obj_sub
 };

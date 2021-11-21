@@ -2,6 +2,8 @@
 
 #include <string.h>
 #include "object.h"
+#include "intobject.h"
+#include "dictobject.h"
 
 struct ListObject
 {
@@ -18,7 +20,14 @@ void ListObject_SetItem(struct Object*, struct Object*, struct Object*);
 int ListObject_FindItem(struct Object*, struct Object*);
 void ListObject_ListDelItem(struct Object*, int);
 int ListObject_Bool(struct Object*);
+struct Object* ListObject_GetItem(struct Object*, struct Object*);
+struct Object* ListObject_GetAttr(struct Object*, struct Object*);
+void ListObject_SetAttr(struct Object*, struct Object*, struct Object*);
 
+struct Object* ListObject_InsertItem2(struct Object*);
+struct Object* ListObject_ListDelItem2(struct Object*);
+
+struct DictObject* listobjectattr;
 static struct ObjectAttribute ListObjectAttribute = {
 	(char*)"list",	//obj_name
 	NULL,	//obj_add
@@ -26,6 +35,8 @@ static struct ObjectAttribute ListObjectAttribute = {
 	ListObject_Bool,	//obj_bool
 	NULL,	//obj_div
 	NULL,	//obj_eq
+	ListObject_GetAttr,	//obj_getattr
+	ListObject_GetItem,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
 	ListObject_InsertItem,	//obj_insertitem
@@ -37,6 +48,7 @@ static struct ObjectAttribute ListObjectAttribute = {
 	ListObject_New,	//obj_new
 	NULL,	//obj_or
 	ListObject_Print,	//obj_print
+	ListObject_SetAttr,	//obj_setattr
 	ListObject_SetItem,	//obj_setitem
 	NULL,	//obj_sub
 };

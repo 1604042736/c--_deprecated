@@ -22,6 +22,8 @@ static struct ObjectAttribute FunctionObjectAttribute = {
 	NULL,	//obj_bool
 	NULL,	//obj_div
 	NULL,	//obj_eq
+	NULL,	//obj_getattr
+	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
 	NULL,	//obj_insertitem
@@ -33,6 +35,7 @@ static struct ObjectAttribute FunctionObjectAttribute = {
 	FunctionObject_New,	//obj_new
 	NULL,	//obj_or
 	FunctionObject_Print,	//obj_print
+	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
 };

@@ -1,3 +1,4 @@
+#include <string.h>
 #include "dictobject.h"
 
 struct Object* DictObject_New()
@@ -49,17 +50,12 @@ void DictObject_SetItem(struct Object* self, struct Object* key, struct Object* 
 	{
 		if (selfdict->size + 1 >= selfdict->allocated)	//超出了已分配的范围
 		{
-			struct DictItem* copy = selfdict->item;
 			selfdict->allocated += MAXALLOCATEDSIZE;
-			selfdict->item = (struct DictItem*)malloc(sizeof(struct DictItem) * selfdict->allocated);
+			selfdict->item = (struct DictItem*)realloc(selfdict->item ,sizeof(struct DictItem) * selfdict->allocated);
 			if (selfdict->item == NULL)
 			{
 				printf("dict item内存分配失败");
 				exit(-1);
-			}
-			for (int i = 0; i < selfdict->size; i++)
-			{
-				selfdict->item[i] = copy[i];
 			}
 		}
 		selfdict->item[selfdict->size].key = key;
@@ -100,4 +96,18 @@ int DictObject_Bool(struct Object* self)
 {
 	struct DictObject* selfdict = (struct DictObject*)self;
 	return selfdict->size;
+}
+
+void DictObject_DelItem(struct Object* self, struct Object* other)
+{
+	struct DictObject* selfdict = (struct DictObject*)self;
+	int index = DictObject_FindItem(self, other);
+	if (index != -1)
+	{
+		for (int i = index; i < selfdict->size - 1; i++)
+		{
+			selfdict->item[i] = selfdict->item[i + 1];
+		}
+		selfdict->size -= 1;
+	}
 }

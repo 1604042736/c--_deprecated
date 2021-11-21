@@ -30,6 +30,8 @@ static struct ObjectAttribute StringObjectAttribute = {
 	StringObject_Bool,	//obj_bool
 	NULL,	//obj_div
 	StringObject_Eq,	//obj_eq
+	NULL,	//obj_getattr
+	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
 	NULL,	//obj_insertitem
@@ -41,6 +43,7 @@ static struct ObjectAttribute StringObjectAttribute = {
 	StringObject_New,	//obj_new
 	NULL,	//obj_or
 	StringObject_Print,	//obj_print
+	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
 };

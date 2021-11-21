@@ -66,6 +66,18 @@
     <ClCompile Include="Objects\functionobject.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Objects\initobjects.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\cfunctionobject.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\doubleobject.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\blockobject.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\object.h">
@@ -114,6 +126,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Include\functionobject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\cfunctionobject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\doubleobject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\blockobject.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

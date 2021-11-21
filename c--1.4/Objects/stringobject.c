@@ -32,7 +32,29 @@ struct Object* StringObject_NewWithChar(char ch)
 void StringObject_Print(struct Object* obj)
 {
 	struct StringObject* strobj = (struct StringObject*)obj;
-	printf("%s", strobj->string);
+	printf("\"");
+	for (int i = 0; i < strobj->size; i++)
+	{
+		switch (strobj->string[i])
+		{
+		case '\n':
+			printf("\\n");
+			break;
+		case '\b':
+			printf("\\b");
+			break;
+		case '\t':
+			printf("\\t");
+			break;
+		case '\r':
+			printf("\\r");
+			break;
+		default:
+			printf("%c", strobj->string[i]);
+			break;
+		}
+	}
+	printf("\"");
 }
 
 struct Object* StringObject_Add(struct Object* self, struct Object* other)
