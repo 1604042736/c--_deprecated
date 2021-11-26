@@ -9,13 +9,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 	int size = frameobj->bytecode->code->size;
 	struct ListObject* temp=ListObject_New();
 	struct ListObject* blocks = ListObject_New();
-	struct ExceptionObject* exception;
+	struct StringObject* filename;
 	while (i < size)
 	{
 		op = ((struct OpCodeObject*)frameobj->bytecode->code->item[i])->op;
 		oparg= ((struct OpCodeObject*)frameobj->bytecode->code->item[i])->oparg;
 		lineno=((struct OpCodeObject*)frameobj->bytecode->code->item[i])->lineno;
 		linepos = ((struct OpCodeObject*)frameobj->bytecode->code->item[i])->linepos;
+		filename = ((struct OpCodeObject*)frameobj->bytecode->code->item[i])->filename;
 		switch (op)
 		{
 		case OP_LOAD_CONST:
@@ -34,7 +35,7 @@ struct Object* Eval(struct FrameObject* frameobj)
 				value=DictObject_GetItem(frameobj->globals, name);
 				if (value == NULL)
 				{
-					exception = ExceptionObject_NewWithMessage("找不到", lineno, linepos);
+					exception = ExceptionObject_NewWithMessage(StringObject_NewWithString("找不到"),filename, lineno, linepos);
 					goto ERROR;
 				}
 			}
@@ -47,7 +48,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size, left->objattr->obj_add(left,right));
+			struct Object* result = Object_Add(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_SUB:
@@ -56,7 +62,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size, left->objattr->obj_sub(left, right));
+			struct Object* result = Object_Sub(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_MUL:
@@ -65,7 +76,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size, left->objattr->obj_mul(left, right));
+			struct Object* result = Object_Mul(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_DIV:
@@ -74,7 +90,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size, left->objattr->obj_div(left, right));
+			struct Object* result = Object_Div(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_MOD:
@@ -83,7 +104,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size, left->objattr->obj_mod(left, right));
+			struct Object* result = Object_Mod(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_EQ:
@@ -92,7 +118,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size,left->objattr->obj_eq(left, right));
+			struct Object* result = Object_Eq(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_NEQ:
@@ -101,7 +132,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size, left->objattr->obj_neq(left, right));
+			struct Object* result = Object_Neq(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_GT:
@@ -110,7 +146,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size, left->objattr->obj_gt(left, right));
+			struct Object* result = Object_Gt(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_GEQ:
@@ -119,7 +160,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size, left->objattr->obj_geq(left, right));
+			struct Object* result = Object_Geq(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_LT:
@@ -128,7 +174,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size, left->objattr->obj_lt(left, right));
+			struct Object* result = Object_Lt(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_LEQ:
@@ -137,7 +188,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size, left->objattr->obj_leq(left, right));
+			struct Object* result = Object_Leq(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_AND:
@@ -146,7 +202,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size, left->objattr->obj_and(left, right));
+			struct Object* result = Object_And(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_OR:
@@ -155,7 +216,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size, left->objattr->obj_or(left, right));
+			struct Object* result = Object_Or(left, right);
+			if (result == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, result);
 			break;
 		}
 		case OP_IFJMP:
@@ -342,13 +408,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 	ERROR:
 		{
 			struct BlockObject* block = blocks->item[blocks->size - 1];
-			if (block->type == BLOCKTYPE_EXCEPTION)
+			if (blocks->size - 1>=0&&block!=NULL&&block->type == BLOCKTYPE_EXCEPTION)
 			{
 				i = ((struct IntObject*)block->flags->item[0])->value + ((struct IntObject*)block->flags->item[1])->value+1;
+				ListObject_ListDelItem(blocks, blocks->size - 1);
 			}
 			else if (exception != NULL)
 			{
-				printf("\n在 行 %d,列 %d\n", exception->lineno, exception->linepos);
+				printf("\n错误:文件 %s:行 %d,列 %d:", filename->string,lineno, linepos);
 				printf("%s\n", exception->message->string);
 				exit(-1);
 			}

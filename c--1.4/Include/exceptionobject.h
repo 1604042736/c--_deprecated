@@ -5,6 +5,7 @@
 
 #define EXCEPTION_OBJECT_HEAD	OBJECT_HEAD;\
 								int lineno,linepos;\
+								struct StringObject* filename;\
 								struct StringObject* message
 
 struct ExceptionObject
@@ -13,7 +14,7 @@ struct ExceptionObject
 };
 
 struct Object* ExceptionObject_New();
-struct Object* ExceptionObject_NewWithMessage(char*,int,int);
+struct Object* ExceptionObject_NewWithMessage(struct StringObject*,struct StringObject*,int,int);
 void ExceptionObject_Print(struct Object*);
 
 static struct ObjectAttribute ExceptionObjectAttribute = {
@@ -41,3 +42,5 @@ static struct ObjectAttribute ExceptionObjectAttribute = {
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
 };
+
+struct ExceptionObject* exception;

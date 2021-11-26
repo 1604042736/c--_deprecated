@@ -1,6 +1,6 @@
 #include "preprocessor.h"
 
-struct Preprocessor* Preprocessor_New(FILE* file)
+struct Preprocessor* Preprocessor_New(FILE* file, char* filename)
 {
 	struct Preprocessor* preprocessor = (struct Preprocessor*)malloc(sizeof(struct Preprocessor));
 	if (preprocessor == NULL)
@@ -9,6 +9,7 @@ struct Preprocessor* Preprocessor_New(FILE* file)
 		exit(-1);
 	}
 	preprocessor->file = file;
+	preprocessor->filename = StringObject_NewWithString(filename);
 	preprocessor->result = (struct StringObject*)StringObject_New();
 	preprocessor->definedict = DictObject_New();
 	preprocessor->defineflag = 0;
@@ -160,7 +161,7 @@ struct StringObject* Preprocessor_Dealprecode(struct Preprocessor* preprocessor,
 		{
 			//从默认目录包含
 		}
-		struct Preprocessor* pre = Preprocessor_New(f);
+		struct Preprocessor* pre = Preprocessor_New(f,filename);
 		Preprocessor_Preprocess(pre);
 
 		int i = preprocessor->result->size - 1;

@@ -8,12 +8,13 @@ struct Object* ExceptionObject_New()
 	return (struct Object*)exceptobj;
 }
 
-struct Object* ExceptionObject_NewWithMessage(char* message,int lineno,int linepos)
+struct Object* ExceptionObject_NewWithMessage(struct StringObject* message, struct StringObject* filename,int lineno,int linepos)
 {
 	struct ExceptionObject* exceptobj = (struct ExceptionObject*)ExceptionObject_New();
-	exceptobj->message = StringObject_NewWithString(message);
+	exceptobj->message = message;
 	exceptobj->lineno = lineno;
 	exceptobj->linepos = linepos;
+	exceptobj->filename = filename;
 	return (struct Object*)exceptobj;
 }
 

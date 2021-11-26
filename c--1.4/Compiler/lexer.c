@@ -20,7 +20,7 @@ void Lexer_Init()
 	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("except"), IntObject_NewWithValue(TK_EXCEPT));
 }
 
-struct Lexer* Lexer_New(struct StringObject* code)
+struct Lexer* Lexer_New(struct Preprocessor* pre)
 {
 	struct Lexer* lexer = (struct Lexer*)malloc(sizeof(struct Lexer));
 	if (lexer == NULL)
@@ -28,7 +28,8 @@ struct Lexer* Lexer_New(struct StringObject* code)
 		printf("Lexer·ÖÅäÄÚ´æÊ§°Ü");
 		exit(-1);
 	}
-	lexer->code = code;
+	lexer->code = pre->result;
+	lexer->filename = pre->filename;
 	lexer->lineno = 1;
 	lexer->linepos = 1;
 	lexer->pos = 0;

@@ -6,6 +6,7 @@ struct Object* StringObject_New()
 	strobj->objattr = &StringObjectAttribute;
 	strobj->string = "\0";
 	strobj->size = 0;
+	strobj->objattr->attr = stringobjattr;
 	return (struct Object*)strobj;
 }
 
@@ -109,4 +110,22 @@ int StringObject_Bool(struct Object* self)
 {
 	struct StringObject* selfstring = (struct StringObject*)self;
 	return selfstring->size;
+}
+
+struct Object* StringObject_Add2(struct Object* arg)
+{
+	struct ListObject* args = (struct ListObject*)arg;
+	return StringObject_Add(args->item[0], args->item[1]);
+}
+
+struct Object* StringObject_Eq2(struct Object* arg)
+{
+	struct ListObject* args = (struct ListObject*)arg;
+	return StringObject_Eq(args->item[0], args->item[1]);
+}
+
+struct Object* StringObject_Split2(struct Object* arg)
+{
+	struct ListObject* args = (struct ListObject*)arg;
+	return StringObject_Split(args->item[0], args->item[1]);
 }

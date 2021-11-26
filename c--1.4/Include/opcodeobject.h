@@ -1,6 +1,7 @@
 #pragma once
 
 #include "object.h"
+#include "stringobject.h"
 
 #define OP_ADD			0
 #define OP_SUB			1
@@ -51,10 +52,11 @@ struct OpCodeObject
 	opcodetype oparg;
 	opcodetype opcode;	//=op<<8+oparg
 	int lineno, linepos;
+	struct StringObject* filename;
 };
 
 struct Object* OpCodeObject_New();
-struct Object* OpCodeObject_NewWithOpCodeAndLine(opcodetype, opcodetype, int, int);
+struct Object* OpCodeObject_NewWithInfo(opcodetype, opcodetype, int, int,struct StringObject*);
 void OpCodeObject_Print(struct Object*);
 
 static struct ObjectAttribute OpCodeObjectAttribute = {

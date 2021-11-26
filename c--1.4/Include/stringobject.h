@@ -4,6 +4,7 @@
 #include "object.h"
 #include "listobject.h"
 #include "intobject.h"
+#include "dictobject.h"
 
 #define isWhite(ch) (ch==' '||ch=='\n'||ch=='\t')
 
@@ -23,6 +24,11 @@ struct Object* StringObject_Eq(struct Object*, struct Object*);
 struct ListObject* StringObject_Split(struct Object*, struct Object*);
 int StringObject_Bool(struct Object*);
 
+struct Object* StringObject_Add2(struct Object*);
+struct Object* StringObject_Eq2(struct Object*);
+struct Object* StringObject_Split2(struct Object*);
+
+struct DictObject* stringobjattr;
 static struct ObjectAttribute StringObjectAttribute = {
 	(char*)"string",	//obj_name
 	StringObject_Add,	//obj_add

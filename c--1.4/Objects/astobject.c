@@ -15,6 +15,7 @@ struct Object* NameSpaceASTObject_NewWithParser(struct Parser* parser)
 	struct NameSpaceASTObject* astobject = NameSpaceASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -34,6 +35,7 @@ struct Object* IfASTObject_NewWithParser(struct Parser* parser)
 	struct IfASTObject* astobject = IfASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -50,6 +52,7 @@ struct Object* OperationASTObject_NewWithParser(struct Parser* parser)
 	struct OperationASTObject* astobject = OperationASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -67,6 +70,7 @@ struct Object* NameASTObject_NewWithParser(struct Parser* parser)
 	struct NameASTObject* astobject = NameASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -82,6 +86,7 @@ struct Object* ConstantASTObject_NewWithParser(struct Parser* parser)
 	struct ConstantASTObject* astobject = ConstantASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -98,6 +103,7 @@ struct Object* AssignASTObject_NewWithParser(struct Parser* parser)
 	struct AssignASTObject* astobject = AssignASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -114,6 +120,7 @@ struct Object* SubscriptASTObject_NewWithParser(struct Parser* parser)
 	struct SubscriptASTObject* astobject = SubscriptASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -130,6 +137,7 @@ struct Object* CallASTObject_NewWithParser(struct Parser* parser)
 	struct CallASTObject* astobject = CallASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -145,6 +153,7 @@ struct Object* ReturnASTObject_NewWithParser(struct Parser* parser)
 	struct ReturnASTObject* astobject = ReturnASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -161,6 +170,7 @@ struct Object* FunctionDefASTObject_NewWithParser(struct Parser* parser)
 	struct ReturnASTObject* astobject = FunctionDefASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -177,6 +187,7 @@ struct Object* WhileASTObject_NewWithParser(struct Parser* parser)
 	struct WhileASTObject* astobject = WhileASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -193,6 +204,7 @@ struct Object* ListASTObject_NewWithParser(struct Parser* parser)
 	struct ListASTObject* astobject = ListASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -208,6 +220,7 @@ struct Object* AttributeASTObject_NewWithParser(struct Parser* parser)
 	struct AttributeASTObject* astobject = AttributeASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -223,6 +236,7 @@ struct Object* BreakASTObject_NewWithParser(struct Parser* parser)
 	struct BreakASTObject* astobject = BreakASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -238,6 +252,7 @@ struct Object* ContinueASTObject_NewWithParser(struct Parser* parser)
 	struct ContinueASTObject* astobject = ContinueASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -253,6 +268,7 @@ struct Object* ImportASTObject_NewWithParser(struct Parser* parser)
 	struct ImportASTObject* astobject = ImportASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -270,6 +286,7 @@ struct Object* ClassASTObject_NewWithParser(struct Parser* parser)
 	struct ClassASTObject* astobject = ClassASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 
@@ -287,6 +304,7 @@ struct Object* TryASTObject_NewWithParser(struct Parser* parser)
 	struct TryASTObject* astobject = TryASTObject_New();
 	astobject->lineno = parser->lexer->lineno;
 	astobject->linepos = parser->lexer->linepos;
+	astobject->filename = parser->lexer->filename;
 	return (struct Object*)astobject;
 }
 

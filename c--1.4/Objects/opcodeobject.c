@@ -8,7 +8,7 @@ struct Object* OpCodeObject_New()
 	return (struct Object*)opcodeobj;
 }
 
-struct Object* OpCodeObject_NewWithOpCodeAndLine(opcodetype op, opcodetype oparg, int lineno, int linepos)
+struct Object* OpCodeObject_NewWithInfo(opcodetype op, opcodetype oparg, int lineno, int linepos, struct StringObject* filename)
 {
 	struct OpCodeObject* opcodeobj = OpCodeObject_New();
 	opcodeobj->op = op;
@@ -16,6 +16,7 @@ struct Object* OpCodeObject_NewWithOpCodeAndLine(opcodetype op, opcodetype oparg
 	opcodeobj->opcode = (op << 8) + oparg;
 	opcodeobj->lineno = lineno;
 	opcodeobj->linepos = linepos;
+	opcodeobj->filename = filename;
 	return (struct Object*)opcodeobj;
 }
 

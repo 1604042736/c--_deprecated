@@ -15,7 +15,7 @@ struct NamespaceObject* compiler(char* filename,char* namespacename)
 		exit(-1);
 	}
 
-	struct Preprocessor* preprocessor = Preprocessor_New(file);
+	struct Preprocessor* preprocessor = Preprocessor_New(file,filename);
 	Preprocessor_Preprocess(preprocessor);
 
 	struct Lexer* lexer = Lexer_New(preprocessor->result);
@@ -47,6 +47,10 @@ int main(int argc,char* argv[])
 		file = fopen(filename, "r");
 	}
 #else
+	if (argc == 1)
+	{
+		return 0;
+	}
 	char* filename = argv[1];
 	FILE* file = fopen(argv[1], "r");
 #endif
@@ -57,11 +61,11 @@ int main(int argc,char* argv[])
 	}
 	Object_Init();
 
-	struct Preprocessor* preprocessor = Preprocessor_New(file);
+	struct Preprocessor* preprocessor = Preprocessor_New(file,filename);
 	Preprocessor_Preprocess(preprocessor);
 
 	Lexer_Init();
-	struct Lexer* lexer = Lexer_New(preprocessor->result);
+	struct Lexer* lexer = Lexer_New(preprocessor);
 
 	struct Parser* parser = Parser_New(lexer);
 	struct NameSpaceASTObject* astobject = Parser_Parse(parser);

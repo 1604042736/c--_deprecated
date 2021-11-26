@@ -4,7 +4,9 @@
 #include "listobject.h"
 #include "parser.h"
 
-#define ASTOBJECT_HEAD	OBJECT_HEAD;int lineno,linepos
+#define ASTOBJECT_HEAD	OBJECT_HEAD;\
+						int lineno,linepos;\
+						struct StringObject* filename
 
 #define printSpace(SPACE) for (int i = 0; i < (SPACE); i++){printf("  ");}
 #define checkASTObject(obj) (CHECK(obj,"Namespace"))

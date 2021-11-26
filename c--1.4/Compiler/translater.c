@@ -27,8 +27,8 @@ void Translater_Init()
 
 void Translater_Translate(struct Translater* translater,struct Object* obj)
 {
-#define APPENDOPCODE		ListObject_InsertItem(translater->bytecode->code, translater->bytecode->code->size, OpCodeObject_NewWithOpCodeAndLine(op, oparg, astobject->lineno, astobject->linepos))
-#define INSERTOPCODE(INDEX)	ListObject_InsertItem(translater->bytecode->code, INDEX, OpCodeObject_NewWithOpCodeAndLine(op, oparg, astobject->lineno, astobject->linepos))
+#define APPENDOPCODE		ListObject_InsertItem(translater->bytecode->code, translater->bytecode->code->size, OpCodeObject_NewWithInfo(op, oparg, astobject->lineno, astobject->linepos,astobject->filename))
+#define INSERTOPCODE(INDEX)	ListObject_InsertItem(translater->bytecode->code, INDEX, OpCodeObject_NewWithInfo(op, oparg, astobject->lineno, astobject->linepos,astobject->filename))
 	if (obj == NULL)return;
 	opcodetype op, oparg=0;
 	if (CHECK(obj, "list"))
@@ -375,8 +375,8 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		struct Translater* tr = Translater_New();
 		Translater_Translate(tr, astobject->body);
 		tr->bytecode->name = astobject->name->string;
-		ListObject_InsertItem(tr->bytecode->code, tr->bytecode->code->size, OpCodeObject_NewWithOpCodeAndLine(OP_LOAD_LOCAL, 0, astobject->lineno, astobject->linepos));
-		ListObject_InsertItem(tr->bytecode->code, tr->bytecode->code->size, OpCodeObject_NewWithOpCodeAndLine(OP_RETURN, 0, astobject->lineno, astobject->linepos));
+		ListObject_InsertItem(tr->bytecode->code, tr->bytecode->code->size, OpCodeObject_NewWithInfo(OP_LOAD_LOCAL, 0, astobject->lineno, astobject->linepos,astobject->filename));
+		ListObject_InsertItem(tr->bytecode->code, tr->bytecode->code->size, OpCodeObject_NewWithInfo(OP_RETURN, 0, astobject->lineno, astobject->linepos,astobject->filename));
 		ListObject_InsertItem(translater->bytecode->consts, translater->bytecode->consts->size, tr->bytecode);
 
 		op = OP_LOAD_CONST;
@@ -405,6 +405,8 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		int backindex = translater->bytecode->code->size;
 
 		Translater_Translate(translater, astobject->body);
+		op = OP_DEL_BLOCK;
+		APPENDOPCODE;
 
 		op = OP_ADD_FLAG;
 		oparg = translater->bytecode->code->size - backindex+2;
@@ -416,8 +418,5 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		op = OP_JMP;
 		oparg = translater->bytecode->code->size - backindex;
 		INSERTOPCODE(backindex);
-
-		op = OP_DEL_BLOCK;
-		APPENDOPCODE;
 	}
 }

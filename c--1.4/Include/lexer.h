@@ -3,6 +3,7 @@
 #include "dictobject.h"
 #include "stringobject.h"
 #include "intobject.h"
+#include "preprocessor.h"
 
 #define isName(ch)	((ch>='a'&&ch<='z')||(ch>='A'&&ch<='Z')||ch=='_')
 #define isNum(ch)	(ch>='0'&&ch<='9')
@@ -64,6 +65,7 @@ struct Lexer
 	int pos;	//µ±Ç°×Ö·ûÎ»ÖÃ
 	char ch;
 	int eof;
+	struct StringObject* filename;
 	struct StringObject* tokenstr;
 	struct StringObject* code;
 	struct StringObject* indent;
@@ -71,7 +73,7 @@ struct Lexer
 
 static struct DictObject* keywordmap;
 void Lexer_Init();
-struct Lexer* Lexer_New(struct StringObject*);
+struct Lexer* Lexer_New(struct Preprocessor*);
 void Lexer_gettoken(struct Lexer*);
 void Lexer_getch(struct Lexer*);
 void Lexer_ungetch(struct Lexer*);

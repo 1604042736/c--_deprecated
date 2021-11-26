@@ -1,6 +1,7 @@
 #pragma once
 
 #include "object.h"
+#include "dictobject.h"
 
 struct IntObject
 {
@@ -27,6 +28,22 @@ int IntObject_Bool(struct Object*);
 struct Object* IntObject_And(struct Object*, struct Object*);
 struct Object* IntObject_Or(struct Object*, struct Object*);
 
+struct Object* IntObject_Add2(struct Object*);
+struct Object* IntObject_Eq2(struct Object*);
+struct Object* IntObject_Sub2(struct Object*);
+struct Object* IntObject_Mul2(struct Object*);
+struct Object* IntObject_Div2(struct Object*);
+struct Object* IntObject_Mod2(struct Object*);
+struct Object* IntObject_Neq2(struct Object*);
+struct Object* IntObject_Gt2(struct Object*);
+struct Object* IntObject_Geq2(struct Object*);
+struct Object* IntObject_Lt2(struct Object*);
+struct Object* IntObject_Leq2(struct Object*);
+struct Object* IntObject_Bool2(struct Object*);
+struct Object* IntObject_And2(struct Object*);
+struct Object* IntObject_Or2(struct Object*);
+
+struct DictObject* intobjectattr;
 static struct ObjectAttribute IntObjectAttribute = {
 	(char*)"int",	//obj_name
 	IntObject_Add,	//obj_add
