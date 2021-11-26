@@ -7,6 +7,8 @@
 #include "cfunctionobject.h"
 #include "blockobject.h"
 #include "namespaceobject.h"
+#include "classobject.h"
+#include "exceptionobject.h"
 
 struct Object* Eval(struct FrameObject*);
 struct FunctionObject* make_function(struct FrameObject*,struct StringObject*, struct ByteCodeObject*);

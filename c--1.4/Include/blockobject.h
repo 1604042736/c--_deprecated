@@ -3,9 +3,13 @@
 #include "object.h"
 #include "listobject.h"
 
+#define BLOCKTYPE_WHILE		0
+#define BLOCKTYPE_EXCEPTION	1
+
 struct BlockObject
 {
 	OBJECT_HEAD;
+	int type;
 	struct ListObject* flags;
 };
 
@@ -16,6 +20,7 @@ static struct ObjectAttribute BlockObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr

@@ -21,6 +21,7 @@ static struct ObjectAttribute NamespaceObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NamespaceObject_GetAttr,	//obj_getattr

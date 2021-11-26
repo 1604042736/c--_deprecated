@@ -69,15 +69,15 @@ struct Object* StringObject_Add(struct Object* self, struct Object* other)
 	return StringObject_NewWithString(result);
 }
 
-int StringObject_Eq(struct Object* self, struct Object* other)
+struct Object* StringObject_Eq(struct Object* self, struct Object* other)
 {
 	if (!CHECK(other, "string"))
 	{
-		return 0;
+		return IntObject_NewWithValue(0);
 	}
 	struct StringObject* selfstring = (struct StringObject*)self;
 	struct StringObject* otherstring = (struct StringObject*)other;
-	return !strcmp(selfstring->string, otherstring->string);
+	return IntObject_NewWithValue(!strcmp(selfstring->string, otherstring->string));
 }
 
 struct ListObject* StringObject_Split(struct Object* self, struct Object* split)

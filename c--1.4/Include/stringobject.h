@@ -19,7 +19,7 @@ struct Object* StringObject_NewWithString(char*);
 struct Object* StringObject_NewWithChar(char);
 void StringObject_Print(struct Object*);
 struct Object* StringObject_Add(struct Object*, struct Object*);
-int StringObject_Eq(struct Object*, struct Object*);
+struct Object* StringObject_Eq(struct Object*, struct Object*);
 struct ListObject* StringObject_Split(struct Object*, struct Object*);
 int StringObject_Bool(struct Object*);
 
@@ -28,6 +28,7 @@ static struct ObjectAttribute StringObjectAttribute = {
 	StringObject_Add,	//obj_add
 	NULL,	//obj_and
 	StringObject_Bool,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	StringObject_Eq,	//obj_eq
 	NULL,	//obj_getattr

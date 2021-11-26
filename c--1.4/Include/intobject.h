@@ -12,7 +12,7 @@ struct Object* IntObject_New();
 struct Object* IntObject_NewWithValue(int);
 void IntObject_Print(struct Object*);
 struct Object* IntObject_Add(struct Object*, struct Object*);
-int IntObject_Eq(struct Object*, struct Object*);
+struct Object* IntObject_Eq(struct Object*, struct Object*);
 int IntObject_toInt(struct Object*);
 struct Object* IntObject_Sub(struct Object*, struct Object*);
 struct Object* IntObject_Mul(struct Object*, struct Object*);
@@ -32,6 +32,7 @@ static struct ObjectAttribute IntObjectAttribute = {
 	IntObject_Add,	//obj_add
 	IntObject_And,	//obj_and
 	IntObject_Bool,	//obj_bool
+	NULL,	//obj_call
 	IntObject_Div,	//obj_div
 	IntObject_Eq,	//obj_eq
 	NULL,	//obj_getattr

@@ -140,7 +140,7 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		if (CHECK(astobject->func, "Attribute"))
 		{
 			struct AttributeASTObject* func = (struct AttributeASTObject*)astobject->func;
-			if (strcmp(func->mode->string, "namespace"))
+			if (strcmp(func->mode->string, "withoutself"))
 			{
 				Translater_Translate(translater, func->value);
 				op = OP_SET_TEMP;
@@ -153,7 +153,7 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		if (CHECK(astobject->func, "Attribute"))
 		{
 			struct AttributeASTObject* func = (struct AttributeASTObject*)astobject->func;
-			if (strcmp(func->mode->string, "namespace"))
+			if (strcmp(func->mode->string, "withoutself"))
 			{
 				int index = ListObject_FindItem(translater->bytecode->consts, func->attr);
 				if (index == -1)
@@ -193,6 +193,15 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		{
 			op = OP_POP_TOP;
 			APPENDOPCODE;
+		}
+		if (CHECK(astobject->func, "Attribute"))
+		{
+			struct AttributeASTObject* func = (struct AttributeASTObject*)astobject->func;
+			if (strcmp(func->mode->string, "withoutself"))
+			{
+				op = OP_POP_TEMP;
+				APPENDOPCODE;
+			}
 		}
 	}
 	else if (CHECK(obj, "Return"))
@@ -236,6 +245,7 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 	{
 		struct WhileASTObject* astobject = (struct WhileASTObject*)obj;
 		op = OP_NEW_BLOCK;
+		oparg = 0;
 		APPENDOPCODE;
 		op = OP_ADD_FLAG;
 		/*设置continue的flag(while开始的地方)*/
@@ -344,6 +354,70 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		}
 
 		op = OP_STORE_NAME;
+		APPENDOPCODE;
+	}
+	else if (CHECK(obj, "Class"))
+	{
+		struct ClassASTObject* astobject = (struct ClassASTObject*)obj;
+
+		int index = ListObject_FindItem(translater->bytecode->consts, astobject->name);
+		if (index == -1)
+		{
+			index = translater->bytecode->consts->size;
+			ListObject_InsertItem(translater->bytecode->consts, translater->bytecode->consts->size, astobject->name);
+		}
+		op = OP_LOAD_CONST;
+		oparg = index;
+		APPENDOPCODE;
+
+		Translater_Translate(translater, astobject->bases);
+
+		struct Translater* tr = Translater_New();
+		Translater_Translate(tr, astobject->body);
+		tr->bytecode->name = astobject->name->string;
+		ListObject_InsertItem(tr->bytecode->code, tr->bytecode->code->size, OpCodeObject_NewWithOpCodeAndLine(OP_LOAD_LOCAL, 0, astobject->lineno, astobject->linepos));
+		ListObject_InsertItem(tr->bytecode->code, tr->bytecode->code->size, OpCodeObject_NewWithOpCodeAndLine(OP_RETURN, 0, astobject->lineno, astobject->linepos));
+		ListObject_InsertItem(translater->bytecode->consts, translater->bytecode->consts->size, tr->bytecode);
+
+		op = OP_LOAD_CONST;
+		oparg = translater->bytecode->consts->size - 1;
+		APPENDOPCODE;
+
+		op = OP_CALL;
+		oparg = 0;
+		APPENDOPCODE;
+
+		op = OP_BUILD_CLASS;
+		oparg = astobject->bases->size;
+		APPENDOPCODE;
+
+		op = OP_STORE_NAME;
+		oparg = index;
+		APPENDOPCODE;
+	}
+	else if (CHECK(obj, "Try"))
+	{
+		struct TryASTObject* astobject = (struct TryASTObject*)obj;
+		op = OP_NEW_BLOCK;
+		oparg = 1;
+		APPENDOPCODE;
+
+		int backindex = translater->bytecode->code->size;
+
+		Translater_Translate(translater, astobject->body);
+
+		op = OP_ADD_FLAG;
+		oparg = translater->bytecode->code->size - backindex+2;
+		INSERTOPCODE(backindex);
+		backindex = translater->bytecode->code->size;
+
+		Translater_Translate(translater, astobject->handle);
+
+		op = OP_JMP;
+		oparg = translater->bytecode->code->size - backindex;
+		INSERTOPCODE(backindex);
+
+		op = OP_DEL_BLOCK;
 		APPENDOPCODE;
 	}
 }

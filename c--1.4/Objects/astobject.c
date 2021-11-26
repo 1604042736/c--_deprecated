@@ -256,6 +256,40 @@ struct Object* ImportASTObject_NewWithParser(struct Parser* parser)
 	return (struct Object*)astobject;
 }
 
+struct Object* ClassASTObject_New()
+{
+	struct ClassASTObject* astobject = (struct ClassASTObject*)malloc(sizeof(struct ClassASTObject));
+	astobject->objattr = &ClassASTObjectAttribute;
+	astobject->bases = ListObject_New();
+	astobject->body = ListObject_New();
+	return (struct Object*)astobject;
+}
+
+struct Object* ClassASTObject_NewWithParser(struct Parser* parser)
+{
+	struct ClassASTObject* astobject = ClassASTObject_New();
+	astobject->lineno = parser->lexer->lineno;
+	astobject->linepos = parser->lexer->linepos;
+	return (struct Object*)astobject;
+}
+
+struct Object* TryASTObject_New()
+{
+	struct TryASTObject* astobject = (struct TryASTObject*)malloc(sizeof(struct TryASTObject));
+	astobject->objattr = &TryASTObjectAttribute;
+	astobject->handle = ListObject_New();
+	astobject->body = ListObject_New();
+	return (struct Object*)astobject;
+}
+
+struct Object* TryASTObject_NewWithParser(struct Parser* parser)
+{
+	struct TryASTObject* astobject = TryASTObject_New();
+	astobject->lineno = parser->lexer->lineno;
+	astobject->linepos = parser->lexer->linepos;
+	return (struct Object*)astobject;
+}
+
 void printastobject(struct Object* obj,int space)
 {
 	if (obj == NULL)
@@ -480,5 +514,47 @@ void printastobject(struct Object* obj,int space)
 		printSpace(space + 1);
 		printf("name\n");
 		printastobject(astobject->name, space + 2);
+	}
+	else if (CHECK(obj, "Class"))
+	{
+		struct ClassASTObject* astobject = (struct ClassASTObject*)obj;
+		printf("Class\n");
+
+		printSpace(space + 1);
+		printf("name: ");
+		printf("%s\n", astobject->name->string);
+
+		printSpace(space + 1);
+		printf("bases\n");
+		for (int i = 0; i < astobject->bases->size; i++)
+		{
+			printastobject(astobject->bases->item[i], space + 2);
+		}
+
+		printSpace(space + 1);
+		printf("body\n");
+		for (int i = 0; i < astobject->body->size; i++)
+		{
+			printastobject(astobject->body->item[i], space + 2);
+		}
+	}
+	else if (CHECK(obj, "Try"))
+	{
+		struct TryASTObject* astobject = (struct TryASTObject*)obj;
+		printf("Try\n");
+
+		printSpace(space + 1);
+		printf("body\n");
+		for (int i = 0; i < astobject->body->size; i++)
+		{
+			printastobject(astobject->body->item[i], space + 2);
+		}
+
+		printSpace(space + 1);
+		printf("handle\n");
+		for (int i = 0; i < astobject->handle->size; i++)
+		{
+			printastobject(astobject->handle->item[i], space + 2);
+		}
 	}
 }

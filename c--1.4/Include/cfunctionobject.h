@@ -12,12 +12,14 @@ struct CFunctionObject
 struct Object* CFunctionObject_New();
 struct Object* CFunctionObject_NewWithCFunc(char*,CFunction);
 void CFunctionObject_Print(struct Object*);
+struct Object* CFunctionObject_Call(struct Object*, struct Object*);
 
 static struct ObjectAttribute CFunctionObjectAttribute = {
 	(char*)"cfunciton",	//obj_name
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	CFunctionObject_Call,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr

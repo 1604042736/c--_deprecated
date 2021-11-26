@@ -38,3 +38,5 @@ struct Object* Parser_functiondef(struct Parser*);
 struct Object* Parser_while(struct Parser*);
 void Parser_preprocess(struct Parser*);
 struct Object* Parser_import(struct Parser*);
+struct Object* Parser_class(struct Parser*);
+struct Object* Parser_try(struct Parser*);

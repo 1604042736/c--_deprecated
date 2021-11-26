@@ -1,4 +1,5 @@
 #include "doubleobject.h"
+#include "intobject.h"
 
 struct Object* DoubleObject_New()
 {
@@ -29,15 +30,15 @@ struct Object* DoubleObject_Add(struct Object* self, struct Object* other)
 	return DoubleObject_NewWithValue(result);
 }
 
-int DoubleObject_Eq(struct Object* self, struct Object* other)
+struct Object* DoubleObject_Eq(struct Object* self, struct Object* other)
 {
 	if (!CHECK(other, "double"))
 	{
-		return 0;
+		return IntObject_NewWithValue(0);
 	}
 	struct DoubleObject* selfint = (struct DoubleObject*)self;
 	struct DoubleObject* otherint = (struct DoubleObject*)other;
-	return selfint->value == otherint->value;
+	return IntObject_NewWithValue(selfint->value == otherint->value);
 }
 
 struct Object* DoubleObject_Sub(struct Object* self, struct Object* other)

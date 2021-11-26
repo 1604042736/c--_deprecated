@@ -1,6 +1,8 @@
 #pragma once
-
+#define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
+#include <crtdbg.h>
+
 #include <stdio.h>
 #include <string.h>
 
@@ -15,11 +17,12 @@ struct Object;
 typedef struct Object*	(*Add)(struct Object*, struct Object*);
 typedef struct Object*	(*And)(struct Object*, struct Object*);
 typedef int				(*Bool)(struct Object*);
+typedef struct Object*	(*Call)(struct Object*, struct Object*);
 typedef struct Object*	(*Div)(struct Object*, struct Object*);
-typedef int				(*Eq)(struct Object*, struct Object*);
+typedef struct Object*	(*Eq)(struct Object*, struct Object*);
 typedef struct Object*	(*GetAttr)(struct Object*, struct Object*);
 typedef struct Object*	(*GetItem)(struct Object*, struct Object*);
-typedef struct Object*	(*Geq)(struct Oject*, struct Object*);
+typedef struct Object*	(*Geq)(struct Object*, struct Object*);
 typedef struct Object*	(*Gt)(struct Object*, struct Object*);
 typedef void			(*InsertItem)(struct Object*, int, struct Object*);
 typedef struct Object*	(*Leq)(struct Object*, struct Object*);
@@ -42,6 +45,7 @@ struct ObjectAttribute
 	Add			obj_add;	//加法
 	And			obj_and;
 	Bool		obj_bool;
+	Call		obj_call;
 	Div			obj_div;
 	Eq			obj_eq;	//判断是否相等
 	GetAttr		obj_getattr;
@@ -70,29 +74,50 @@ struct Object
 
 void Object_Init();
 
-struct Object* Object_New();
-void Object_Print(struct Object*);
+struct Object*	Object_Add(struct Object*, struct Object*);
+struct Object*	Object_And(struct Object*, struct Object*);
+int				Object_Bool(struct Object*);
+struct Object*	Object_Call(struct Object*, struct Object*);
+struct Object*	Object_Div(struct Object*, struct Object*);
+struct Object*	Object_Eq(struct Object*, struct Object*);
+struct Object*	Object_GetAttr(struct Object*, struct Object*);
+struct Object*	Object_GetItem(struct Object*, struct Object*);
+struct Object*	Object_Geq(struct Object*, struct Object*);
+struct Object*	Object_Gt(struct Object*, struct Object*);
+void			Object_InsertItem(struct Object*, int, struct Object*);
+struct Object*	Object_Leq(struct Object*, struct Object*);
+struct Object*	Object_Lt(struct Object*, struct Object*);
+struct Object*	Object_Mod(struct Object*, struct Object*);
+struct Object*	Object_Mul(struct Object*, struct Object*);
+struct Object*	Object_Neq(struct Object*, struct Object*);
+struct Object*	Object_New();
+struct Object*	Object_Or(struct Object*, struct Object*);
+void			Object_Print(struct Object*);
+void			Object_SetAttr(struct Object*, struct Object*, struct Object*);
+void			Object_SetItem(struct Object*, struct Object*, struct Object*);
+struct Object*	Object_Sub(struct Object*, struct Object*);
 
 static struct ObjectAttribute ObjectObjectAttribute = {
 	(char*)"object",	//obj_name
-	NULL,	//obj_add
-	NULL,	//obj_and
-	NULL,	//obj_bool
-	NULL,	//obj_div
-	NULL,	//obj_eq
-	NULL,	//obj_getattr
-	NULL,	//obj_getitem
-	NULL,	//obj_geq
-	NULL,	//obj_gt
-	NULL,	//obj_insertitem
-	NULL,	//obj_leq
-	NULL,	//obj_lt
-	NULL,	//obj_mod
-	NULL,	//obj_mul
-	NULL,	//obj_neq
+	Object_Add,	//obj_add
+	Object_And,	//obj_and
+	Object_Bool,	//obj_bool
+	Object_Call,	//obj_call
+	Object_Div,	//obj_div
+	Object_Eq,	//obj_eq
+	Object_GetAttr,	//obj_getattr
+	Object_GetItem,	//obj_getitem
+	Object_Geq,	//obj_geq
+	Object_Gt,	//obj_gt
+	Object_InsertItem,	//obj_insertitem
+	Object_Leq,	//obj_leq
+	Object_Lt,	//obj_lt
+	Object_Mod,	//obj_mod
+	Object_Mul,	//obj_mul
+	Object_Neq,	//obj_neq
 	Object_New,	//obj_new
-	NULL,	//obj_or
+	Object_Or,	//obj_or
 	Object_Print,	//obj_print
-	NULL,	//obj_setitem
-	NULL,	//obj_sub
+	Object_SetItem,	//obj_setitem
+	Object_Sub,	//obj_sub
 };

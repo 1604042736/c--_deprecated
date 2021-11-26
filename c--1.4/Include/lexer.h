@@ -47,6 +47,9 @@
 #define TK_CONTINUE	38
 #define TK_COMMENT	39
 #define TK_IMPORT	40
+#define TK_CLASS	41
+#define TK_TRY		42
+#define TK_EXCEPT	43
 
 enum State
 {

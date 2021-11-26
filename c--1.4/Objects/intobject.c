@@ -29,15 +29,15 @@ struct Object* IntObject_Add(struct Object* self, struct Object* other)
 	return IntObject_NewWithValue(result);
 }
 
-int IntObject_Eq(struct Object* self, struct Object* other)
+struct Object* IntObject_Eq(struct Object* self, struct Object* other)
 {
 	if (!CHECK(other, "int"))
 	{
-		return 0;
+		return IntObject_NewWithValue(0);
 	}
 	struct IntObject* selfint = (struct IntObject*)self;
 	struct IntObject* otherint = (struct IntObject*)other;
-	return selfint->value == otherint->value;
+	return IntObject_NewWithValue(selfint->value == otherint->value);
 }
 
 int IntObject_toInt(struct Object* self)
@@ -135,6 +135,10 @@ struct Object* IntObject_Leq(struct Object* self, struct Object* other)
 
 int IntObject_Bool(struct Object* self)
 {
+	if (self == NULL)
+	{
+		return 0;
+	}
 	struct IntObject* selfint = (struct IntObject*)self;
 	return selfint->value;
 }

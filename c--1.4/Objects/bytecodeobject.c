@@ -1,4 +1,6 @@
 #include "bytecodeobject.h"
+#include "eval.h"
+#include "frameobject.h"
 
 struct Object* ByteCodeObject_New()
 {
@@ -40,4 +42,10 @@ void ByteCodeObject_Print2(struct Object* self)
 		printf("\n");
 		ByteCodeObject_Print2(bytecodelist->item[i]);
 	}
+}
+
+struct Object* ByteCodeObject_Call(struct Object* self, struct Object* args)
+{
+	struct FrameObject* ft = FrameObject_NewWithByteCode(self);
+	return Eval(ft);
 }

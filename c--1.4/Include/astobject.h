@@ -23,6 +23,7 @@ static struct ObjectAttribute NameSpaceASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -59,6 +60,7 @@ static struct ObjectAttribute IfASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -95,6 +97,7 @@ static struct ObjectAttribute OperationASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -130,6 +133,7 @@ static struct ObjectAttribute NameASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -164,6 +168,7 @@ static struct ObjectAttribute ConstantASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -199,6 +204,7 @@ static struct ObjectAttribute AssignASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -235,6 +241,7 @@ static struct ObjectAttribute SubscriptASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -271,6 +278,7 @@ static struct ObjectAttribute CallASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -305,6 +313,7 @@ static struct ObjectAttribute ReturnASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -341,6 +350,7 @@ static struct ObjectAttribute FunctionDefASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -376,6 +386,7 @@ static struct ObjectAttribute WhileASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -410,6 +421,7 @@ static struct ObjectAttribute ListASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -446,6 +458,7 @@ static struct ObjectAttribute AttributeASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -479,6 +492,7 @@ static struct ObjectAttribute BreakASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -512,6 +526,7 @@ static struct ObjectAttribute ContinueASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -546,6 +561,7 @@ static struct ObjectAttribute ImportASTObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -559,6 +575,79 @@ static struct ObjectAttribute ImportASTObjectAttribute = {
 	NULL,	//obj_mul
 	NULL,	//obj_neq
 	ImportASTObject_New,	//obj_new
+	NULL,	//obj_or
+	NULL,	//obj_print
+	NULL,	//obj_setattr
+	NULL,	//obj_setitem
+	NULL,	//obj_sub
+};
+
+struct ClassASTObject
+{
+	ASTOBJECT_HEAD;
+	struct StringObject* name;
+	struct ListObject* bases;
+	struct ListObject* body;
+};
+
+struct Object* ClassASTObject_New();
+struct Object* ClassASTObject_NewWithParser(struct Parser*);
+
+static struct ObjectAttribute ClassASTObjectAttribute = {
+	(char*)"Class",
+	NULL,	//obj_add
+	NULL,	//obj_and
+	NULL,	//obj_bool
+	NULL,	//obj_call
+	NULL,	//obj_div
+	NULL,	//obj_eq
+	NULL,	//obj_getattr
+	NULL,	//obj_getitem
+	NULL,	//obj_geq
+	NULL,	//obj_gt
+	NULL,	//obj_insertitem
+	NULL,	//obj_leq
+	NULL,	//obj_lt
+	NULL,	//obj_mod
+	NULL,	//obj_mul
+	NULL,	//obj_neq
+	ClassASTObject_New,	//obj_new
+	NULL,	//obj_or
+	NULL,	//obj_print
+	NULL,	//obj_setattr
+	NULL,	//obj_setitem
+	NULL,	//obj_sub
+};
+
+struct TryASTObject
+{
+	ASTOBJECT_HEAD;
+	struct ListObject* body;
+	struct ListObject* handle;
+};
+
+struct Object* TryASTObject_New();
+struct Object* TryASTObject_NewWithParser(struct Parser*);
+
+static struct ObjectAttribute TryASTObjectAttribute = {
+	(char*)"Try",
+	NULL,	//obj_add
+	NULL,	//obj_and
+	NULL,	//obj_bool
+	NULL,	//obj_call
+	NULL,	//obj_div
+	NULL,	//obj_eq
+	NULL,	//obj_getattr
+	NULL,	//obj_getitem
+	NULL,	//obj_geq
+	NULL,	//obj_gt
+	NULL,	//obj_insertitem
+	NULL,	//obj_leq
+	NULL,	//obj_lt
+	NULL,	//obj_mod
+	NULL,	//obj_mul
+	NULL,	//obj_neq
+	TryASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
 	NULL,	//obj_setattr

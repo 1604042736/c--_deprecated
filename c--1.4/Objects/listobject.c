@@ -50,8 +50,10 @@ void ListObject_InsertItem(struct Object* self, int index, struct Object* item)
 	}
 	if (selflist->size + 1 >= selflist->allocated)	//超出了已分配的范围
 	{
+		struct Object** copy = selflist->item;
 		selflist->allocated += MAXALLOCATEDSIZE;
 		selflist->item = (struct Object**)realloc(selflist->item,sizeof(struct Object*) * selflist->allocated);
+		
 		if (selflist->item == NULL)
 		{
 			printf("list item分配内存失败");
@@ -89,7 +91,7 @@ int ListObject_FindItem(struct Object* self, struct Object* obj)
 	for (int i = 0; i < selflist->size; i++)
 	{
 		struct Object* item = selflist->item[i];
-		if (item!=NULL&&item->objattr->obj_eq!=NULL&& item->objattr->obj_eq(item, obj))
+		if (item!=NULL&&item->objattr->obj_eq!=NULL&& IntObject_Bool(item->objattr->obj_eq(item, obj)))
 		{
 			return i;
 		}

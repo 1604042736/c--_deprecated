@@ -1,5 +1,6 @@
 #include <string.h>
 #include "dictobject.h"
+#include "intobject.h"
 
 struct Object* DictObject_New()
 {
@@ -70,7 +71,7 @@ int DictObject_FindItem(struct Object* self, struct Object* obj)
 	for (int i = 0; i < selfdict->size; i++)
 	{
 		struct Object* item = selfdict->item[i].key;
-		if (item->objattr->obj_eq(item, obj))
+		if (IntObject_Bool(item->objattr->obj_eq(item, obj)))
 		{
 			return i;
 		}
@@ -84,7 +85,7 @@ struct Object* DictObject_GetItem(struct Object* self, struct Object* key)
 	for (int i = 0; i < selfdict->size; i++)
 	{
 		struct Object* item = selfdict->item[i].key;
-		if (item->objattr->obj_eq(item, key))
+		if (IntObject_Bool(item->objattr->obj_eq(item, key)))
 		{
 			return selfdict->item[i].value;
 		}

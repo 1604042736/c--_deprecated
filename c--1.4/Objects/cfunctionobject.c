@@ -1,4 +1,6 @@
 #include "cfunctionobject.h"
+#include "listobject.h"
+#include "eval.h"
 
 struct Object* CFunctionObject_New()
 {
@@ -20,4 +22,18 @@ void CFunctionObject_Print(struct Object* self)
 {
 	struct CFunctionObject* ct = (struct CFunctionObject*)self;
 	printf("<CFunction %s at %p>", ct->name, ct);
+}
+
+struct Object* CFunctionObject_Call(struct Object* self, struct Object* arg)
+{
+	struct CFunctionObject* func = (struct CFunctionObject*)self;
+	struct ListObject* args = (struct ListObject*)arg;
+	struct ListObject* cfuncargs = ListObject_New();
+
+	for (int i = 0; i < args->size; i++)
+	{
+		ListObject_InsertItem(cfuncargs, 0, args->item[i]);
+	}
+
+	return func->func(cfuncargs);
 }

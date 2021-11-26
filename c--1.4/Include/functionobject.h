@@ -14,12 +14,14 @@ struct FunctionObject
 
 struct Object* FunctionObject_New();
 void FunctionObject_Print(struct Object*);
+struct Object* FunctionObject_Call(struct Object*, struct Object*);
 
 static struct ObjectAttribute FunctionObjectAttribute = {
 	(char*)"function",	//obj_name
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	FunctionObject_Call,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr

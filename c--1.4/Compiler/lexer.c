@@ -15,6 +15,9 @@ void Lexer_Init()
 	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("break"), IntObject_NewWithValue(TK_BREAK));
 	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("continue"), IntObject_NewWithValue(TK_CONTINUE));
 	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("import"), IntObject_NewWithValue(TK_IMPORT));
+	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("class"), IntObject_NewWithValue(TK_CLASS));
+	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("try"), IntObject_NewWithValue(TK_TRY));
+	DictObject_SetItem((struct Object*)keywordmap, StringObject_NewWithString("except"), IntObject_NewWithValue(TK_EXCEPT));
 }
 
 struct Lexer* Lexer_New(struct StringObject* code)

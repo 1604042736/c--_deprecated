@@ -78,5 +78,9 @@ int main(int argc,char* argv[])
 	Eval(frameobj);
 
 	fclose(file);
+
+#ifndef NDEBUG
+	_CrtDumpMemoryLeaks();
+#endif // !NDEBUG
 	return 0;
 }

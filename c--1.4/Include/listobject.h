@@ -33,6 +33,7 @@ static struct ObjectAttribute ListObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	ListObject_Bool,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	ListObject_GetAttr,	//obj_getattr

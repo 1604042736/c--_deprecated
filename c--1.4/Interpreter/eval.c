@@ -5,14 +5,17 @@ struct Object* Eval(struct FrameObject* frameobj)
 #define BYTECODE	(frameobj->bytecode)
 #define CODE		(BYTECODE->code)
 #define STACK		(frameobj->statck)
-	int i = 0,op,oparg,index;
+	int i = 0,op,oparg,index,lineno,linepos;
 	int size = frameobj->bytecode->code->size;
-	struct Object* temp=Object_New();
+	struct ListObject* temp=ListObject_New();
 	struct ListObject* blocks = ListObject_New();
+	struct ExceptionObject* exception;
 	while (i < size)
 	{
 		op = ((struct OpCodeObject*)frameobj->bytecode->code->item[i])->op;
 		oparg= ((struct OpCodeObject*)frameobj->bytecode->code->item[i])->oparg;
+		lineno=((struct OpCodeObject*)frameobj->bytecode->code->item[i])->lineno;
+		linepos = ((struct OpCodeObject*)frameobj->bytecode->code->item[i])->linepos;
 		switch (op)
 		{
 		case OP_LOAD_CONST:
@@ -31,9 +34,8 @@ struct Object* Eval(struct FrameObject* frameobj)
 				value=DictObject_GetItem(frameobj->globals, name);
 				if (value == NULL)
 				{
-					printf("找不到");
-					name->objattr->obj_print(name);
-					exit(-1);
+					exception = ExceptionObject_NewWithMessage("找不到", lineno, linepos);
+					goto ERROR;
 				}
 			}
 			ListObject_InsertItem(STACK, STACK->size, value);
@@ -90,7 +92,7 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
-			ListObject_InsertItem(STACK, STACK->size,IntObject_NewWithValue( left->objattr->obj_eq(left, right)));
+			ListObject_InsertItem(STACK, STACK->size,left->objattr->obj_eq(left, right));
 			break;
 		}
 		case OP_NEQ:
@@ -260,15 +262,19 @@ struct Object* Eval(struct FrameObject* frameobj)
 		}
 		case OP_SET_TEMP:
 		{
-			temp = STACK->item[STACK->size - 1];
+			struct Object* t = STACK->item[STACK->size - 1];
 			ListObject_ListDelItem(STACK, STACK->size - 1);
+			ListObject_InsertItem(temp, temp->size, t);
 			break;
 		}
 		case OP_GET_TEMP:
 		{
-			ListObject_InsertItem(STACK, STACK->size,temp);
+			ListObject_InsertItem(STACK, STACK->size,temp->item[temp->size-1]);
 			break;
 		}
+		case OP_POP_TEMP:
+			ListObject_ListDelItem(temp, temp->size - 1);
+			break;
 		case OP_POP_TOP:
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			break;
@@ -276,6 +282,7 @@ struct Object* Eval(struct FrameObject* frameobj)
 		{
 			ListObject_InsertItem(blocks, blocks->size, BlockObject_New());
 			struct BlockObject* block = blocks->item[blocks->size - 1];
+			block->type = oparg;
 			ListObject_InsertItem(block->flags, block->flags->size, IntObject_NewWithValue(i));
 			break;
 		}
@@ -301,13 +308,54 @@ struct Object* Eval(struct FrameObject* frameobj)
 			ListObject_InsertItem(STACK, STACK->size, nt);
 			break;
 		}
+		case OP_LOAD_LOCAL:
+			ListObject_InsertItem(STACK, STACK->size, frameobj->locals);
+			break;
+		case OP_BUILD_CLASS:
+		{
+			struct ClassObject* classobject= ClassObject_New();
+			struct DictObject* attr= STACK->item[STACK->size - 1];
+			ListObject_ListDelItem(STACK, STACK->size - 1);
+			for (int i = 0; i < oparg; i++)
+			{
+				ListObject_InsertItem(classobject->bases, 0, STACK->item[STACK->size - 1]);
+				ListObject_ListDelItem(STACK, STACK->size - 1);
+			}
+			classobject->name= STACK->item[STACK->size - 1];
+			ListObject_ListDelItem(STACK, STACK->size - 1);
+
+			for (int i = 0; i < attr->size; i++)
+			{
+				DictObject_SetItem(classobject->dict, attr->item[i].key, attr->item[i].value);
+			}
+
+			ListObject_InsertItem(STACK, STACK->size, classobject);
+			break;
+		}
 		}
 #ifndef NDEBUG
 		printf("\n%d:", i);
 		FrameObject_Print(frameobj);
 #endif
 		i++;
+		continue;
+	ERROR:
+		{
+			struct BlockObject* block = blocks->item[blocks->size - 1];
+			if (block->type == BLOCKTYPE_EXCEPTION)
+			{
+				i = ((struct IntObject*)block->flags->item[0])->value + ((struct IntObject*)block->flags->item[1])->value+1;
+			}
+			else if (exception != NULL)
+			{
+				printf("\n在 行 %d,列 %d\n", exception->lineno, exception->linepos);
+				printf("%s\n", exception->message->string);
+				exit(-1);
+			}
+		}
 	}
+	free(temp);
+	free(blocks);
 	return IntObject_NewWithValue(0);
 }
 
@@ -322,41 +370,7 @@ struct FunctionObject* make_function(struct FrameObject* frameobj,struct StringO
 
 struct Object* call(struct Object* f, struct ListObject* args)
 {
-	if (CHECK(f, "function"))
-	{
-		struct FunctionObject* func = (struct FunctionObject*)f;
-		struct FrameObject* frameobj = FrameObject_NewWithByteCode(func->bytecode);
-		frameobj->argindex = args->size - 1;
-		for (int i = 0; i < args->size; i++)
-		{
-			ListObject_InsertItem(frameobj->statck, frameobj->statck->size, args->item[i]);
-		}
-		struct DictObject* dict = DictObject_New();
-		struct FrameObject* frame = func->frame;
-		for (int i = 0; i < frame->globals->size; i++)
-		{
-			DictObject_SetItem(dict, frame->globals->item[i].key, frame->globals->item[i].value);
-		}
-		for (int i = 0; i < frame->locals->size; i++)
-		{
-			DictObject_SetItem(dict, frame->locals->item[i].key, frame->locals->item[i].value);
-		}
-		frameobj->globals = dict;
-		return Eval(frameobj);
-	}
-	else if (CHECK(f, "cfunciton"))
-	{
-		struct CFunctionObject* func = (struct CFunctionObject*)f;
-		struct ListObject* cfuncargs = ListObject_New();
-
-		for (int i = 0; i < args->size; i++)
-		{
-			ListObject_InsertItem(cfuncargs, 0, args->item[i]);
-		}
-
-		return func->func(cfuncargs);
-	}
-	return IntObject_New();
+	return f->objattr->obj_call(f, args);
 }
 
 struct NamespaceObject* load_namespace(struct StringObject* name)

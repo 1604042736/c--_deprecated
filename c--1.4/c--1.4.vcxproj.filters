@@ -78,6 +78,12 @@
     <ClCompile Include="Objects\blockobject.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Objects\classobject.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\exceptionobject.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\object.h">
@@ -135,6 +141,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Include\blockobject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\classobject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\exceptionobject.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

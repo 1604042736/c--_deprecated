@@ -155,8 +155,10 @@
     <ClCompile Include="Objects\blockobject.c" />
     <ClCompile Include="Objects\bytecodeobject.c" />
     <ClCompile Include="Objects\cfunctionobject.c" />
+    <ClCompile Include="Objects\classobject.c" />
     <ClCompile Include="Objects\dictobject.c" />
     <ClCompile Include="Objects\doubleobject.c" />
+    <ClCompile Include="Objects\exceptionobject.c" />
     <ClCompile Include="Objects\frameobject.c" />
     <ClCompile Include="Objects\functionobject.c" />
     <ClCompile Include="Objects\initobjects.c" />
@@ -172,9 +174,11 @@
     <ClInclude Include="Include\blockobject.h" />
     <ClInclude Include="Include\bytecodeobject.h" />
     <ClInclude Include="Include\cfunctionobject.h" />
+    <ClInclude Include="Include\classobject.h" />
     <ClInclude Include="Include\dictobject.h" />
     <ClInclude Include="Include\doubleobject.h" />
     <ClInclude Include="Include\eval.h" />
+    <ClInclude Include="Include\exceptionobject.h" />
     <ClInclude Include="Include\frameobject.h" />
     <ClInclude Include="Include\functionobject.h" />
     <ClInclude Include="Include\intobject.h" />

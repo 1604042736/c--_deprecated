@@ -125,6 +125,12 @@ struct Object* Parser_sentence(struct Parser* parser)
 	case TK_IMPORT:
 		t = Parser_import(parser);
 		break;
+	case TK_CLASS:
+		t = Parser_class(parser);
+		break;
+	case TK_TRY:
+		t = Parser_try(parser);
+		break;
 	default:
 		printf("%s不能作为语句", parser->lexer->tokenstr->string);
 		exit(-1);
@@ -353,7 +359,7 @@ struct Object* Parser_exp_postfix(struct Parser* parser)
 			}
 			else
 			{
-				p->mode= StringObject_NewWithString("namespace");
+				p->mode= StringObject_NewWithString("withoutself");
 			}
 			t = p;
 		}
@@ -633,5 +639,140 @@ struct Object* Parser_import(struct Parser* parser)
 	parser->importmode = 1;
 	t->name = Parser_exp_postfix(parser);
 	parser->importmode = 0;
+	return t;
+}
+
+struct Object* Parser_class(struct Parser* parser)
+{
+	struct ClassASTObject* t = ClassASTObject_NewWithParser(parser);
+	Parser_match(parser, TK_CLASS);
+
+	t->name = parser->lexer->tokenstr;
+	Parser_match(parser, parser->lexer->token);
+
+	if (parser->lexer->token == TK_LLITTLE)
+	{
+		Parser_match(parser,TK_LLITTLE);
+		struct Object* p = Parser_exp(parser);
+		ListObject_InsertItem(t->bases, t->bases->size, p);
+		while (parser->lexer->token == TK_COMMA)
+		{
+			Parser_match(parser, TK_COMMA);
+			struct Object* p = Parser_exp(parser);
+			ListObject_InsertItem(t->bases, t->bases->size, p);
+		}
+		Parser_match(parser, TK_RLITTLE);
+	}
+
+	if (parser->blockstyle == BRACES)
+	{
+		Parser_match(parser, TK_LLARGE);
+		if (parser->lexer->token != TK_RLARGE)
+		{
+			t->body = Parser_body(parser,"",-1);
+		}
+		Parser_match(parser, TK_RLARGE);
+	}
+	else if (parser->blockstyle == INDENT)
+	{
+		Parser_match(parser, TK_COLON);
+		t->body = Parser_body(parser, parser->lexer->indent->string, -1);
+	}
+	else if (parser->blockstyle == BEGINEND)
+	{
+		Parser_match(parser, TK_BEGIN);
+		if (parser->lexer->token != TK_RLARGE)
+		{
+			t->body = Parser_body(parser, "", -1);
+		}
+		Parser_match(parser, TK_END);
+	}
+	else if (parser->blockstyle == END)
+	{
+		struct Object* body = Parser_body(parser, "", -1);
+		t->body = body;
+	}
+	else if (parser->blockstyle == ENDNAME)
+	{
+		struct Object* body = Parser_body(parser, "", TK_CLASS);
+		t->body = body;
+	}
+	return t;
+}
+
+struct Object* Parser_try(struct Parser* parser)
+{
+	struct TryASTObject* t = TryASTObject_NewWithParser(parser);
+	Parser_match(parser, TK_TRY);
+
+	if (parser->blockstyle == BRACES)
+	{
+		Parser_match(parser, TK_LLARGE);
+		if (parser->lexer->token != TK_RLARGE)
+		{
+			t->body = Parser_body(parser, "", -1);
+		}
+		Parser_match(parser, TK_RLARGE);
+	}
+	else if (parser->blockstyle == INDENT)
+	{
+		Parser_match(parser, TK_COLON);
+		t->body = Parser_body(parser, parser->lexer->indent->string, -1);
+	}
+	else if (parser->blockstyle == BEGINEND)
+	{
+		Parser_match(parser, TK_BEGIN);
+		if (parser->lexer->token != TK_RLARGE)
+		{
+			t->body = Parser_body(parser, "", -1);
+		}
+		Parser_match(parser, TK_END);
+	}
+	else if (parser->blockstyle == END)
+	{
+		struct Object* body = Parser_body(parser, "", -1);
+		t->body = body;
+	}
+	else if (parser->blockstyle == ENDNAME)
+	{
+		struct Object* body = Parser_body(parser, "", TK_CLASS);
+		t->body = body;
+	}
+
+	Parser_match(parser, TK_EXCEPT);
+
+	if (parser->blockstyle == BRACES)
+	{
+		Parser_match(parser, TK_LLARGE);
+		if (parser->lexer->token != TK_RLARGE)
+		{
+			t->handle = Parser_body(parser, "", -1);
+		}
+		Parser_match(parser, TK_RLARGE);
+	}
+	else if (parser->blockstyle == INDENT)
+	{
+		Parser_match(parser, TK_COLON);
+		t->handle = Parser_body(parser, parser->lexer->indent->string, -1);
+	}
+	else if (parser->blockstyle == BEGINEND)
+	{
+		Parser_match(parser, TK_BEGIN);
+		if (parser->lexer->token != TK_RLARGE)
+		{
+			t->handle = Parser_body(parser, "", -1);
+		}
+		Parser_match(parser, TK_END);
+	}
+	else if (parser->blockstyle == END)
+	{
+		struct Object* body = Parser_body(parser, "", -1);
+		t->handle = body;
+	}
+	else if (parser->blockstyle == ENDNAME)
+	{
+		struct Object* body = Parser_body(parser, "", TK_CLASS);
+		t->handle = body;
+	}
 	return t;
 }

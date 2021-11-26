@@ -21,9 +21,12 @@
 #define OP_GET_TEMP		17
 #define OP_SET_TEMP		18
 #define OP_POP_TOP		19
-#define OP_NEW_BLOCK	20
-#define OP_DEL_BLOCK	21
+#define OP_DEL_BLOCK	20
+#define OP_POP_TEMP		21
+#define OP_LOAD_LOCAL	22
 
+#define OP_NEW_BLOCK		112
+#define OP_BUILD_CLASS		113
 #define OP_LOAD_NAMESPACE	114
 #define OP_GOTO_FLAG		115
 #define OP_ADD_FLAG			116
@@ -59,6 +62,7 @@ static struct ObjectAttribute OpCodeObjectAttribute = {
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	NULL,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr

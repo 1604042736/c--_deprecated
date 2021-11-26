@@ -15,12 +15,14 @@ struct ByteCodeObject
 struct Object* ByteCodeObject_New();
 void ByteCodeObject_Print(struct Object*);
 void ByteCodeObject_Print2(struct Object*);
+struct Object* ByteCodeObject_Call(struct Object*, struct Object*);
 
 static struct ObjectAttribute ByteCodeObjectAttribute = {
 	(char*)"bytecode",	//obj_name
 	NULL,	//obj_add
 	NULL,	//obj_and
 	NULL,	//obj_bool
+	ByteCodeObject_Call,	//obj_call
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
