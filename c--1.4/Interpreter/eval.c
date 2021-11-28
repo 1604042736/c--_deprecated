@@ -35,7 +35,9 @@ struct Object* Eval(struct FrameObject* frameobj)
 				value=DictObject_GetItem(frameobj->globals, name);
 				if (value == NULL)
 				{
-					exception = ExceptionObject_NewWithMessage(StringObject_NewWithString("找不到"),filename, lineno, linepos);
+					struct ListObject* format = ListObject_New();
+					ListObject_InsertItem(format, format->size, name);
+					exception = ExceptionObject_NewWithMessage(StringObject_Format(StringObject_NewWithString("找不到{0}"),format),filename, lineno, linepos);
 					goto ERROR;
 				}
 			}
@@ -266,7 +268,12 @@ struct Object* Eval(struct FrameObject* frameobj)
 				ListObject_InsertItem(args, args->size, STACK->item[STACK->size - 1]);
 				ListObject_ListDelItem(STACK, STACK->size - 1);
 			}
-			ListObject_InsertItem(STACK, STACK->size, call(func,args));
+			struct Object* returnvalue = call(func, args);
+			if (returnvalue == NULL)
+			{
+				goto ERROR;
+			}
+			ListObject_InsertItem(STACK, STACK->size, returnvalue);
 			break;
 		}
 		case OP_STORE_ARG:
@@ -415,7 +422,7 @@ struct Object* Eval(struct FrameObject* frameobj)
 			}
 			else if (exception != NULL)
 			{
-				printf("\n错误:文件 %s:行 %d,列 %d:", filename->string,lineno, linepos);
+				printf("\n%s(%d,%d):错误:", filename->string,lineno, linepos);
 				printf("%s\n", exception->message->string);
 				exit(-1);
 			}
@@ -442,7 +449,15 @@ struct Object* call(struct Object* f, struct ListObject* args)
 
 struct NamespaceObject* load_namespace(struct StringObject* name)
 {
-	struct StringObject* filename = name;
-	filename = StringObject_Add(filename, StringObject_NewWithString(".c--"));
-	return compiler(filename->string,name->string);
+	struct Object* obj = DictObject_GetItem(builtinnamespaces, name);
+	if (obj != NULL)
+	{
+		return obj;
+	}
+	else
+	{
+		struct StringObject* filename = name;
+		filename = StringObject_Add(filename, StringObject_NewWithString(".c--"));
+		return compiler(filename->string, name->string, 0);
+	}
 }

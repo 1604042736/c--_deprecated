@@ -38,6 +38,7 @@ static struct ObjectAttribute ClassObjectAttribute = {
 	ClassObject_New,	//obj_new
 	NULL,	//obj_or
 	ClassObject_Print,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -75,6 +76,7 @@ static struct ObjectAttribute InstanceObjectAttribute = {
 	InstanceObject_New,	//obj_new
 	NULL,	//obj_or
 	InstanceObject_Print,	//obj_print
+	NULL,	//obj_tostring
 	InstanceObject_SetAttr,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub

@@ -80,6 +80,7 @@ static struct ObjectAttribute OpCodeObjectAttribute = {
 	OpCodeObject_New,	//obj_new
 	NULL,	//obj_or
 	OpCodeObject_Print,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub

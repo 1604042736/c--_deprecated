@@ -49,6 +49,7 @@ static struct ObjectAttribute ListObjectAttribute = {
 	ListObject_New,	//obj_new
 	NULL,	//obj_or
 	ListObject_Print,	//obj_print
+	NULL,	//obj_tostring
 	ListObject_SetAttr,	//obj_setattr
 	ListObject_SetItem,	//obj_setitem
 	NULL,	//obj_sub

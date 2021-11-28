@@ -474,6 +474,23 @@ void Object_Print(struct Object* self)
 	}
 }
 
+struct Object* Object_ToString(struct Object* self)
+{
+	struct Object* func = DictObject_GetItem(self->objattr->attr, StringObject_NewWithString("tostring"));
+	if (func != NULL)
+	{
+		struct  ListObject* args = ListObject_New();
+		ListObject_InsertItem(args, args->size, self);
+		return func->objattr->obj_call(func, args);
+	}
+	else
+	{
+		exception = ExceptionObject_New();
+		exception->message = StringObject_NewWithString("不存在该运算符");
+		return NULL;
+	}
+}
+
 void Object_SetAttr(struct Object* self, struct Object* attr, struct Object* obj)
 {
 	struct Object* func = DictObject_GetItem(self->objattr->attr, StringObject_NewWithString("setattr"));

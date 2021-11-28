@@ -38,6 +38,7 @@ static struct ObjectAttribute ExceptionObjectAttribute = {
 	ExceptionObject_New,	//obj_new
 	NULL,	//obj_or
 	ExceptionObject_Print,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub

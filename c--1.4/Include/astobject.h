@@ -41,6 +41,7 @@ static struct ObjectAttribute NameSpaceASTObjectAttribute = {
 	NameSpaceASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -78,6 +79,7 @@ static struct ObjectAttribute IfASTObjectAttribute = {
 	IfASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -115,6 +117,7 @@ static struct ObjectAttribute OperationASTObjectAttribute = {
 	OperationASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -151,6 +154,7 @@ static struct ObjectAttribute NameASTObjectAttribute = {
 	NameASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -186,6 +190,7 @@ static struct ObjectAttribute ConstantASTObjectAttribute = {
 	ConstantASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -222,6 +227,7 @@ static struct ObjectAttribute AssignASTObjectAttribute = {
 	AssignASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -259,6 +265,7 @@ static struct ObjectAttribute SubscriptASTObjectAttribute = {
 	SubscriptASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -296,6 +303,7 @@ static struct ObjectAttribute CallASTObjectAttribute = {
 	CallASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -331,6 +339,7 @@ static struct ObjectAttribute ReturnASTObjectAttribute = {
 	ReturnASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -368,6 +377,7 @@ static struct ObjectAttribute FunctionDefASTObjectAttribute = {
 	FunctionDefASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -404,6 +414,7 @@ static struct ObjectAttribute WhileASTObjectAttribute = {
 	WhileASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -439,6 +450,7 @@ static struct ObjectAttribute ListASTObjectAttribute = {
 	ListASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -476,6 +488,7 @@ static struct ObjectAttribute AttributeASTObjectAttribute = {
 	AttributeASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -510,6 +523,7 @@ static struct ObjectAttribute BreakASTObjectAttribute = {
 	BreakASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -544,6 +558,7 @@ static struct ObjectAttribute ContinueASTObjectAttribute = {
 	ContinueASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -579,6 +594,7 @@ static struct ObjectAttribute ImportASTObjectAttribute = {
 	ImportASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -616,6 +632,7 @@ static struct ObjectAttribute ClassASTObjectAttribute = {
 	ClassASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
@@ -652,6 +669,7 @@ static struct ObjectAttribute TryASTObjectAttribute = {
 	TryASTObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub

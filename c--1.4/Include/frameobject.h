@@ -40,6 +40,7 @@ static struct ObjectAttribute FrameObjectAttribute = {
 	FrameObject_New,	//obj_new
 	NULL,	//obj_or
 	FrameObject_Print,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub

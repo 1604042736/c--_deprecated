@@ -1,4 +1,5 @@
 #include "stringobject.h"
+#include "listobject.h"
 
 struct Object* StringObject_New()
 {
@@ -128,4 +129,47 @@ struct Object* StringObject_Split2(struct Object* arg)
 {
 	struct ListObject* args = (struct ListObject*)arg;
 	return StringObject_Split(args->item[0], args->item[1]);
+}
+
+struct Object* StringObject_Format(struct Object* self, struct Object* format)
+{
+	struct ListObject* formatlist = (struct ListObject*)format;
+	struct StringObject* result = StringObject_New();
+	struct StringObject* selfstr = (struct StringObject*)self;
+	int i = 0;
+	while (i < selfstr->size)
+	{
+		if (selfstr->string[i] == '{')
+		{
+			i++;
+			int index = selfstr->string[i] - '0';
+			if (index < formatlist->size)
+			{
+				struct Object* obj = formatlist->item[index];
+				struct Object* afterformat = Object_ToString(obj);
+				if (afterformat != NULL&&CHECK(afterformat,"string"))
+				{
+					result = StringObject_Add(result, afterformat);
+				}
+			}
+			i += 2;
+		}
+		else
+		{
+			result = StringObject_Add(result, StringObject_NewWithChar(selfstr->string[i]));
+			i++;
+		}
+	}
+	return result;
+}
+
+struct Object* StringObject_ToString(struct Object* self)
+{
+	return self;
+}
+
+struct Object* StringObject_ToString2(struct Object* arg)
+{
+	struct ListObject* args = (struct ListObject*)arg;
+	return StringObject_ToString(args->item[0]);
 }

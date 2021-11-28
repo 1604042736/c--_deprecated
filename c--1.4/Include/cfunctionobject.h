@@ -35,6 +35,8 @@ static struct ObjectAttribute CFunctionObjectAttribute = {
 	CFunctionObject_New,	//obj_new
 	NULL,	//obj_or
 	CFunctionObject_Print,	//obj_print
+	NULL,	//obj_tostring
+	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
 };

@@ -65,6 +65,7 @@ static struct ObjectAttribute IntObjectAttribute = {
 	IntObject_New,	//obj_new
 	IntObject_Or,	//obj_or
 	IntObject_Print,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	IntObject_Sub,	//obj_sub

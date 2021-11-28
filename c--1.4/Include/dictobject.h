@@ -46,6 +46,7 @@ static struct ObjectAttribute DictObjectAttribute = {
 	DictObject_New,	//obj_new
 	NULL,	//obj_or
 	DictObject_Print,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	DictObject_SetItem,	//obj_setitem
 	NULL,	//obj_sub

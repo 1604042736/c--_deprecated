@@ -37,6 +37,7 @@ static struct ObjectAttribute FunctionObjectAttribute = {
 	FunctionObject_New,	//obj_new
 	NULL,	//obj_or
 	FunctionObject_Print,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub

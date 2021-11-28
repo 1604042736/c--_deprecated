@@ -304,7 +304,7 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		{
 			op = OP_STORE_ATTR;
 		}
-		else if (!strcmp(astobject->mode->string, "namespace"))
+		else if (!strcmp(astobject->mode->string, "withoutself"))
 		{
 			op = OP_LOAD_ATTR;
 		}

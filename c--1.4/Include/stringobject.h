@@ -23,10 +23,13 @@ struct Object* StringObject_Add(struct Object*, struct Object*);
 struct Object* StringObject_Eq(struct Object*, struct Object*);
 struct ListObject* StringObject_Split(struct Object*, struct Object*);
 int StringObject_Bool(struct Object*);
+struct Object* StringObject_Format(struct Object*, struct Object*);
+struct Object* StringObject_ToString(struct Object*);
 
 struct Object* StringObject_Add2(struct Object*);
 struct Object* StringObject_Eq2(struct Object*);
 struct Object* StringObject_Split2(struct Object*);
+struct Object* StringObject_ToString2(struct Object*);
 
 struct DictObject* stringobjattr;
 static struct ObjectAttribute StringObjectAttribute = {
@@ -50,6 +53,7 @@ static struct ObjectAttribute StringObjectAttribute = {
 	StringObject_New,	//obj_new
 	NULL,	//obj_or
 	StringObject_Print,	//obj_print
+	StringObject_ToString,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub

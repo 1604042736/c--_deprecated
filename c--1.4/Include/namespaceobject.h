@@ -37,6 +37,7 @@ static struct ObjectAttribute NamespaceObjectAttribute = {
 	NamespaceObject_New,	//obj_new
 	NULL,	//obj_or
 	NamespaceObject_Print,	//obj_print
+	NULL,	//obj_tostring
 	NamespaceObject_SetAttr,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub

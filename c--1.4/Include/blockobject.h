@@ -36,6 +36,8 @@ static struct ObjectAttribute BlockObjectAttribute = {
 	BlockObject_New,	//obj_new
 	NULL,	//obj_or
 	NULL,	//obj_print
+	NULL,	//obj_tostring
+	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
 };

@@ -89,7 +89,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <Link>
@@ -150,8 +150,10 @@
     <ClCompile Include="Compiler\parser.c" />
     <ClCompile Include="Compiler\preprocessor.c" />
     <ClCompile Include="Compiler\translater.c" />
+    <ClCompile Include="Interpreter\builtins.c" />
     <ClCompile Include="Interpreter\eval.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="Namespaces\namespace_system.c" />
     <ClCompile Include="Objects\astobject.c" />
     <ClCompile Include="Objects\blockobject.c" />
     <ClCompile Include="Objects\bytecodeobject.c" />
@@ -173,6 +175,7 @@
   <ItemGroup>
     <ClInclude Include="Include\astobject.h" />
     <ClInclude Include="Include\blockobject.h" />
+    <ClInclude Include="Include\builtins.h" />
     <ClInclude Include="Include\bytecodeobject.h" />
     <ClInclude Include="Include\cfunctionobject.h" />
     <ClInclude Include="Include\classobject.h" />
@@ -186,6 +189,7 @@
     <ClInclude Include="Include\lexer.h" />
     <ClInclude Include="Include\listobject.h" />
     <ClInclude Include="Include\namespaceobject.h" />
+    <ClInclude Include="Include\namespace_system.h" />
     <ClInclude Include="Include\object.h" />
     <ClInclude Include="Include\opcodeobject.h" />
     <ClInclude Include="Include\parser.h" />

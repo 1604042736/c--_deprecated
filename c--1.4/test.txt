@@ -1,0 +1,2 @@
+import system
+print(system::version)

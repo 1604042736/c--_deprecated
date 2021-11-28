@@ -29,4 +29,6 @@ void Object_Init()
 	ADD(stringobjattr, "add", StringObject_Add2);
 	ADD(stringobjattr, "split", StringObject_Split2);
 	ADD(stringobjattr, "eq", StringObject_Add2);
+	ADD(stringobjattr, "tostring", StringObject_ToString2);
+#undef ADD
 }

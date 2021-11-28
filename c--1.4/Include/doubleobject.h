@@ -46,6 +46,7 @@ static struct ObjectAttribute DoubleObjectAttribute = {
 	DoubleObject_New,	//obj_new
 	DoubleObject_Or,	//obj_or
 	DoubleObject_Print,	//obj_print
+	NULL,	//obj_tostring
 	NULL,	//obj_setattr
 	NULL,	//obj_setitem
 	DoubleObject_Sub,	//obj_sub

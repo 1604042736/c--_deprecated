@@ -33,6 +33,7 @@ typedef struct Object*	(*Neq)(struct Object*, struct Object*);
 typedef struct Object*	(*New)();
 typedef struct Object*	(*Or)(struct Object*, struct Object*);
 typedef void			(*Print)(struct Object*);
+typedef struct Object*	(*ToString)(struct Object*);
 typedef void			(*SetAttr)(struct Object*, struct Object*, struct Object*);
 typedef void			(*SetItem)(struct Object*, struct Object*, struct Object*);
 typedef struct Object*	(*Sub)(struct Object*, struct Object*);
@@ -61,6 +62,7 @@ struct ObjectAttribute
 	New			obj_new;	//对象创建
 	Or			obj_or;
 	Print		obj_print;	//对象输出
+	ToString	obj_tostring;
 	SetAttr		obj_setattr;
 	SetItem		obj_setitem;	//设置元素
 	Sub			obj_sub;
@@ -93,6 +95,7 @@ struct Object*	Object_Neq(struct Object*, struct Object*);
 struct Object*	Object_New();
 struct Object*	Object_Or(struct Object*, struct Object*);
 void			Object_Print(struct Object*);
+struct Object*	Object_ToString(struct Object*);
 void			Object_SetAttr(struct Object*, struct Object*, struct Object*);
 void			Object_SetItem(struct Object*, struct Object*, struct Object*);
 struct Object*	Object_Sub(struct Object*, struct Object*);
@@ -118,6 +121,7 @@ static struct ObjectAttribute ObjectObjectAttribute = {
 	Object_New,	//obj_new
 	Object_Or,	//obj_or
 	Object_Print,	//obj_print
+	Object_ToString,	//obj_tostring
 	Object_SetItem,	//obj_setitem
 	Object_Sub,	//obj_sub
 };

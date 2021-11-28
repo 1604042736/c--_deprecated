@@ -5,8 +5,10 @@
 #include "namespaceobject.h"
 #include "frameobject.h"
 #include "eval.h"
+#include "builtins.h"
+#include "namespace_system.h"
 
-struct NamespaceObject* compiler(char* filename,char* namespacename)
+struct NamespaceObject* compiler(char* filename,char* namespacename,int print)
 {
 	FILE* file = fopen(filename, "r");
 	if (file == NULL)
@@ -18,17 +20,26 @@ struct NamespaceObject* compiler(char* filename,char* namespacename)
 	struct Preprocessor* preprocessor = Preprocessor_New(file,filename);
 	Preprocessor_Preprocess(preprocessor);
 
-	struct Lexer* lexer = Lexer_New(preprocessor->result);
+	struct Lexer* lexer = Lexer_New(preprocessor);
 
 	struct Parser* parser = Parser_New(lexer);
 	struct NameSpaceASTObject* astobject = Parser_Parse(parser);
+	if (print)
+	{
+		printastobject((struct Object*)astobject, 0);
+	}
 
 	struct Translater* translater = Translater_New();
 	Translater_Translate(translater, astobject);
+	if (print)
+	{
+		ByteCodeObject_Print2(translater->bytecode);
+	}
 
 	struct NamespaceObject* namespaceobj = NamespaceObject_NewWithName(namespacename);
 	struct FrameObject* frameobj = FrameObject_NewWithByteCode(translater->bytecode);
 	frameobj->locals = namespaceobj->globals;
+	frameobj->globals = builtins;
 	Eval(frameobj);
 
 	fclose(file);
@@ -43,8 +54,7 @@ int main(int argc,char* argv[])
 	FILE* file = fopen(filename, "r");
 	if (file == NULL)
 	{
-		filename = "Debug/test.txt";
-		file = fopen(filename, "r");
+		filename = "../test.txt";
 	}
 #else
 	if (argc == 1)
@@ -52,36 +62,20 @@ int main(int argc,char* argv[])
 		return 0;
 	}
 	char* filename = argv[1];
-	FILE* file = fopen(argv[1], "r");
 #endif
-	if (file == NULL)
-	{
-		printf("无法打开:%s", filename);
-		return 1;
-	}
+
+	Namespace_System_Init();
+
 	Object_Init();
-
-	struct Preprocessor* preprocessor = Preprocessor_New(file,filename);
-	Preprocessor_Preprocess(preprocessor);
-
 	Lexer_Init();
-	struct Lexer* lexer = Lexer_New(preprocessor);
-
-	struct Parser* parser = Parser_New(lexer);
-	struct NameSpaceASTObject* astobject = Parser_Parse(parser);
-	printastobject((struct Object*)astobject,0);
-
 	Translater_Init();
-	struct Translater* translater = Translater_New();
-	Translater_Translate(translater, astobject);
-	ByteCodeObject_Print2(translater->bytecode);
+	Builtins_Init();
 
-	struct NamespaceObject* namespaceobj = NamespaceObject_NewWithName("main");
-	struct FrameObject* frameobj = FrameObject_NewWithByteCode(translater->bytecode);
-	frameobj->locals = namespaceobj->globals;
-	Eval(frameobj);
-
-	fclose(file);
+#ifndef NDEBUG
+	compiler(filename, "main", 1);
+#else
+	compiler(filename, "main", 0);
+#endif
 
 #ifndef NDEBUG
 	_CrtDumpMemoryLeaks();
