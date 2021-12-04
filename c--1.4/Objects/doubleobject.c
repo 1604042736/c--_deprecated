@@ -6,6 +6,7 @@ struct Object* DoubleObject_New()
 	struct DoubleObject* doubleobj = (struct DoubleObject*)malloc(sizeof(struct DoubleObject));
 	doubleobj->objattr = &DoubleObjectAttribute;
 	doubleobj->value = 0;
+	doubleobj->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)doubleobj;
 }
 

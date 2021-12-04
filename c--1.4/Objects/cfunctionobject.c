@@ -7,6 +7,7 @@ struct Object* CFunctionObject_New()
 	struct CFunctionObject* ct = (struct CFunctionObject*)malloc(sizeof(struct CFunctionObject));
 	ct->objattr = &CFunctionObjectAttribute;
 	ct->name = "";
+	ct->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)ct;
 }
 
@@ -34,6 +35,8 @@ struct Object* CFunctionObject_Call(struct Object* self, struct Object* arg)
 	{
 		ListObject_InsertItem(cfuncargs, 0, args->item[i]);
 	}
-
-	return func->func(cfuncargs);
+	Memory_Free(memory, args);
+	struct Object* val= func->func(cfuncargs);
+	Memory_Free(memory, cfuncargs);
+	return val;
 }

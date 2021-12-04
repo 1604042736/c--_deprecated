@@ -9,6 +9,7 @@ struct Object* ByteCodeObject_New()
 	bytecodeobj->code = ListObject_New();
 	bytecodeobj->consts = ListObject_New();
 	bytecodeobj->name = "";
+	bytecodeobj->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)bytecodeobj;
 }
 

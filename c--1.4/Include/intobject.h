@@ -27,6 +27,7 @@ struct Object* IntObject_Leq(struct Object*, struct Object*);
 int IntObject_Bool(struct Object*);
 struct Object* IntObject_And(struct Object*, struct Object*);
 struct Object* IntObject_Or(struct Object*, struct Object*);
+struct Object* IntObject_Copy(struct Object*);
 
 struct Object* IntObject_Add2(struct Object*);
 struct Object* IntObject_Eq2(struct Object*);
@@ -45,11 +46,12 @@ struct Object* IntObject_Or2(struct Object*);
 
 struct DictObject* intobjectattr;
 static struct ObjectAttribute IntObjectAttribute = {
-	(char*)"int",	//obj_name
+	"int",	//obj_name
 	IntObject_Add,	//obj_add
 	IntObject_And,	//obj_and
 	IntObject_Bool,	//obj_bool
 	NULL,	//obj_call
+	IntObject_Copy,	//obj_copy
 	IntObject_Div,	//obj_div
 	IntObject_Eq,	//obj_eq
 	NULL,	//obj_getattr

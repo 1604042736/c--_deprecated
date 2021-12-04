@@ -26,6 +26,7 @@ static struct ObjectAttribute NameSpaceASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -64,6 +65,7 @@ static struct ObjectAttribute IfASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -102,6 +104,7 @@ static struct ObjectAttribute OperationASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -139,6 +142,7 @@ static struct ObjectAttribute NameASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -175,6 +179,7 @@ static struct ObjectAttribute ConstantASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -212,6 +217,7 @@ static struct ObjectAttribute AssignASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -250,6 +256,7 @@ static struct ObjectAttribute SubscriptASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -288,6 +295,7 @@ static struct ObjectAttribute CallASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -324,6 +332,7 @@ static struct ObjectAttribute ReturnASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -362,6 +371,7 @@ static struct ObjectAttribute FunctionDefASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -399,6 +409,7 @@ static struct ObjectAttribute WhileASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -435,6 +446,7 @@ static struct ObjectAttribute ListASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -473,6 +485,7 @@ static struct ObjectAttribute AttributeASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -508,6 +521,7 @@ static struct ObjectAttribute BreakASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -543,6 +557,7 @@ static struct ObjectAttribute ContinueASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -579,6 +594,7 @@ static struct ObjectAttribute ImportASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -617,6 +633,7 @@ static struct ObjectAttribute ClassASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -654,6 +671,7 @@ static struct ObjectAttribute TryASTObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr

@@ -90,6 +90,9 @@
     <ClCompile Include="Namespaces\namespace_system.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Memory\memory.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\object.h">
@@ -159,6 +162,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Include\namespace_system.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\memory.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

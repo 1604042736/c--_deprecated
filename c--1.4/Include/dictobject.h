@@ -31,6 +31,7 @@ static struct ObjectAttribute DictObjectAttribute = {
 	NULL,	//obj_and
 	DictObject_Bool,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr

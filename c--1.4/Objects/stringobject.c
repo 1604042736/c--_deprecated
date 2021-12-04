@@ -3,11 +3,12 @@
 
 struct Object* StringObject_New()
 {
-	struct StringObject* strobj = (struct StringObject*)malloc(sizeof(struct StringObject));
+	struct StringObject* strobj = Memory_Malloc(memory,"string");
 	strobj->objattr = &StringObjectAttribute;
 	strobj->string = "\0";
 	strobj->size = 0;
 	strobj->objattr->attr = stringobjattr;
+	strobj->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)strobj;
 }
 

@@ -149,7 +149,6 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 				APPENDOPCODE;
 			}
 		}
-		Translater_Translate(translater, astobject->args);
 		if (CHECK(astobject->func, "Attribute"))
 		{
 			struct AttributeASTObject* func = (struct AttributeASTObject*)astobject->func;
@@ -186,6 +185,8 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		{
 			Translater_Translate(translater, astobject->func);
 		}
+		Translater_Translate(translater, astobject->args);
+		
 		op = OP_CALL;
 		APPENDOPCODE;
 
@@ -268,7 +269,7 @@ void Translater_Translate(struct Translater* translater,struct Object* obj)
 		INSERTOPCODE(blockbackindex);
 		/*»Øµ½exp*/
 		op = OP_JMP;
-		oparg = jmpindex - translater->bytecode->code->size - 1;
+		oparg = jmpindex - translater->bytecode->code->size;
 		APPENDOPCODE;
 
 		op = OP_DEL_BLOCK;

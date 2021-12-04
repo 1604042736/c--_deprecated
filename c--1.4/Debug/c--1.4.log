@@ -1,9 +1,9 @@
 ﻿  main.c
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(103,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(103,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(33,44): warning C4133: “函数”: 从“NameSpaceASTObject *”到“Object *”的类型不兼容
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(36,45): warning C4133: “函数”: 从“ByteCodeObject *”到“Object *”的类型不兼容
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(26,1): warning C4133: “初始化”: 从“Object *”到“NameSpaceASTObject *”的类型不兼容
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(39,1): warning C4133: “初始化”: 从“Object *”到“NamespaceObject *”的类型不兼容
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(40,1): warning C4133: “初始化”: 从“Object *”到“FrameObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(122,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(122,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(34,44): warning C4133: “函数”: 从“NameSpaceASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(37,45): warning C4133: “函数”: 从“ByteCodeObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(27,1): warning C4133: “初始化”: 从“Object *”到“NameSpaceASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(40,1): warning C4133: “初始化”: 从“Object *”到“NamespaceObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(41,1): warning C4133: “初始化”: 从“Object *”到“FrameObject *”的类型不兼容
   c--1.4.vcxproj -> E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Debug\c--1.4.exe

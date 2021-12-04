@@ -3,7 +3,7 @@
 
 struct Object* ListObject_New()
 {
-	struct ListObject* listobj = (struct ListObject*)malloc(sizeof(struct ListObject));
+	struct ListObject* listobj = Memory_Malloc(memory,"list");
 	if (listobj == NULL)
 	{
 		printf("listÄÚ´æ·ÖÅäÊ§°Ü");
@@ -19,6 +19,7 @@ struct Object* ListObject_New()
 	}
 	listobj->size = 0;
 	listobj->objattr->attr = listobjectattr;
+	listobj->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)listobj;
 }
 
@@ -53,7 +54,6 @@ void ListObject_InsertItem(struct Object* self, int index, struct Object* item)
 		struct Object** copy = selflist->item;
 		selflist->allocated += MAXALLOCATEDSIZE;
 		selflist->item = (struct Object**)realloc(selflist->item,sizeof(struct Object*) * selflist->allocated);
-		
 		if (selflist->item == NULL)
 		{
 			printf("list item·ÖÅäÄÚ´æÊ§°Ü");
@@ -61,6 +61,7 @@ void ListObject_InsertItem(struct Object* self, int index, struct Object* item)
 		}
 	}
 	selflist->size += 1;
+	ADDREFCOUNT(item);
 	for (int i = selflist->size-1; i > index; i--)
 	{
 		selflist->item[i] = selflist->item[i - 1];
@@ -102,6 +103,7 @@ int ListObject_FindItem(struct Object* self, struct Object* obj)
 void ListObject_ListDelItem(struct Object* self, int index)
 {
 	struct ListObject* selflist = (struct ListObject*)self;
+	SUBREFCOUNT(selflist->item[index])
 	for (int i = index; i < selflist->size-1; i++)
 	{
 		selflist->item[i] = selflist->item[i + 1];

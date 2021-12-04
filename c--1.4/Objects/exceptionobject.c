@@ -5,6 +5,7 @@ struct Object* ExceptionObject_New()
 	struct ExceptionObject* exceptobj = (struct ExceptionObject*)malloc(sizeof(struct ExceptionObject));
 	exceptobj->objattr = &ExceptionObjectAttribute;
 	exceptobj->message = StringObject_New();
+	exceptobj->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)exceptobj;
 }
 

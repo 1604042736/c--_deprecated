@@ -2,7 +2,7 @@
 
 struct Object* FrameObject_New()
 {
-	struct FrameObject* frameobj = (struct FrameObject*)malloc(sizeof(struct FrameObject));
+	struct FrameObject* frameobj = Memory_Malloc(memory,"frame");
 	if (frameobj == NULL)
 	{
 		printf("frame·ÖÅäÄÚ´æÊ§°Ü");
@@ -12,6 +12,7 @@ struct Object* FrameObject_New()
 	frameobj->globals = DictObject_New();
 	frameobj->locals = DictObject_New();
 	frameobj->statck = ListObject_New();
+	frameobj->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)frameobj;
 }
 

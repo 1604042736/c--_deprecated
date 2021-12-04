@@ -20,6 +20,7 @@ static struct ObjectAttribute CFunctionObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	CFunctionObject_Call,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr

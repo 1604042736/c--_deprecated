@@ -23,6 +23,7 @@ static struct ObjectAttribute ClassObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	ClassObject_Call,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr
@@ -61,6 +62,7 @@ static struct ObjectAttribute InstanceObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	InstanceObject_GetAttr,	//obj_getattr

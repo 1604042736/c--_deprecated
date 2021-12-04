@@ -7,6 +7,7 @@ struct Object* ClassObject_New()
 	classobj->bases = ListObject_New();
 	classobj->name = StringObject_New();
 	classobj->dict = DictObject_New();
+	classobj->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)classobj;
 }
 
@@ -43,6 +44,7 @@ struct Object* InstanceObject_New()
 {
 	struct InstanceObject* classobj = (struct InstanceObject*)malloc(sizeof(struct InstanceObject));
 	classobj->objattr = &InstanceObjectAttribute;
+	classobj->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)classobj;
 }
 

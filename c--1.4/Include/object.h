@@ -6,18 +6,36 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "memory.h"
+
 #pragma warning(disable:4996)
 
-#define OBJECT_HEAD struct ObjectAttribute* objattr
+#define OBJECT_HEAD struct ObjectAttribute* objattr;\
+					struct Block* block;\
+					int refcount
 #define MAXALLOCATEDSIZE 256
 #define CHECK(OBJ,TYPE) (!strcmp((OBJ)->objattr->obj_name,TYPE))
 #define NORMALRETURN	return IntObject_NewWithValue(0);
+#define DEFAULTREFCOUNT	0
+
+#define SUBREFCOUNT(OBJ) \
+		(OBJ)->refcount--; \
+		if ((OBJ)->refcount <= 0)\
+			Memory_Free(memory, OBJ);
+
+#define ADDREFCOUNT(OBJ)	(OBJ)->refcount++
+
+#define GETATTR(NAME) \
+	struct Object* name = StringObject_NewWithString(NAME);\
+	struct Object* func = DictObject_GetItem(self->objattr->attr, name);\
+	Memory_Free(memory, name);
 
 struct Object;
 typedef struct Object*	(*Add)(struct Object*, struct Object*);
 typedef struct Object*	(*And)(struct Object*, struct Object*);
 typedef int				(*Bool)(struct Object*);
 typedef struct Object*	(*Call)(struct Object*, struct Object*);
+typedef struct Object*	(*Copy)(struct Object*);
 typedef struct Object*	(*Div)(struct Object*, struct Object*);
 typedef struct Object*	(*Eq)(struct Object*, struct Object*);
 typedef struct Object*	(*GetAttr)(struct Object*, struct Object*);
@@ -47,6 +65,7 @@ struct ObjectAttribute
 	And			obj_and;
 	Bool		obj_bool;
 	Call		obj_call;
+	Copy		obj_copy;
 	Div			obj_div;
 	Eq			obj_eq;	//≈–∂œ «∑Òœ‡µ»
 	GetAttr		obj_getattr;
@@ -106,6 +125,7 @@ static struct ObjectAttribute ObjectObjectAttribute = {
 	Object_And,	//obj_and
 	Object_Bool,	//obj_bool
 	Object_Call,	//obj_call
+	NULL,	//obj_copy
 	Object_Div,	//obj_div
 	Object_Eq,	//obj_eq
 	Object_GetAttr,	//obj_getattr

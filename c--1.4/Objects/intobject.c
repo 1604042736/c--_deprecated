@@ -3,10 +3,11 @@
 
 struct Object* IntObject_New()
 {
-	struct IntObject* intobj = (struct IntObject*)malloc(sizeof(struct IntObject));
+	struct IntObject* intobj = Memory_Malloc(memory, "int");
 	intobj->objattr = &IntObjectAttribute;
 	intobj->value = 0;
 	intobj->objattr->attr = intobjectattr;
+	intobj->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)intobj;
 }
 
@@ -185,6 +186,12 @@ struct Object* IntObject_Or(struct Object* self, struct Object* other)
 	struct IntObject* selfint = (struct IntObject*)self;
 	struct IntObject* otherint = (struct IntObject*)other;
 	return IntObject_NewWithValue(selfint->value || otherint->value);
+}
+
+struct Object* IntObject_Copy(struct Object* self)
+{
+	struct IntObject* selfint = (struct IntObject*)self;
+	return IntObject_NewWithValue(selfint->value);
 }
 
 struct Object* IntObject_Add2(struct Object* arg)

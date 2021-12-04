@@ -7,6 +7,7 @@
 #include "eval.h"
 #include "builtins.h"
 #include "namespace_system.h"
+#include "memory.h"
 
 struct NamespaceObject* compiler(char* filename,char* namespacename,int print)
 {
@@ -40,7 +41,20 @@ struct NamespaceObject* compiler(char* filename,char* namespacename,int print)
 	struct FrameObject* frameobj = FrameObject_NewWithByteCode(translater->bytecode);
 	frameobj->locals = namespaceobj->globals;
 	frameobj->globals = builtins;
-	Eval(frameobj);
+	if (Eval(frameobj) == NULL)
+	{
+		if (exception != NULL)
+		{
+			printf("\n%s(%d,%d):´íÎó:", exception->filename->string, exception->lineno, exception->linepos);
+			printf("%s\n", exception->message->string);
+			exit(-1);
+		}
+		else
+		{
+			printf("Î´Öª´íÎó\n");
+			exit(-1);
+		}
+	}
 
 	fclose(file);
 
@@ -63,9 +77,8 @@ int main(int argc,char* argv[])
 	}
 	char* filename = argv[1];
 #endif
-
+	Memory_Init();
 	Namespace_System_Init();
-
 	Object_Init();
 	Lexer_Init();
 	Translater_Init();
@@ -76,9 +89,5 @@ int main(int argc,char* argv[])
 #else
 	compiler(filename, "main", 0);
 #endif
-
-#ifndef NDEBUG
-	_CrtDumpMemoryLeaks();
-#endif // !NDEBUG
 	return 0;
 }

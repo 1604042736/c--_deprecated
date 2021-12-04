@@ -23,6 +23,7 @@ static struct ObjectAttribute ByteCodeObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	ByteCodeObject_Call,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr

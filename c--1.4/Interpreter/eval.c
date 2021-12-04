@@ -47,10 +47,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_ADD:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_Add(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;
@@ -61,10 +65,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_SUB:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_Sub(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;
@@ -117,10 +125,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_EQ:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_Eq(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;
@@ -215,10 +227,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_OR:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_Or(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;
@@ -244,9 +260,10 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_RETURN:
 		{
 			struct Object* val = STACK->item[STACK->size - 1];
-			ListObject_ListDelItem(STACK, STACK->size - 1);
+			ADDREFCOUNT(val);
+			Memory_Free(memory, blocks);
+			Memory_Free(memory, temp);
 			return val;
-			break;
 		}
 		case OP_MAKE_FUNCTION:
 		{
@@ -260,14 +277,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		}
 		case OP_CALL:
 		{
-			struct Object* func = STACK->item[STACK->size - 1];
-			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct ListObject* args = ListObject_New();
 			for (int i = 0; i < oparg; i++)
 			{
 				ListObject_InsertItem(args, args->size, STACK->item[STACK->size - 1]);
 				ListObject_ListDelItem(STACK, STACK->size - 1);
 			}
+			struct Object* func = STACK->item[STACK->size - 1];
+			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* returnvalue = call(func, args);
 			if (returnvalue == NULL)
 			{
@@ -407,8 +424,8 @@ struct Object* Eval(struct FrameObject* frameobj)
 		}
 		}
 #ifndef NDEBUG
-		printf("\n%d:", i);
-		FrameObject_Print(frameobj);
+		//printf("\n%d:", i);
+		//FrameObject_Print(frameobj);
 #endif
 		i++;
 		continue;
@@ -420,16 +437,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 				i = ((struct IntObject*)block->flags->item[0])->value + ((struct IntObject*)block->flags->item[1])->value+1;
 				ListObject_ListDelItem(blocks, blocks->size - 1);
 			}
-			else if (exception != NULL)
+			else
 			{
-				printf("\n%s(%d,%d):´íÎó:", filename->string,lineno, linepos);
-				printf("%s\n", exception->message->string);
-				exit(-1);
+				return NULL;
 			}
 		}
 	}
-	free(temp);
-	free(blocks);
+	Memory_Free(memory, blocks);
+	Memory_Free(memory, temp);
 	return IntObject_NewWithValue(0);
 }
 

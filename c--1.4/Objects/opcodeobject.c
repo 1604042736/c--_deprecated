@@ -5,6 +5,7 @@ struct Object* OpCodeObject_New()
 	struct OpCodeObject* opcodeobj = (struct OpCodeObject*)malloc(sizeof(struct OpCodeObject));
 	opcodeobj->objattr = &OpCodeObjectAttribute;
 	opcodeobj->oparg = 0;
+	opcodeobj->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)opcodeobj;
 }
 

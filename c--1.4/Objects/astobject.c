@@ -7,6 +7,7 @@ struct Object* NameSpaceASTObject_New()
 	astobject->lineno = 0;
 	astobject->linepos = 0;
 	astobject->body = ListObject_New();
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -27,6 +28,7 @@ struct Object* IfASTObject_New()
 	astobject->linepos = 0;
 	astobject->body = ListObject_New();
 	astobject->elses = ListObject_New();
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -44,6 +46,7 @@ struct Object* OperationASTObject_New()
 	struct OperationASTObject* astobject = (struct OperationASTObject*)malloc(sizeof(struct OperationASTObject));
 	astobject->objattr = &OperationASTObjectAttribute;
 	astobject->op = StringObject_New();
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -62,6 +65,7 @@ struct Object* NameASTObject_New()
 	astobject->objattr = &NameASTObjectAttribute;
 	astobject->id = StringObject_New();
 	astobject->mode = StringObject_New();
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -78,6 +82,7 @@ struct Object* ConstantASTObject_New()
 {
 	struct ConstantASTObject* astobject = (struct ConstantASTObject*)malloc(sizeof(struct ConstantASTObject));
 	astobject->objattr = &ConstantASTObjectAttribute;
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -95,6 +100,7 @@ struct Object* AssignASTObject_New()
 	struct AssignASTObject* astobject = (struct AssignASTObject*)malloc(sizeof(struct AssignASTObject));
 	astobject->objattr = &AssignASTObjectAttribute;
 	astobject->targets = ListObject_New();
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -112,6 +118,7 @@ struct Object* SubscriptASTObject_New()
 	struct SubscriptASTObject* astobject = (struct SubscriptASTObject*)malloc(sizeof(struct SubscriptASTObject));
 	astobject->objattr = &SubscriptASTObjectAttribute;
 	astobject->mode = StringObject_New();
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -129,6 +136,7 @@ struct Object* CallASTObject_New()
 	struct CallASTObject* astobject = (struct CallASTObject*)malloc(sizeof(struct CallASTObject));
 	astobject->objattr = &CallASTObjectAttribute;
 	astobject->args = ListObject_New();
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -145,6 +153,7 @@ struct Object* ReturnASTObject_New()
 {
 	struct ReturnASTObject* astobject = (struct ReturnASTObject*)malloc(sizeof(struct ReturnASTObject));
 	astobject->objattr = &ReturnASTObjectAttribute;
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -162,6 +171,8 @@ struct Object* FunctionDefASTObject_New()
 	struct FunctionDefASTObject* astobject = (struct FunctionDefASTObject*)malloc(sizeof(struct FunctionDefASTObject));
 	astobject->objattr = &FunctionDefASTObjectAttribute;
 	astobject->name = StringObject_New();
+	astobject->refcount = DEFAULTREFCOUNT;
+	astobject->args = ListObject_New();
 	return (struct Object*)astobject;
 }
 
@@ -179,6 +190,7 @@ struct Object* WhileASTObject_New()
 	struct WhileASTObject* astobject = (struct WhileASTObject*)malloc(sizeof(struct WhileASTObject));
 	astobject->objattr = &WhileASTObjectAttribute;
 	astobject->body = ListObject_New();
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -196,6 +208,7 @@ struct Object* ListASTObject_New()
 	struct ListASTObject* astobject = (struct ListASTObject*)malloc(sizeof(struct ListASTObject));
 	astobject->objattr = &ListASTObjectAttribute;
 	astobject->list = ListObject_New();
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -212,6 +225,7 @@ struct Object* AttributeASTObject_New()
 {
 	struct AttributeASTObject* astobject = (struct AttributeASTObject*)malloc(sizeof(struct AttributeASTObject));
 	astobject->objattr = &AttributeASTObjectAttribute;
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -228,6 +242,7 @@ struct Object* BreakASTObject_New()
 {
 	struct BreakASTObject* astobject = (struct BreakASTObject*)malloc(sizeof(struct BreakASTObject));
 	astobject->objattr = &BreakASTObjectAttribute;
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -244,6 +259,7 @@ struct Object* ContinueASTObject_New()
 {
 	struct ContinueASTObject* astobject = (struct ContinueASTObject*)malloc(sizeof(struct ContinueASTObject));
 	astobject->objattr = &ContinueASTObjectAttribute;
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -260,6 +276,7 @@ struct Object* ImportASTObject_New()
 {
 	struct ImportASTObject* astobject = (struct ImportASTObject*)malloc(sizeof(struct ImportASTObject));
 	astobject->objattr = &ImportASTObjectAttribute;
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -278,6 +295,7 @@ struct Object* ClassASTObject_New()
 	astobject->objattr = &ClassASTObjectAttribute;
 	astobject->bases = ListObject_New();
 	astobject->body = ListObject_New();
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 
@@ -296,6 +314,7 @@ struct Object* TryASTObject_New()
 	astobject->objattr = &TryASTObjectAttribute;
 	astobject->handle = ListObject_New();
 	astobject->body = ListObject_New();
+	astobject->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)astobject;
 }
 

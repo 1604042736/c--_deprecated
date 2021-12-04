@@ -31,6 +31,7 @@ static struct ObjectAttribute DoubleObjectAttribute = {
 	DoubleObject_And,	//obj_and
 	DoubleObject_Bool,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	DoubleObject_Div,	//obj_div
 	DoubleObject_Eq,	//obj_eq
 	NULL,	//obj_getattr

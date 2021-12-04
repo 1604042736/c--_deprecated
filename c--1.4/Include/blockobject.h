@@ -21,6 +21,7 @@ static struct ObjectAttribute BlockObjectAttribute = {
 	NULL,	//obj_and
 	NULL,	//obj_bool
 	NULL,	//obj_call
+	NULL,	//obj_copy
 	NULL,	//obj_div
 	NULL,	//obj_eq
 	NULL,	//obj_getattr

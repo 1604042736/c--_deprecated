@@ -5,6 +5,7 @@ struct Object* FunctionObject_New()
 {
 	struct FunctionObject* funcobj = (struct FunctionObject*)malloc(sizeof(struct FunctionObject));
 	funcobj->objattr = &FunctionObjectAttribute;
+	funcobj->refcount = DEFAULTREFCOUNT;
 	return (struct Object*)funcobj;
 }
 
@@ -24,16 +25,17 @@ struct Object* FunctionObject_Call(struct Object* self, struct Object* arg)
 	{
 		ListObject_InsertItem(frameobj->statck, frameobj->statck->size, args->item[i]);
 	}
-	struct DictObject* dict = DictObject_New();
+	Memory_Free(memory, args);
 	struct FrameObject* frame = func->frame;
 	for (int i = 0; i < frame->globals->size; i++)
 	{
-		DictObject_SetItem(dict, frame->globals->item[i].key, frame->globals->item[i].value);
+		DictObject_SetItem(frameobj->globals, frame->globals->item[i].key, frame->globals->item[i].value);
 	}
 	for (int i = 0; i < frame->locals->size; i++)
 	{
-		DictObject_SetItem(dict, frame->locals->item[i].key, frame->locals->item[i].value);
+		DictObject_SetItem(frameobj->globals, frame->locals->item[i].key, frame->locals->item[i].value);
 	}
-	frameobj->globals = dict;
-	return Eval(frameobj);
+	struct Object* val = Eval(frameobj);
+	Memory_Free(memory,frameobj);
+	return val;
 }
