@@ -219,7 +219,8 @@ struct Object* Object_Geq(struct Object* self, struct Object* other)
 {
 	if (self->objattr->attr != NULL)
 	{
-		struct Object* func = DictObject_GetItem(self->objattr->attr, StringObject_NewWithString("geq"));
+		GETATTR("geq")
+		//struct Object* func = DictObject_GetItem(self->objattr->attr, StringObject_NewWithString("geq"));
 		if (func != NULL)
 		{
 			struct  ListObject* args = ListObject_New();

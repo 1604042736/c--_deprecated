@@ -83,10 +83,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_MUL:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_Mul(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;
@@ -97,10 +101,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_DIV:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_Div(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;
@@ -111,10 +119,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_MOD:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_Mod(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;
@@ -143,10 +155,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_NEQ:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_Neq(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;
@@ -157,10 +173,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_GT:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_Gt(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;
@@ -171,10 +191,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_GEQ:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_Geq(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;
@@ -185,10 +209,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_LT:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_Lt(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;
@@ -199,10 +227,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_LEQ:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_Leq(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;
@@ -213,10 +245,14 @@ struct Object* Eval(struct FrameObject* frameobj)
 		case OP_AND:
 		{
 			struct Object* right = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(right);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* left = STACK->item[STACK->size - 1];
+			ADDREFCOUNT(left);
 			ListObject_ListDelItem(STACK, STACK->size - 1);
 			struct Object* result = Object_And(left, right);
+			SUBREFCOUNT(right)
+			SUBREFCOUNT(left)
 			if (result == NULL)
 			{
 				goto ERROR;

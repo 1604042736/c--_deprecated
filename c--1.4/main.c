@@ -45,6 +45,10 @@ struct NamespaceObject* compiler(char* filename,char* namespacename,int print)
 	{
 		if (exception != NULL)
 		{
+			if (exception->filename == NULL)
+			{
+				exception->filename = StringObject_NewWithString(filename);
+			}
 			printf("\n%s(%d,%d):´íÎó:", exception->filename->string, exception->lineno, exception->linepos);
 			printf("%s\n", exception->message->string);
 			exit(-1);

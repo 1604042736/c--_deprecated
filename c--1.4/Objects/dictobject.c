@@ -115,6 +115,8 @@ void dictresize(struct DictObject* selfdict)
 	}
 	for (int i = 0; i < size; i++)
 	{
+		copy[i].key->refcount--;
+		copy[i].value->refcount--;
 		DictObject_SetItem(selfdict, copy[i].key, copy[i].value);
 	}
 }

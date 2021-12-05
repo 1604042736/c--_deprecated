@@ -6,6 +6,9 @@ struct Object* ExceptionObject_New()
 	exceptobj->objattr = &ExceptionObjectAttribute;
 	exceptobj->message = StringObject_New();
 	exceptobj->refcount = DEFAULTREFCOUNT;
+	exceptobj->lineno = -1;
+	exceptobj->linepos = -1;
+	exceptobj->filename = NULL;
 	return (struct Object*)exceptobj;
 }
 

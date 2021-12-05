@@ -24,6 +24,7 @@ void Object_Init()
 	ADD(intobjectattr, "bool", IntObject_Bool2);
 	ADD(intobjectattr, "and", IntObject_And2);
 	ADD(intobjectattr, "or", IntObject_Or2);
+	ADD(intobjectattr, "geq", IntObject_Geq2);
 
 	stringobjattr = DictObject_New();
 	ADD(stringobjattr, "add", StringObject_Add2);
