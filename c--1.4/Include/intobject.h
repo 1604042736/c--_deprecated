@@ -28,6 +28,7 @@ int IntObject_Bool(struct Object*);
 struct Object* IntObject_And(struct Object*, struct Object*);
 struct Object* IntObject_Or(struct Object*, struct Object*);
 struct Object* IntObject_Copy(struct Object*);
+int IntObject_Hash(struct Object*);
 
 struct Object* IntObject_Add2(struct Object*);
 struct Object* IntObject_Eq2(struct Object*);
@@ -58,6 +59,7 @@ static struct ObjectAttribute IntObjectAttribute = {
 	NULL,	//obj_getitem
 	IntObject_Geq,	//obj_geq
 	IntObject_Gt,	//obj_gt
+	IntObject_Hash,	//obj_hash
 	NULL,	//obj_insertitem
 	IntObject_Leq,	//obj_leq
 	IntObject_Lt,	//obj_lt

@@ -38,6 +38,7 @@ static struct ObjectAttribute DoubleObjectAttribute = {
 	NULL,	//obj_getitem
 	DoubleObject_Geq,	//obj_geq
 	DoubleObject_Gt,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	DoubleObject_Leq,	//obj_leq
 	DoubleObject_Lt,	//obj_lt

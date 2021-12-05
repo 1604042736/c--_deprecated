@@ -25,11 +25,14 @@ struct ListObject* StringObject_Split(struct Object*, struct Object*);
 int StringObject_Bool(struct Object*);
 struct Object* StringObject_Format(struct Object*, struct Object*);
 struct Object* StringObject_ToString(struct Object*);
+int StringObject_Hash(struct Object*);
 
 struct Object* StringObject_Add2(struct Object*);
 struct Object* StringObject_Eq2(struct Object*);
 struct Object* StringObject_Split2(struct Object*);
 struct Object* StringObject_ToString2(struct Object*);
+
+unsigned int DJBHash(char* str);
 
 struct DictObject* stringobjattr;
 static struct ObjectAttribute StringObjectAttribute = {
@@ -45,6 +48,7 @@ static struct ObjectAttribute StringObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	StringObject_Hash,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt

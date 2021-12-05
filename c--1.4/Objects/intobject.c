@@ -188,6 +188,12 @@ struct Object* IntObject_Or(struct Object* self, struct Object* other)
 	return IntObject_NewWithValue(selfint->value || otherint->value);
 }
 
+int IntObject_Hash(struct Object* self)
+{
+	struct IntObject* selfint = (struct IntObject*)self;
+	return selfint->value;
+}
+
 struct Object* IntObject_Copy(struct Object* self)
 {
 	struct IntObject* selfint = (struct IntObject*)self;

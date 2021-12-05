@@ -1,20 +1,24 @@
 #pragma once
 
 #include "object.h"
+#include "listobject.h"
+
+#define SHIFT	8
 
 struct DictItem
 {
 	struct Object* key;
 	struct Object* value;
-	int hash;	//暂时不用
+	int hash;
 };
 
 struct DictObject
 {
 	OBJECT_HEAD;
-	int size;
+	int size;	//已经使用的dictitem
 	int allocated;
 	struct DictItem* item;
+	struct ListObject* hash;
 };
 
 struct Object* DictObject_New();
@@ -24,6 +28,8 @@ int DictObject_FindItem(struct Object*, struct Object*);
 struct Object* DictObject_GetItem(struct Object*, struct Object*);
 int DictObject_Bool(struct Object*);
 void DictObject_DelItem(struct Object*, struct Object*);
+
+void dictresize(struct DictObject*);
 
 static struct ObjectAttribute DictObjectAttribute = {
 	(char*)"dict",	//obj_name
@@ -38,6 +44,7 @@ static struct ObjectAttribute DictObjectAttribute = {
 	DictObject_GetItem,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt

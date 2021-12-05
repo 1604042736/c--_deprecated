@@ -27,13 +27,19 @@ struct Object* FunctionObject_Call(struct Object* self, struct Object* arg)
 	}
 	Memory_Free(memory, args);
 	struct FrameObject* frame = func->frame;
-	for (int i = 0; i < frame->globals->size; i++)
+	for (int i = 0; i < frame->globals->allocated; i++)
 	{
-		DictObject_SetItem(frameobj->globals, frame->globals->item[i].key, frame->globals->item[i].value);
+		if (frame->globals->item[i].key != NULL)
+		{
+			DictObject_SetItem(frameobj->globals, frame->globals->item[i].key, frame->globals->item[i].value);
+		}
 	}
-	for (int i = 0; i < frame->locals->size; i++)
+	for (int i = 0; i < frame->locals->allocated; i++)
 	{
-		DictObject_SetItem(frameobj->globals, frame->locals->item[i].key, frame->locals->item[i].value);
+		if (frame->locals->item[i].key != NULL)
+		{
+			DictObject_SetItem(frameobj->globals, frame->locals->item[i].key, frame->locals->item[i].value);
+		}
 	}
 	struct Object* val = Eval(frameobj);
 	Memory_Free(memory,frameobj);

@@ -27,6 +27,7 @@ static struct ObjectAttribute CFunctionObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt

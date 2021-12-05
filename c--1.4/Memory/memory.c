@@ -130,10 +130,13 @@ void Memory_Free(struct Memory* mem, struct Object* object)
 	else if (CHECK(object, "dict"))
 	{
 		struct DictObject* obj = (struct DictObject*)object;
-		for (int i = 0; i < obj->size; i++)
+		for (int i = 0; i < obj->allocated; i++)
 		{
-			SUBREFCOUNT(obj->item[i].key)
-			SUBREFCOUNT(obj->item[i].value)
+			if (obj->item[i].key != NULL)
+			{
+				SUBREFCOUNT(obj->item[i].key)
+				SUBREFCOUNT(obj->item[i].value)
+			}
 		}
 		FREEOBJ(dict)
 		/*object->block->back = dict_freelist;

@@ -1,9 +1,20 @@
-﻿  main.c
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(122,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(122,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(34,44): warning C4133: “函数”: 从“NameSpaceASTObject *”到“Object *”的类型不兼容
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(37,45): warning C4133: “函数”: 从“ByteCodeObject *”到“Object *”的类型不兼容
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(27,1): warning C4133: “初始化”: 从“Object *”到“NameSpaceASTObject *”的类型不兼容
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(40,1): warning C4133: “初始化”: 从“Object *”到“NamespaceObject *”的类型不兼容
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(41,1): warning C4133: “初始化”: 从“Object *”到“FrameObject *”的类型不兼容
+﻿  memory.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(9,45): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(29,2): warning C4133: “=”: 从“IntObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(30,2): warning C4133: “=”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(31,2): warning C4133: “=”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(32,2): warning C4133: “=”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(33,2): warning C4133: “=”: 从“FrameObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(52,3): warning C4133: “=”: 从“IntObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(68,3): warning C4133: “=”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(72,3): warning C4133: “=”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(76,3): warning C4133: “=”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(91,3): warning C4133: “=”: 从“FrameObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(123,7): warning C4013: “free”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(149,3): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(150,3): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(151,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(103): warning C4715: “Memory_Malloc”: 不是所有的控件路径都返回值
   c--1.4.vcxproj -> E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Debug\c--1.4.exe

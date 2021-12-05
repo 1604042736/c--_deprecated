@@ -41,6 +41,7 @@ static struct ObjectAttribute ListObjectAttribute = {
 	ListObject_GetItem,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	ListObject_InsertItem,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt

@@ -108,6 +108,13 @@ struct ListObject* StringObject_Split(struct Object* self, struct Object* split)
 	return result;
 }
 
+int StringObject_Hash(struct Object* self)
+{
+	struct StringObject* selfstring = (struct StringObject*)self;
+	int hash = DJBHash(selfstring->string);
+	return hash;
+}
+
 int StringObject_Bool(struct Object* self)
 {
 	struct StringObject* selfstring = (struct StringObject*)self;
@@ -173,4 +180,16 @@ struct Object* StringObject_ToString2(struct Object* arg)
 {
 	struct ListObject* args = (struct ListObject*)arg;
 	return StringObject_ToString(args->item[0]);
+}
+
+unsigned int DJBHash(char* str)
+{
+	unsigned int hash = 5381;
+
+	while (*str)
+	{
+		hash += (hash << 5) + (*str++);
+	}
+
+	return (hash & 0x7FFFFFFF);
 }

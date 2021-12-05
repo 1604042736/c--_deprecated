@@ -33,6 +33,7 @@ static struct ObjectAttribute NameSpaceASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -72,6 +73,7 @@ static struct ObjectAttribute IfASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -111,6 +113,7 @@ static struct ObjectAttribute OperationASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -149,6 +152,7 @@ static struct ObjectAttribute NameASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -186,6 +190,7 @@ static struct ObjectAttribute ConstantASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -224,6 +229,7 @@ static struct ObjectAttribute AssignASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -263,6 +269,7 @@ static struct ObjectAttribute SubscriptASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -302,6 +309,7 @@ static struct ObjectAttribute CallASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -339,6 +347,7 @@ static struct ObjectAttribute ReturnASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -378,6 +387,7 @@ static struct ObjectAttribute FunctionDefASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -416,6 +426,7 @@ static struct ObjectAttribute WhileASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -453,6 +464,7 @@ static struct ObjectAttribute ListASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -492,6 +504,7 @@ static struct ObjectAttribute AttributeASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -528,6 +541,7 @@ static struct ObjectAttribute BreakASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -564,6 +578,7 @@ static struct ObjectAttribute ContinueASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -601,6 +616,7 @@ static struct ObjectAttribute ImportASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -640,6 +656,7 @@ static struct ObjectAttribute ClassASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt
@@ -678,6 +695,7 @@ static struct ObjectAttribute TryASTObjectAttribute = {
 	NULL,	//obj_getitem
 	NULL,	//obj_geq
 	NULL,	//obj_gt
+	NULL,	//obj_hash
 	NULL,	//obj_insertitem
 	NULL,	//obj_leq
 	NULL,	//obj_lt

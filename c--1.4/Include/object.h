@@ -1,8 +1,4 @@
 #pragma once
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-
 #include <stdio.h>
 #include <string.h>
 
@@ -42,6 +38,7 @@ typedef struct Object*	(*GetAttr)(struct Object*, struct Object*);
 typedef struct Object*	(*GetItem)(struct Object*, struct Object*);
 typedef struct Object*	(*Geq)(struct Object*, struct Object*);
 typedef struct Object*	(*Gt)(struct Object*, struct Object*);
+typedef int				(*Hash)(struct Object*);
 typedef void			(*InsertItem)(struct Object*, int, struct Object*);
 typedef struct Object*	(*Leq)(struct Object*, struct Object*);
 typedef struct Object*	(*Lt)(struct Object*, struct Object*);
@@ -72,6 +69,7 @@ struct ObjectAttribute
 	GetItem		obj_getitem;
 	Geq			obj_geq;
 	Gt			obj_gt;
+	Hash		obj_hash;
 	InsertItem	obj_insertitem;	//Ìí¼ÓÔªËØ
 	Leq			obj_leq;
 	Lt			obj_lt;
@@ -132,6 +130,7 @@ static struct ObjectAttribute ObjectObjectAttribute = {
 	Object_GetItem,	//obj_getitem
 	Object_Geq,	//obj_geq
 	Object_Gt,	//obj_gt
+	NULL,	//obj_hash
 	Object_InsertItem,	//obj_insertitem
 	Object_Leq,	//obj_leq
 	Object_Lt,	//obj_lt

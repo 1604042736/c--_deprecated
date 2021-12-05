@@ -1,14 +1,840 @@
-﻿  main.c
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(103,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(103,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(33,44): warning C4133: “函数”: 从“NameSpaceASTObject *”到“Object *”的类型不兼容
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(36,45): warning C4133: “函数”: 从“ByteCodeObject *”到“Object *”的类型不兼容
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(26,1): warning C4133: “初始化”: 从“Object *”到“NameSpaceASTObject *”的类型不兼容
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(39,1): warning C4133: “初始化”: 从“Object *”到“NamespaceObject *”的类型不兼容
-E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(40,1): warning C4133: “初始化”: 从“Object *”到“FrameObject *”的类型不兼容
+﻿  lexer.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\lexer.c(5,31): warning C4133: “=”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\lexer.c(38,34): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\lexer.c(191,39): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\lexer.c(343,51): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\lexer.c(343,89): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\lexer.c(347,41): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+  parser.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(32,27): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(39,27): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(46,27): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(53,27): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(74,27): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(26,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(140,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(167,27): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(168,12): warning C4133: “=”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(170,17): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(178,28): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(179,13): warning C4133: “=”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(181,19): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(188,66): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(193,68): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(202,27): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(203,12): warning C4133: “=”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(205,17): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(213,28): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(214,13): warning C4133: “=”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(216,19): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(222,17): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(226,42): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(232,17): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(236,47): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(157,1): warning C4133: “初始化”: 从“Object *”到“IfASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(166,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(177,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(201,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(212,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(252,8): warning C4133: “=”: 从“OperationASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(247,1): warning C4133: “初始化”: 从“Object *”到“OperationASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(267,8): warning C4133: “=”: 从“OperationASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(262,1): warning C4133: “初始化”: 从“Object *”到“OperationASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(284,8): warning C4133: “=”: 从“OperationASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(279,1): warning C4133: “初始化”: 从“Object *”到“OperationASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(299,8): warning C4133: “=”: 从“OperationASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(294,1): warning C4133: “初始化”: 从“Object *”到“OperationASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(313,8): warning C4133: “=”: 从“OperationASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(308,1): warning C4133: “初始化”: 从“Object *”到“OperationASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(332,48): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(333,9): warning C4133: “=”: 从“SubscriptASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(342,42): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(345,47): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(346,9): warning C4133: “=”: 从“CallASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(358,49): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(362,55): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(364,9): warning C4133: “=”: 从“AttributeASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(327,1): warning C4133: “初始化”: 从“Object *”到“SubscriptASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(337,1): warning C4133: “初始化”: 从“Object *”到“CallASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(351,1): warning C4133: “初始化”: 从“Object *”到“AttributeASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(379,49): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(383,48): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(386,8): warning C4133: “=”: 从“NameASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(393,8): warning C4133: “=”: 从“ConstantASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(398,37): warning C4133: “=”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(400,8): warning C4133: “=”: 从“ConstantASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(407,8): warning C4133: “=”: 从“ConstantASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(424,33): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(428,34): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(432,8): warning C4133: “=”: 从“ListASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(375,1): warning C4133: “初始化”: 从“Object *”到“NameASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(390,1): warning C4133: “初始化”: 从“Object *”到“ConstantASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(397,1): warning C4133: “初始化”: 从“Object *”到“ConstantASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(404,1): warning C4133: “初始化”: 从“Object *”到“ConstantASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(420,1): warning C4133: “初始化”: 从“Object *”到“ListASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(451,74): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(455,79): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(459,79): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(461,35): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(464,8): warning C4133: “=”: 从“AssignASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(448,1): warning C4133: “初始化”: 从“Object *”到“AssignASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(473,25): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(478,26): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(480,10): warning C4133: “return”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(471,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(491,8): warning C4133: “=”: 从“ReturnASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(497,8): warning C4133: “=”: 从“BreakASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(503,8): warning C4133: “=”: 从“ContinueASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(489,1): warning C4133: “初始化”: 从“Object *”到“ReturnASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(495,1): warning C4133: “初始化”: 从“Object *”到“BreakASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(501,1): warning C4133: “初始化”: 从“Object *”到“ContinueASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(519,46): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(520,27): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(520,40): warning C4133: “函数”: 从“NameASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(525,47): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(526,28): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(526,41): warning C4133: “函数”: 从“NameASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(535,39): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(541,66): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(546,40): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(551,40): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(556,44): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(558,10): warning C4133: “return”: 从“FunctionDefASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(510,1): warning C4133: “初始化”: 从“Object *”到“FunctionDefASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(517,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(518,1): warning C4133: “初始化”: 从“Object *”到“NameASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(524,1): warning C4133: “初始化”: 从“Object *”到“NameASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(572,27): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(573,12): warning C4133: “=”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(575,17): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(580,67): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(588,27): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(589,12): warning C4133: “=”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(591,17): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(596,17): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(601,17): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(603,10): warning C4133: “return”: 从“WhileASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(563,1): warning C4133: “初始化”: 从“Object *”到“WhileASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(571,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(587,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(642,10): warning C4133: “return”: 从“ImportASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(637,1): warning C4133: “初始化”: 从“Object *”到“ImportASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(657,33): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(662,34): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(672,39): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(679,67): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(686,41): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(693,17): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(698,17): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(700,10): warning C4133: “return”: 从“ClassASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(647,1): warning C4133: “初始化”: 从“Object *”到“ClassASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(713,41): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(720,67): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(727,41): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(734,17): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(739,17): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(749,43): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(756,69): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(763,43): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(770,19): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(775,19): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(777,10): warning C4133: “return”: 从“TryASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\parser.c(705,1): warning C4133: “初始化”: 从“Object *”到“TryASTObject *”的类型不兼容
+  preprocessor.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(12,63): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(14,45): warning C4133: “=”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(26,64): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(26,109): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(30,65): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(30,110): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(33,64): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(33,109): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(38,64): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(38,109): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(42,65): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(42,110): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(45,64): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(45,109): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(54,39): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(54,84): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(60,65): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(60,76): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(60,77): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(68,33): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(68,78): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(71,70): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(71,76): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(74,65): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(74,73): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(78,65): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(78,71): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(78,72): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(83,64): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(83,109): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(50,1): warning C4133: “初始化”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(65,1): warning C4133: “初始化”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(92,52): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(101,46): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(106,46): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(111,50): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(123,50): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(135,77): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(178,36): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(178,96): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(184,40): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(184,91): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(187,41): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(187,49): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(187,50): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(206,30): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(206,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(209,27): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(210,24): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(214,32): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(218,41): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(219,25): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(175,1): warning C4133: “初始化”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(181,1): warning C4133: “初始化”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\preprocessor.c(201,1): warning C4133: “初始化”: 从“Object *”到“StringObject *”的类型不兼容
+  translater.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(6,37): warning C4133: “=”: 从“Object *”到“ByteCodeObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(12,33): warning C4133: “=”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(13,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(14,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(15,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(16,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(17,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(18,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(19,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(20,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(21,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(22,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(23,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(24,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(25,33): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(45,51): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(52,51): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(55,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(57,52): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(60,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(68,60): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(68,75): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(70,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(75,63): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(75,78): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(79,54): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(79,105): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(98,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(103,63): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(107,54): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(111,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(117,54): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(133,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(147,5): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(149,5): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(157,65): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(157,77): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(161,56): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(161,104): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(165,5): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(176,5): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(188,51): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(191,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(196,4): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(204,5): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(213,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(219,63): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(219,80): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(223,54): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(223,107): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(227,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(230,43): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(231,43): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(233,53): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(233,103): warning C4133: “函数”: 从“ByteCodeObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(236,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(239,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(243,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(250,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(254,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(260,51): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(264,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(269,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(273,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(276,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(281,51): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(285,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(291,63): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(291,80): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(295,54): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(295,107): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(313,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(320,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(327,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(337,64): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(337,74): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(341,55): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(341,101): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(348,64): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(348,74): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(352,55): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(352,101): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(358,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(364,63): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(364,80): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(368,54): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(368,107): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(372,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(374,52): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(377,43): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(379,43): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(380,43): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(381,53): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(381,103): warning C4133: “函数”: 从“ByteCodeObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(385,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(389,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(393,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(397,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(404,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(408,51): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(410,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(414,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(417,53): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(421,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Compiler\translater.c(68,1): warning C4133: “初始化”: 从“Object *”到“IntObject *”的类型不兼容
+  builtins.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\builtins.c(8,29): warning C4133: “=”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\builtins.c(9,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\builtins.c(15,38): warning C4133: “=”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\builtins.c(16,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\builtins.c(16,2): warning C4133: “函数”: 从“NamespaceObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\builtins.c(37,1): warning C4133: “初始化”: 从“Object *”到“StringObject *”的类型不兼容
+  eval.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(23,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(26,39): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(27,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(32,60): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(35,47): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(39,34): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(40,118): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(40,119): warning C4133: “函数”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(40,146): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(44,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(51,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(54,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(62,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(69,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(72,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(80,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(86,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(88,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(94,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(100,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(102,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(108,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(114,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(116,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(122,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(129,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(132,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(140,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(146,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(148,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(154,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(160,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(162,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(168,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(174,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(176,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(182,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(188,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(190,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(196,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(202,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(204,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(210,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(216,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(218,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(224,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(231,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(234,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(242,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(248,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(264,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(265,28): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(271,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(273,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(275,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(275,50): warning C4133: “函数”: 从“FunctionObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(283,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(284,33): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(287,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(293,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(298,39): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(299,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(307,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(308,33): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(310,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(310,50): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(316,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(318,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(320,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(326,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(328,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(330,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(339,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(340,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(347,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(349,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(356,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(357,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(362,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(366,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(369,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(373,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(376,38): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(380,33): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(385,38): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(397,52): warning C4133: “函数”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(398,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(398,48): warning C4133: “函数”: 从“NamespaceObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(402,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(402,62): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(408,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(411,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(412,33): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(414,51): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(415,32): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(419,41): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(422,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(422,57): warning C4133: “函数”: 从“ClassObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(438,34): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(446,28): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(447,26): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(10,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(11,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(38,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(270,1): warning C4133: “初始化”: 从“Object *”到“ByteCodeObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(272,1): warning C4133: “初始化”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(280,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(304,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(374,1): warning C4133: “初始化”: 从“Object *”到“BlockObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(384,1): warning C4133: “初始化”: 从“Object *”到“BlockObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(390,1): warning C4133: “初始化”: 从“Object *”到“BlockObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(406,1): warning C4133: “初始化”: 从“Object *”到“ClassObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(407,1): warning C4133: “初始化”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(434,1): warning C4133: “初始化”: 从“Object *”到“BlockObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(8,21): warning C4101: “index”: 未引用的局部变量
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(453,1): warning C4133: “初始化”: 从“Object *”到“FunctionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(462,37): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(467,59): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(467,65): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(470,13): warning C4133: “return”: 从“Object *”到“NamespaceObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(475,39): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Interpreter\eval.c(475,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+  main.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(34,44): warning C4133: “函数”: 从“NameSpaceASTObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(37,45): warning C4133: “函数”: 从“ByteCodeObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(27,1): warning C4133: “初始化”: 从“Object *”到“NameSpaceASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(40,1): warning C4133: “初始化”: 从“Object *”到“NamespaceObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\main.c(41,1): warning C4133: “初始化”: 从“Object *”到“FrameObject *”的类型不兼容
+  memory.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(9,45): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(29,2): warning C4133: “=”: 从“IntObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(30,2): warning C4133: “=”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(31,2): warning C4133: “=”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(32,2): warning C4133: “=”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(33,2): warning C4133: “=”: 从“FrameObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(52,3): warning C4133: “=”: 从“IntObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(68,3): warning C4133: “=”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(72,3): warning C4133: “=”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(76,3): warning C4133: “=”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(91,3): warning C4133: “=”: 从“FrameObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(123,7): warning C4013: “free”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(149,3): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(150,3): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(151,3): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+  namespace_system.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Namespaces\namespace_system.c(7,58): warning C4133: “=”: 从“Object *”到“NamespaceObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Namespaces\namespace_system.c(8,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+  astobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(9,36): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(16,1): warning C4133: “初始化”: 从“Object *”到“NameSpaceASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(29,36): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(30,37): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(37,1): warning C4133: “初始化”: 从“Object *”到“IfASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(48,36): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(55,1): warning C4133: “初始化”: 从“Object *”到“OperationASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(66,36): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(67,38): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(74,1): warning C4133: “初始化”: 从“Object *”到“NameASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(91,1): warning C4133: “初始化”: 从“Object *”到“ConstantASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(102,39): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(109,1): warning C4133: “初始化”: 从“Object *”到“AssignASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(120,38): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(127,1): warning C4133: “初始化”: 从“Object *”到“SubscriptASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(138,36): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(145,1): warning C4133: “初始化”: 从“Object *”到“CallASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(162,1): warning C4133: “初始化”: 从“Object *”到“ReturnASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(173,38): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(175,36): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(181,1): warning C4133: “初始化”: 从“Object *”到“ReturnASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(192,36): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(199,1): warning C4133: “初始化”: 从“Object *”到“WhileASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(210,36): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(217,1): warning C4133: “初始化”: 从“Object *”到“ListASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(234,1): warning C4133: “初始化”: 从“Object *”到“AttributeASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(251,1): warning C4133: “初始化”: 从“Object *”到“BreakASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(268,1): warning C4133: “初始化”: 从“Object *”到“ContinueASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(285,1): warning C4133: “初始化”: 从“Object *”到“ImportASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(296,37): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(297,36): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(304,1): warning C4133: “初始化”: 从“Object *”到“ClassASTObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(315,38): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(316,36): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\astobject.c(323,1): warning C4133: “初始化”: 从“Object *”到“TryASTObject *”的类型不兼容
+  blockobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\blockobject.c(5,57): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\blockobject.c(7,33): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+  bytecodeobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\bytecodeobject.c(7,69): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\bytecodeobject.c(9,38): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\bytecodeobject.c(10,40): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\bytecodeobject.c(26,39): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\bytecodeobject.c(31,38): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\bytecodeobject.c(25,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\bytecodeobject.c(50,59): warning C4133: “函数”: 从“Object *”到“ByteCodeObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\bytecodeobject.c(50,1): warning C4133: “初始化”: 从“Object *”到“FrameObject *”的类型不兼容
+  cfunctionobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\cfunctionobject.c(7,62): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\cfunctionobject.c(16,1): warning C4133: “初始化”: 从“Object *”到“CFunctionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\cfunctionobject.c(36,34): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\cfunctionobject.c(38,26): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\cfunctionobject.c(39,42): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\cfunctionobject.c(40,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\cfunctionobject.c(32,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+  classobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\classobject.c(5,60): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\classobject.c(7,36): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\classobject.c(8,37): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\classobject.c(9,35): warning C4133: “=”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\classobject.c(48,11): warning C4133: “return”: 从“InstanceObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\classobject.c(24,1): warning C4133: “初始化”: 从“Object *”到“InstanceObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\classobject.c(70,7): warning C4013: “exit”未定义；假设外部返回 int
+  dictobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\dictobject.c(11,7): warning C4013: “exit”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\dictobject.c(15,42): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\dictobject.c(7,1): warning C4133: “初始化”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\dictobject.c(118,30): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+  doubleobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\doubleobject.c(6,63): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\doubleobject.c(127,23): warning C4244: “return”: 从“double”转换到“int”，可能丢失数据
+  exceptionobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\exceptionobject.c(5,69): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\exceptionobject.c(7,41): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+  frameobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\frameobject.c(9,7): warning C4013: “exit”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\frameobject.c(12,38): warning C4133: “=”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\frameobject.c(13,37): warning C4133: “=”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\frameobject.c(14,37): warning C4133: “=”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\frameobject.c(5,1): warning C4133: “初始化”: 从“Object *”到“FrameObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\frameobject.c(21,1): warning C4133: “初始化”: 从“Object *”到“FrameObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\frameobject.c(30,35): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\frameobject.c(32,36): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\frameobject.c(34,35): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+  functionobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\functionobject.c(6,65): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\functionobject.c(26,41): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\functionobject.c(28,26): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\functionobject.c(34,40): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\functionobject.c(41,40): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\functionobject.c(45,29): warning C4133: “函数”: 从“FrameObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\functionobject.c(22,1): warning C4133: “初始化”: 从“Object *”到“FrameObject *”的类型不兼容
+  initobjects.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(10,35): warning C4133: “=”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(11,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(12,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(14,34): warning C4133: “=”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(15,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(16,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(17,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(18,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(19,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(20,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(21,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(22,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(23,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(24,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(25,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(26,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(28,34): warning C4133: “=”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(29,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(30,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(31,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\initobjects.c(32,2): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+  正在编译...
+  intobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\intobject.c(9,39): warning C4133: “=”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\intobject.c(6,1): warning C4133: “初始化”: 从“Object *”到“IntObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\intobject.c(163,14): warning C4047: “return”:“int”与“void *”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\intobject.c(272,38): warning C4047: “return”:“Object *”与“int”的间接级别不同
+  listobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\listobject.c(10,7): warning C4013: “exit”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\listobject.c(14,41): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\listobject.c(21,41): warning C4133: “=”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\listobject.c(6,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\listobject.c(56,44): warning C4013: “realloc”未定义；假设外部返回 int
+  namespaceobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\namespaceobject.c(5,62): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\namespaceobject.c(7,32): warning C4133: “=”: 从“Object *”到“DictObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\namespaceobject.c(22,43): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\namespaceobject.c(28,36): warning C4133: “函数”: 从“DictObject *”到“Object *”的类型不兼容
+  object.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(15,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(16,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(17,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(21,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(22,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(28,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(29,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(14,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(42,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(43,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(44,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(48,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(49,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(55,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(56,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(41,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(69,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(70,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(70,46): warning C4047: “return”:“int”与“Object *”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(74,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(75,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(76,15): warning C4047: “return”:“int”与“void *”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(81,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(82,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(83,14): warning C4047: “return”:“int”与“void *”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(68,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(98,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(99,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(105,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(106,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(119,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(120,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(121,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(125,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(126,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(132,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(133,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(118,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(145,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(146,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(147,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(151,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(152,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(158,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(159,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(144,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(172,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(173,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(174,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(178,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(179,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(185,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(186,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(171,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(199,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(200,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(201,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(205,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(206,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(212,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(213,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(198,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(226,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(227,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(228,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(232,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(233,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(239,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(240,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(225,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(253,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(254,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(255,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(259,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(260,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(266,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(267,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(252,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(280,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(281,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(282,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(283,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(283,46): warning C4098: “Object_InsertItem”:“void”函数返回值
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(287,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(288,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(289,15): warning C4098: “Object_InsertItem”:“void”函数返回值
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(294,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(295,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(296,14): warning C4098: “Object_InsertItem”:“void”函数返回值
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(279,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(308,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(309,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(310,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(314,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(315,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(321,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(322,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(307,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(335,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(336,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(337,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(341,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(342,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(348,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(349,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(334,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(362,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(363,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(364,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(368,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(369,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(375,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(376,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(361,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(389,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(390,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(391,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(395,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(396,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(402,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(403,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(388,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(416,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(417,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(418,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(422,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(423,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(429,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(430,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(415,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(437,45): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(451,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(452,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(453,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(457,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(458,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(464,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(465,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(450,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(484,29): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(485,44): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(489,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(490,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(483,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(501,29): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(502,29): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(503,29): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(504,44): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(504,45): warning C4098: “Object_SetAttr”:“void”函数返回值
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(500,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(514,29): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(515,29): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(515,61): warning C4047: “函数”:“int”与“Object *”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(515,56): warning C4024: “IntObject_NewWithValue”: 形参和实参 1 的类型不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(516,29): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(517,44): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(517,45): warning C4098: “Object_SetItem”:“void”函数返回值
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(513,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(529,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(530,30): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(531,45): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(535,37): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(536,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(542,36): warning C4133: “=”: 从“Object *”到“ExceptionObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(543,75): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\object.c(528,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+  opcodeobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\opcodeobject.c(5,63): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\opcodeobject.c(14,1): warning C4133: “初始化”: 从“Object *”到“OpCodeObject *”的类型不兼容
+  stringobject.c
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4113: “Object *(__cdecl *)(Object *,Object *)”和“SetItem”的参数列表不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Include\object.h(120,1): warning C4047: “初始化”:“SetItem”与“Object *(__cdecl *)(Object *,Object *)”的间接级别不同
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(10,39): warning C4133: “=”: 从“DictObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(6,1): warning C4133: “初始化”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(19,32): warning C4013: “malloc”未定义；假设外部返回 int
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(99,33): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(99,50): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(101,27): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(103,26): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(103,76): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(106,31): warning C4133: “函数”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(106,48): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(89,1): warning C4133: “初始化”: 从“Object *”到“ListObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(94,1): warning C4133: “初始化”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(139,57): warning C4133: “return”: 从“ListObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(160,38): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(160,52): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(167,36): warning C4133: “函数”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(167,83): warning C4133: “=”: 从“Object *”到“StringObject *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(171,15): warning C4133: “return”: 从“StringObject *”到“Object *”的类型不兼容
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Objects\stringobject.c(145,1): warning C4133: “初始化”: 从“Object *”到“StringObject *”的类型不兼容
   正在生成代码
-  0 of 218 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
+E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Memory\memory.c(103): warning C4715: “Memory_Malloc”: 不是所有的控件路径都返回值
+  219 of 229 functions (95.6%) were compiled, the rest were copied from previous compilation.
+    11 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
   c--1.4.vcxproj -> E:\王永健\王永健的文件夹\IntegratedProjects\c--\c--1.4\Release\c--1.4.exe

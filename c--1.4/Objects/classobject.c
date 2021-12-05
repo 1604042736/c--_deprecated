@@ -24,18 +24,26 @@ struct Object* ClassObject_Call(struct Object* self, struct Object* args)
 	struct InstanceObject* it = InstanceObject_New();
 	it->objattr->attr = DictObject_New();
 	it->classname = ct->name;
+	/*复制父类成员*/
 	for (int i = 0; i < ct->bases->size; i++)
 	{
 		struct Object* obj = ct->bases->item[i]->objattr->obj_new();
 		struct DictObject* attr = (struct DictObject*)obj->objattr->attr;
-		for (int i = 0; i < attr->size; i++)
+		for (int i = 0; i < attr->allocated; i++)
 		{
-			DictObject_SetItem(it->objattr->attr, attr->item[i].key, attr->item[i].value);
+			if (attr->item[i].key != NULL)
+			{
+				DictObject_SetItem(it->objattr->attr, attr->item[i].key, attr->item[i].value);
+			}
 		}
 	}
-	for (int i = 0; i < ct->dict->size; i++)
+	/*复制自己的成员*/
+	for (int i = 0; i < ct->dict->allocated; i++)
 	{
-		DictObject_SetItem(it->objattr->attr, ct->dict->item[i].key, ct->dict->item[i].value);
+		if (ct->dict->item[i].key != NULL)
+		{
+			DictObject_SetItem(it->objattr->attr, ct->dict->item[i].key, ct->dict->item[i].value);
+		}
 	}
 	return it;
 }
