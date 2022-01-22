@@ -88,9 +88,10 @@ void Preprocessor_Preprocess(struct Preprocessor* preprocessor)
 
 struct StringObject* Preprocessor_Dealprecode(struct Preprocessor* preprocessor,struct StringObject* precode)
 {
+#define CHECKINS(NAME) IntObject_toInt(StringObject_Eq(list->item[0], StringObject_NewWithString(NAME)))
 	int replace = 0;
 	struct ListObject* list=StringObject_Split(precode, NULL);
-	if (StringObject_Eq(list->item[0], StringObject_NewWithString("define")))	//速度慢,但方便
+	if (CHECKINS("define"))	//速度慢,但方便
 	{
 		struct Object* name = list->item[1];
 		struct Object* value = NULL;
@@ -100,12 +101,12 @@ struct StringObject* Preprocessor_Dealprecode(struct Preprocessor* preprocessor,
 		}
 		DictObject_SetItem(preprocessor->definedict, name, value);
 	}
-	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("undef")))
+	else if (CHECKINS("undef"))
 	{
 		struct Object* name = list->item[1];
 		DictObject_DelItem(preprocessor->definedict, name);
 	}
-	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("ifdef")))
+	else if (CHECKINS("ifdef"))
 	{
 		struct Object* name = list->item[1];
 		if (DictObject_GetItem(preprocessor->definedict, name) != NULL)	//找到了
@@ -117,7 +118,7 @@ struct StringObject* Preprocessor_Dealprecode(struct Preprocessor* preprocessor,
 			replace = 1;
 		}
 	}
-	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("ifndef")))
+	else if (CHECKINS("ifndef"))
 	{
 		struct Object* name = list->item[1];
 		if (DictObject_GetItem(preprocessor->definedict, name) == NULL)
@@ -129,7 +130,7 @@ struct StringObject* Preprocessor_Dealprecode(struct Preprocessor* preprocessor,
 			replace = 1;
 		}
 	}
-	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("elif")))
+	else if (CHECKINS("elif"))
 	{
 		struct Object* name = list->item[1];
 		if (!preprocessor->defineflag&&DictObject_GetItem(preprocessor->definedict, name) != NULL)
@@ -141,25 +142,27 @@ struct StringObject* Preprocessor_Dealprecode(struct Preprocessor* preprocessor,
 			replace = 1;
 		}
 	}
-	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("else")))
+	else if (CHECKINS("else"))
 	{
 		if (preprocessor->defineflag)
 		{
 			replace = 1;
 		}
 	}
-	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("endif")))
+	else if (CHECKINS("endif"))
 	{
 		preprocessor->defineflag = 0;
 	}
-	else if (StringObject_Eq(list->item[0], StringObject_NewWithString("include")))
+	else if (CHECKINS("include"))
 	{
 		struct Object* arg = list->item[1];
 		char* filename = ((struct StringObject*)arg)->string;
 		FILE* f = fopen(filename, "r");
 		if (f == NULL)
 		{
-			//从默认目录包含
+			arg = StringObject_Add(conststr_includepath, arg);
+			char* filename = ((struct StringObject*)arg)->string;
+			f = fopen(filename, "r");
 		}
 		struct Preprocessor* pre = Preprocessor_New(f,filename);
 		Preprocessor_Preprocess(pre);
@@ -230,4 +233,5 @@ struct StringObject* Preprocessor_Dealprecode(struct Preprocessor* preprocessor,
 		}
 	}
 	return NULL;
+#undef CHECKINS
 }

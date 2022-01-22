@@ -1,6 +1,7 @@
 #pragma once
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "memory.h"
 
@@ -21,10 +22,9 @@
 
 #define ADDREFCOUNT(OBJ)	(OBJ)->refcount++
 
-#define GETATTR(NAME) \
-	struct Object* name = StringObject_NewWithString(NAME);\
-	struct Object* func = DictObject_GetItem(self->objattr->attr, name);\
-	Memory_Free(memory, name);
+#define GETATTR(NAME) struct Object* func = DictObject_GetItem(self->objattr->attr, conststr_##NAME);
+
+#define INCLUDEENVPATH "CQQ_INCLUDE_PATH"
 
 struct Object;
 typedef struct Object*	(*Add)(struct Object*, struct Object*);

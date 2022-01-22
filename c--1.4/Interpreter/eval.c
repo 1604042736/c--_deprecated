@@ -475,6 +475,9 @@ struct Object* Eval(struct FrameObject* frameobj)
 			}
 			else
 			{
+				exception->filename = filename;
+				exception->lineno = lineno;
+				exception->linepos = linepos;
 				return NULL;
 			}
 		}
@@ -509,6 +512,10 @@ struct NamespaceObject* load_namespace(struct StringObject* name)
 	{
 		struct StringObject* filename = name;
 		filename = StringObject_Add(filename, StringObject_NewWithString(".c--"));
+		if (fopen(filename, "r") == NULL)
+		{
+			filename = StringObject_Add(conststr_includepath, filename);
+		}
 		return compiler(filename->string, name->string, 0);
 	}
 }

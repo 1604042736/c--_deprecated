@@ -66,9 +66,6 @@
     <ClCompile Include="Objects\functionobject.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\initobjects.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Objects\cfunctionobject.c">
       <Filter>源文件</Filter>
     </ClCompile>

@@ -11,6 +11,7 @@ struct Parser* Parser_New(struct Lexer* lexer)
 	parser->lexer = lexer;
 	parser->blockstyle = INDENT;
 	parser->importmode = 0;
+	parser->namespace_names = DictObject_New();
 	return parser;
 }
 
@@ -353,6 +354,7 @@ struct Object* Parser_exp_postfix(struct Parser* parser)
 			Parser_match(parser, TK_POINT);
 			p->attr = parser->lexer->tokenstr;
 			Parser_match(parser, parser->lexer->token);
+			/*两种方法获取命名空间里的变量*/
 			if (strcmp(tokenstr, "::"))
 			{
 				p->mode = StringObject_NewWithString("load");
@@ -361,6 +363,21 @@ struct Object* Parser_exp_postfix(struct Parser* parser)
 			{
 				p->mode= StringObject_NewWithString("withoutself");
 			}
+
+			struct Object* result=NULL;
+			if (CHECK(t, "Name"))
+			{
+				result = DictObject_GetItem(parser->namespace_names, ((struct NameASTObject*)t)->id);
+			}
+			else if (CHECK(t, "Attribute"))
+			{
+				result = DictObject_GetItem(parser->namespace_names, ((struct AttributeASTObject*)t)->attr);
+			}
+			if (result != NULL)
+			{
+				p->mode = StringObject_NewWithString("withoutself");
+			}
+
 			t = p;
 		}
 	}
@@ -639,6 +656,10 @@ struct Object* Parser_import(struct Parser* parser)
 	parser->importmode = 1;
 	t->name = Parser_exp_postfix(parser);
 	parser->importmode = 0;
+	if (CHECK(t->name, "Name"))
+	{
+		DictObject_SetItem(parser->namespace_names, ((struct NameASTObject*)t->name)->id, IntObject_New());
+	}
 	return t;
 }
 

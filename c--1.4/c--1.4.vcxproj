@@ -167,7 +167,6 @@
     <ClCompile Include="Objects\exceptionobject.c" />
     <ClCompile Include="Objects\frameobject.c" />
     <ClCompile Include="Objects\functionobject.c" />
-    <ClCompile Include="Objects\initobjects.c" />
     <ClCompile Include="Objects\intobject.c" />
     <ClCompile Include="Objects\listobject.c" />
     <ClCompile Include="Objects\namespaceobject.c" />

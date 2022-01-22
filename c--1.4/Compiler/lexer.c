@@ -420,5 +420,8 @@ void Lexer_escape(struct Lexer* lexer)
 	case 'b':
 		lexer->ch = '\b';
 		break;
+	case 't':
+		lexer->ch = '\t';
+		break;
 	}
 }

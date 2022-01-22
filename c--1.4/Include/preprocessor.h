@@ -5,6 +5,7 @@
 #include "stringobject.h"
 #include "dictobject.h"
 #include "parser.h"
+#include "intobject.h"
 
 struct Preprocessor
 {

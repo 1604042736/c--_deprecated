@@ -4,6 +4,8 @@
 #include "astobject.h"
 #include "doubleobject.h"
 #include "preprocessor.h"
+#include "dictobject.h"
+#include "stringobject.h"
 
 enum BlockStyle
 {
@@ -15,6 +17,7 @@ struct Parser
 	struct Lexer* lexer;
 	enum BlockStyle blockstyle;
 	int importmode;
+	struct DictObject* namespace_names;	//可以用符号表
 };
 
 struct Parser* Parser_New(struct Lexer*);

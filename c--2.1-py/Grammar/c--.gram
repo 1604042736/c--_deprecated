@@ -1,0 +1,128 @@
+@subheader"""
+from syntaxtree import *
+import itertools
+"""
+
+start : a=[sentences] ENDMARKER {Module(body=a or [])}
+
+block : NEWLINE INDENT a=sentences DEDENT {a}
+
+sentences : sentence*
+
+sentence : 
+    | a=statement NEWLINE {a}
+    | statement
+
+statement : 
+    | &'if' if_statement
+    | &'while' while_statement
+    | &'def' functiondef_statement
+    | &'return' return_statement
+    | &'break' break_statement
+    | &'continue' continue_statement
+    | expression
+
+expression : assignment_expression
+
+assignment_expression :
+    | a=conditional_expression '=' b=expression {Assign(targets=a,value=b)}
+    | conditional_expression
+
+conditional_expression :
+    | logical_or_expression
+
+logical_or_expression :
+    | a=logical_and_expression b=('or' logical_and_expression)+ {BoolOp(op=Or(),values=[a]+[i[1]for i in b])}
+    | logical_and_expression
+
+logical_and_expression :
+    | a=inclusive_or_expression b=('and' inclusive_or_expression)+ {BoolOp(op=And(),values=[a]+[i[1] for i in b])}
+    | inclusive_or_expression
+
+inclusive_or_expression :
+    | a=inclusive_or_expression '|' b=exclusive_or_expression {BinOp(left=a,op=BitOr(),right=b)}
+    | exclusive_or_expression
+
+exclusive_or_expression :
+    | a=exclusive_or_expression '^' b=and_expression {BinOp(left=a,op=BitXor(),right=b)}
+    | and_expression
+
+and_expression :
+    | a=and_expression '&' b=relational_expression {BinOp(left=a,op=BitAnd(),right=b)}
+    | relational_expression
+
+relational_expression :
+    | a=shift_expression b=compares {Compare(left=a,ops=[i for i,j in b],comparators=[j for i,j in b])}
+    | shift_expression
+
+compares:
+    | compare+
+
+compare : 
+    | '<' a=shift_expression {(Lt(),a)}
+    | '<=' a=shift_expression {(LtE(),a)}
+    | '>' a=shift_expression {(Gt(),a)}
+    | '>=' a=shift_expression {(GtE(),a)}
+    | '==' a=shift_expression {(Eq(),a)}
+    | '!=' a=shift_expression {(NotEq(),a)}
+
+shift_expression :
+    | a=shift_expression '>>' b=additive_expression {BinOp(left=a,op=RShift(),right=b)}
+    | a=shift_expression '<<' b=additive_expression {BinOp(left=a,op=LShift(),right=b)}
+    | additive_expression
+
+additive_expression :
+    | a=additive_expression '+' b=multiplicative_expression {BinOp(left=a,op=Add(),right=b)}
+    | a=additive_expression '-' b=multiplicative_expression {BinOp(left=a,op=Sub(),right=b)}
+    | multiplicative_expression
+
+multiplicative_expression :
+    | a=multiplicative_expression '*' b=cast_expression {BinOp(left=a,op=Mult(),right=b)}
+    | a=multiplicative_expression '/' b=cast_expression {BinOp(left=a,op=Div(),right=b)}
+    | a=multiplicative_expression '%' b=cast_expression {BinOp(left=a,op=Mod(),right=b)}
+    | cast_expression
+
+cast_expression : unary_expression
+
+unary_expression: postfix_expression
+
+postfix_expression : 
+    | a=postfix_expression '[' b=expression ']' {Subscript(value=a,slice=b,ctx=Load())}
+    | a=postfix_expression '(' ')' {Call(func=a,args=[])}
+    | a=postfix_expression '(' b=argument_expression_list ')' {Call(func=a,args=b)}
+    | a=postfix_expression b=NAME {Attribute(value=a,attr=b.string,ctx=Load())}
+    | primary_expression
+
+primary_expression :
+    | NAME {Name(id=name.string,ctx=Load())}
+    | NUMBER {Constant(value=number.string)}
+    | STRING {Constant(value=string.string)}
+    | '(' a=expression ')' {a}
+
+argument_expression_list : a=assignment_expression b=(',' assignment_expression)* {[a]+b}
+
+if_statement: 
+    | 'if' a=expression ':' b=block c=else_statement {If(test=a,body=b,orelse=[c] if not isinstance(c,list) else c)}
+    | 'if' a=expression ':' b=block {If(test=a,body=b,orelse=[])}
+
+else_statement : 
+    | 'elif' a=expression ':' b=block c=else_statement {If(test=a,body=b,orelse=[c] if not isinstance(c,list) else c)}
+    | 'elif' a=expression ':' b=block {If(test=a,body=b,orelse=[])}
+    | 'else' ':' a=block {a}
+
+while_statement :
+    | 'while' a=expression ':' b=block 'else' ':' c=block {While(test=a,body=b,orelse=c)}
+    | 'while' a=expression ':' b=block {While(test=a,block=b,orelse=[])}
+
+functiondef_statement:
+    | 'def' NAME '(' ')' ':' b=block {FunctionDef(name=name.string,args=[],body=b)}
+    | 'def' NAME '(' b=argument_expression_list ')' ':' c=block {FunctionDef(name=name.string,args=b,body=c)}
+
+return_statement :
+    | 'return' a=expression {Return(value=a)}
+
+break_statement :
+    | 'break' {Break()}
+
+continue_statement:
+    | 'continue' {Continue()}

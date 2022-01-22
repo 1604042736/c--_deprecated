@@ -63,3 +63,30 @@ static struct ObjectAttribute StringObjectAttribute = {
 	NULL,	//obj_setitem
 	NULL,	//obj_sub
 };
+
+struct StringObject* conststr_add;
+struct StringObject* conststr_and;
+struct StringObject* conststr_bool;
+struct StringObject* conststr_call;
+struct StringObject* conststr_copy;
+struct StringObject* conststr_div;
+struct StringObject* conststr_eq;
+struct StringObject* conststr_getattr;
+struct StringObject* conststr_getitem;
+struct StringObject* conststr_geq;
+struct StringObject* conststr_gt;
+struct StringObject* conststr_hash;
+struct StringObject* conststr_insertitem;
+struct StringObject* conststr_leq;
+struct StringObject* conststr_lt;
+struct StringObject* conststr_mod;
+struct StringObject* conststr_mul;
+struct StringObject* conststr_neq;
+struct StringObject* conststr_new;
+struct StringObject* conststr_or;
+struct StringObject* conststr_print;
+struct StringObject* conststr_tostring;
+struct StringObject* conststr_setattr;
+struct StringObject* conststr_setitem;
+struct StringObject* conststr_sub;
+struct StringObject* conststr_includepath;
