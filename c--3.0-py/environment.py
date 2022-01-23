@@ -11,6 +11,9 @@ class Environment:
         self.curframe = self.frames[-1]
 
     def add_frame(self, frame):
+        '''
+        添加栈帧
+        '''
         self.frames.append(frame)
         self.curframe = frame
 

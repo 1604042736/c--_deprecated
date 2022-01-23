@@ -1,5 +1,8 @@
-def f(n):
-    if n==1 or n==2:
-        return 1
-    return f(n-1)+f(n-2)
-a=f(10)
+class A:
+	a=1
+	def f(n):
+		if n==1 or n==2:
+			return 1
+		return f(n-1)+f(n-2)
+a=A()
+print(a.f(10))

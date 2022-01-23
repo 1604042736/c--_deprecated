@@ -1,6 +1,7 @@
+from copy import deepcopy
 import operator
 from frame import Frame
-
+from exception import ReturnException,BreakException,ContinueException,JumpException
 
 def haverun(func):
     '''
@@ -18,28 +19,6 @@ def haverun(func):
         args[0].runcount += 1
         return a
     return wrap
-
-class JumpException(Exception):
-    def __init__(self,*args):
-        super().__init__(*args)
-        self.ast=args[0]
-
-
-class BreakException(JumpException):
-    '''
-    循环中断
-    '''
-
-class ContinueException(JumpException):
-    '''
-    循环继续
-    '''
-
-class ReturnException(JumpException):
-    '''
-    返回值
-    '''
-
 
 class SyntaxTree:
     '''
@@ -63,10 +42,13 @@ class SyntaxTree:
         'and': lambda a, b: a and b,
         'or': lambda a, b: a or b
     }
-    state = []
     memory=[]
     def __init__(self, *args, **kwargs):
         self.runcount = 0
+        self.envir=kwargs['parser'].envir
+        self.lineno=kwargs['parser'].lexer.lineno
+        self.lexer=kwargs['parser'].lexer
+        kwargs.pop('parser')
         self.__dict__ |= kwargs
 
     def print(self, space=0):
@@ -76,6 +58,8 @@ class SyntaxTree:
         print('  '*space, end='')
         print(self.__class__.__name__)
         for key, val in self.__dict__.items():
+            if key in ('_values','_class','envir','lineno','runcount','attr','lexer'):
+                continue
             print('  '*(space+1), end='')
             print(key, end='')
             if isinstance(val, SyntaxTree):
@@ -120,7 +104,10 @@ class SyntaxTree:
         try:
             self.envir.curframe.stack.append(self.envir.curframe.locals[a])
         except KeyError:
-            self.envir.curframe.stack.append(self.envir.curframe.globals[a])
+            try:
+                self.envir.curframe.stack.append(self.envir.curframe.globals[a])
+            except KeyError:
+                self.envir.curframe.stack.append(self.envir.curframe.builtins[a])
 
     def store_name(self, a):
         '''
@@ -169,34 +156,71 @@ class SyntaxTree:
         '''
         获取索引
         '''
-        slc = self.envir.curframe.stack.pop()
         cls = self.envir.curframe.stack.pop()
-        return cls[slc]
+        slc = self.envir.curframe.stack.pop()
+        self.load_val(cls[slc])
 
     def store_sub(self):
         '''
         存储索引
         '''
-        val = self.envir.curframe.stack.pop()
-        slc = self.envir.curframe.stack.pop()
         cls = self.envir.curframe.stack.pop()
+        slc = self.envir.curframe.stack.pop()
+        val = self.envir.curframe.stack.pop()
         cls[slc] = val
 
-    def call(self):
+    def call(self,a):
         '''
         调用函数
         '''
-        SyntaxTree.state.append('call')
         func = self.pop()
         return_val = None
-        #func.print()
-        try:
-            func.run()
-        except ReturnException:
-            return_val = self.pop()
-        SyntaxTree.state.pop()
-        self.envir.pop_frame()
+        if isinstance(func,FunctionDef):    #不是内置函数
+            try:
+                func.run(a)
+            except ReturnException:
+                return_val = self.pop()
+            self.envir.pop_frame()
+        else:   #是内置函数或者类
+            args=[]
+            for i in range(a):
+                args.append(self.pop())
+            args=args[::-1]
+            return_val=func(*args)
         return return_val
+
+    def load_attr(self,a):
+        '''
+        获取属性
+        '''
+        val=self.pop()
+        self.load_val(getattr(val,a))
+
+    def store_attr(self,a):
+        '''
+        存储属性
+        '''
+        val=self.pop()
+        setval=self.pop()
+        setattr(val,a,setval)
+
+    def make_list(self,a):
+        '''
+        创建列表
+        '''
+        l=[]
+        for i in range(a):
+            l.insert(0,self.pop)
+        self.load_val(l)
+
+    def make_dict(self,a):
+        '''
+        创建字典
+        '''
+        d={}
+        for i in range(a):
+            d[self.pop()]=self.pop()
+        self.load_val(d)
 
 
 class Sentence(SyntaxTree):
@@ -205,7 +229,7 @@ class Sentence(SyntaxTree):
         self.runcount = -2  # 语句在解析时就已运行,设置成-2防止重复运行
 
 
-class Namespace(Sentence):
+class Namespace(SyntaxTree):
     @haverun
     def run(self):
         for t in self.body:
@@ -293,11 +317,17 @@ class Call(SyntaxTree):
         for t in self.args:
             t.run()
         self.func.run()
-        self.load_val(self.call())
+        self.load_val(self.call(len(self.args)))
 
 
 class Attribute(SyntaxTree):
-    pass
+    @haverun
+    def run(self):
+        self.value.run()
+        if self.mode=='load':
+            self.load_attr(self.attr)
+        elif self.mode=='store':
+            self.store_attr(self.attr)
 
 
 class If(Sentence):
@@ -318,41 +348,39 @@ class Unkown(SyntaxTree):
         from parser import Parser
         filename = self.lexer.filename
         lexer = Lexer(
-            self.lexer.lines[self.startlineno:self.endlineno], filename, shift=self.shift)
+            self.lexer.lines, filename, startlineno=self.startlineno,endlineno=self.endlineno)
         parser = Parser(lexer, self.envir)
         while parser.token!='<None>' and self.indent==parser.indent:
+            global_lineno=lexer.lineno
             try:
                 p=parser.sentence()
-                if lexer.lineno+lexer.shift not in SyntaxTree.memory:
+                if global_lineno not in SyntaxTree.memory:   #没有保存
                     l.insert(i,p)   #将语句添加到语法树对应的列表中
-                    SyntaxTree.memory.append(lexer.lineno+lexer.shift)
+                    SyntaxTree.memory.append(global_lineno)
             except JumpException as e:
-                if lexer.lineno+lexer.shift not in SyntaxTree.memory:
+                if global_lineno not in SyntaxTree.memory:
                     l.insert(i,e.ast)
-                    SyntaxTree.memory.append(lexer.lineno+lexer.shift)
+                    SyntaxTree.memory.append(global_lineno)
                 e.ast.runcount=1    #因为之前已经运行过一次
-                #lexer.lineno相对于新的lines
-                #self.endlineno相对于原来的
-                if lexer.lineno+lexer.shift>=self.endlineno and isinstance(l[-1],Unkown):    #全部解析完
+                if self.startlineno+1>=self.endlineno and isinstance(l[-1],Unkown):    #全部解析完
                     l.pop()
                 raise e
             #更新信息
             self.startlineno=self.get_lineno(lexer.lines,lexer.lineno)
-            self.shift=self.startlineno+lexer.shift
             i+=1
+            #print(lexer.lineno,self.endlineno)
+            #pt.print()
         l.pop(i)    #全部解析完了
 
     def get_lineno(self,lines,lineno):
         '''
         获得新的行
         '''
-        #lineno是相对于新的lines
-        #newlineno是相对于原来的lines
-        #所以之后要加上偏移
         newlineno=lineno
+        #print(lines,lineno,self.shift,self.endlineno,list(self.indent))
         while newlineno<len(lines)and self.indent!=self.lexer.get_indent(lines[newlineno]):
             newlineno+=1
-        return newlineno+self.shift
+        return newlineno
 
 
 class While(Sentence):
@@ -370,41 +398,33 @@ class While(Sentence):
 
 
 class Break(Sentence):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.runcount = -2
-
     @haverun
     def run(self):
-        raise BreakException(self)
+        raise BreakException(self,'break不应该在这里出现')
 
 
 class Continue(Sentence):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.runcount = -2
-
     @haverun
     def run(self):
-        raise ContinueException(self)
+        raise ContinueException(self,'continue不应该在这里出现')
 
 
 class FunctionDef(Sentence):
     @haverun
-    def run(self):
+    def run(self,arglen=-1):
         if self.runcount == -2:  # 第一次运行
             self.load_val(self)
             self.store_name(self.name)
             self.runcount = 0
-            self.values = self.envir.curframe.globals | self.envir.curframe.locals
-        elif 'call' in SyntaxTree.state:
-            arglen = len(self.args)
+            self._values = self.envir.curframe.globals | self.envir.curframe.locals #函数所在作用域的全局变量和局部变量
+        elif arglen!=-1:    #是函数调用
             args = []
+            #self.print()
             for i in range(arglen):
                 args.append(self.pop())
             args = args[::-1]
             frame = Frame()
-            frame.globals = self.values
+            frame.globals = self._values
             self.envir.add_frame(frame)
             for i, arg in enumerate(self.args):
                 if isinstance(arg, Name):
@@ -417,7 +437,87 @@ class Return(Sentence):
     @haverun
     def run(self):
         self.value.run()
-        raise ReturnException(self)
+        raise ReturnException(self,'return不应该在这里出现')
+
+class List(SyntaxTree):
+    @haverun
+    def run(self):
+        for i in self.list:
+            i.run()
+        self.make_list(len(self.list))
+
+class Dict(SyntaxTree):
+    @haverun
+    def run(self):
+        for i in range(len(self.keys)):
+            self.keys[i].run()
+            self.values[i].run()
+        self.make_dict(len(self.keys))
+
+class Try(Sentence):
+    @haverun
+    def run(self):
+        try:
+            self.run_list(self.body)
+        except Exception as e:
+            result=[]   #异常处理情况
+            for t in self.handles:
+                result.append(t.run(e))
+            if not any(result): #有一个处理好了
+                raise e
+
+class ExceptionHandle(SyntaxTree):
+    @haverun
+    def run(self,e):
+        if self.type==None:
+            self.run_list(self.body)
+            return True
+        else:
+            self.type.run()
+            if isinstance(e,self.pop()):
+                return True
+        return False
+
+class Class(Sentence):
+    @haverun
+    def run(self):
+        #self.print()
+        if self.runcount==-2:   #第一次运行(初始化)
+            self.runcount=1
+            self.load_val(self)
+            self.store_name(self.name)
+            #运行类,获取类的属性
+            frame = Frame()
+            frame.globals = self.envir.curframe.globals|self.envir.curframe.locals
+            self.envir.add_frame(frame)
+            self.run_list(self.body)
+            self.attr=frame.locals
+            #去除一些不必要的东西
+            self.attr.pop('globals')
+            self.attr.pop('stack')
+            self.attr.pop('builtins')
+            self.envir.pop_frame()
+
+    def __call__(self):
+        '''
+        创建类的实例
+        '''
+        return self
+
+    def __getattribute__(self, __name: str):
+        if __name=='attr':
+            try:
+                return super().__getattribute__(__name)
+            except:
+                return {}
+        if __name in self.attr:
+            return self.attr[__name]
+        return super().__getattribute__(__name)
+
+    def __setattr__(self, __name: str, __value) -> None:
+        if __name in self.attr:
+            self.attr[__name]=__value
+        return super().__setattr__(__name, __value)
 
 
 def compileandrun(func):
@@ -425,9 +525,9 @@ def compileandrun(func):
     编译后运行语法树
     '''
     def wrap(*args):
+        lineno=args[0].lexer.lineno #保存行
         tree = func(*args)
-        tree.__dict__['envir'] = args[0].envir
-        if 'donotrun' not in SyntaxTree.state and isinstance(tree, Sentence):  # 是语句并且可以运行
+        if isinstance(tree, Sentence):  # 是语句并且可以运行
             tree.run()
         return tree
     return wrap

@@ -1,4 +1,5 @@
 import re
+from exception import SyntaxException
 
 
 class Token:
@@ -6,9 +7,9 @@ class Token:
     存储token
     '''
 
-    def __init__(self, name, lineno, linepos, filename, shift=0, type=None):
+    def __init__(self, name, lineno, linepos, filename, type=None):
         self.name = name  # token内容
-        self.lineno, self.linepos = lineno+shift, linepos  # token行列
+        self.lineno, self.linepos = lineno, linepos  # token行列
         self.filename = filename
         self.type = type if type else name  # 类型
 
@@ -25,19 +26,20 @@ class Lexer:
     '''
     词法分析器
     '''
-    pattern = '|'.join([r'[a-zA-z]([a-zA-z]|[0-9]|_)+',  # 标识符
+    pattern = '|'.join([r'([a-zA-Z]|_)([a-zA-Z]|[0-9]|_)+',  # 标识符
                        r'[0-9]+\.[0-9]+',  # 小数
                         r'[0-9]+',  # 整数
                         r'>=|<=|>|<|==|!=',  # 长度大于1的符号
+                        r"'.+'|\".+\"", #字符串
                         r'( |\t)+',  # 缩进
                         r'.+?',  # 匹配剩余字符
                         ])
 
-    def __init__(self, lines, filename, shift=0):
+    def __init__(self, lines, filename, startlineno=0,endlineno=-1):
         self.lines = lines  # 以行为单位的代码
-        self.shift = shift  # 行的偏移量
         self.filename = filename
-        self.lineno = 0  # 行
+        self.lineno = startlineno  # 行(开始)
+        self.endlineno=endlineno if endlineno!=-1 else len(lines)   #结束位置
         self.tokens = None  # 当前行所有的token
         self.tokenindex = 0  # 索引
         self.eof = False  # 代码是否结束
@@ -79,12 +81,12 @@ class Lexer:
         '''
         self.tokens = []
         self.tokenindex = 0
-        if self.lineno >= len(self.lines):
+        if self.lineno >= self.endlineno:
             self.eof = True
             return
         line = self.lines[self.lineno]
         # 去除空行
-        while (self.lineno+1) < len(self.lines) and self.is_emptyline(line):
+        while (self.lineno+1) < self.endlineno and self.is_emptyline(line):
             self.lineno += 1
             line = self.lines[self.lineno]
         if self.is_emptyline(line):  # 最后一行
@@ -93,7 +95,7 @@ class Lexer:
         for token in re.finditer(self.pattern, self.lines[self.lineno]):
             if not self.is_whitespace(token.group()):
                 self.tokens.append(Token(token.group(), self.lineno, token.span()[
-                                   1], self.filename, shift=self.shift))
+                                   1], self.filename))
 
     def get_indent(self, s):
         '''
@@ -126,8 +128,7 @@ class Lexer:
 
     def expect(self, expected):
         if expected not in (self.token.name, self.token.type):
-            print(f'期望得到{expected},实际得到{self.token}')
-            exit()
+            raise SyntaxException(self.filename,self.lines[self.lineno],self.lineno,f'期望得到{expected},实际得到{self.token}')
         return self.get_token()
 
     def skip_block(self):
@@ -137,14 +138,16 @@ class Lexer:
         startline = self.lineno
         indent = self.get_indent(self.lines[self.lineno])  # 获取当前缩进
         self.lineno += 1
-        while self.lineno < len(self.lines) and indent in self.get_indent(self.lines[self.lineno]):
+        #print(self.lines,self.lineno)
+        while (self.lineno) < self.endlineno and indent in self.get_indent(self.lines[self.lineno]):
             self.lineno += 1
         endline = self.lineno
+        #print(startline, endline, indent)
         self.set_tokens()
         self.get_token()
         return startline, endline, indent
 
     def __str__(self):
-        return f'Lexer(filename="{self.filename}")'
+        return f'Lexer(filename="{self.filename}",lines={self.lines})'
 
     __repr__ = __str__
