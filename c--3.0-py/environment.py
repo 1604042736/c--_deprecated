@@ -15,11 +15,8 @@ class Environment:
         添加栈帧
         '''
         self.frames.append(frame)
-        self.curframe = frame
+        self.curframe = self.frames[-1]
 
     def pop_frame(self):
         self.frames.pop()
         self.curframe = self.frames[-1]
-
-    def __str__(self):
-        return f'Environment(framenum={len(self.frames)})'

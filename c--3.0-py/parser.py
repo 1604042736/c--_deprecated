@@ -1,5 +1,5 @@
 from ast import ExceptHandler
-from syntaxtree import Assign, Attribute, BinOp, BoolOp, Break, Call, Class, Compare, Constant, Continue, Dict, ExceptionHandle, Expr, FunctionDef, If, List, Name, Namespace, Return, Sentence, Subscript, SyntaxTree, Try, Unkown, While, compileandrun
+from syntaxtree import Assign, Attribute, BinOp, BoolOp, Break, Call, Class, Compare, Constant, Continue, Dict, ExceptionHandle, Expr, FunctionDef, If, Import, List, Name, Namespace, Return, Sentence, Subscript, SyntaxTree, Try, Unkown, While, compileandrun
 
 
 class Parser:
@@ -53,6 +53,8 @@ class Parser:
             t=self.try_sentence()
         elif self.token=='class':
             t=self.class_sentence()
+        elif self.token=='import':
+            t=self.import_sentence()
         else:
             t = self.expression_sentence()
         return t
@@ -64,11 +66,24 @@ class Parser:
         return t
 
     @compileandrun
+    def import_sentence(self):
+        self.expect('import')
+        t=Import(name=self.expression(),parser=self)
+        return t
+
+    @compileandrun
     def class_sentence(self):
-        t=Class(parser=self,name='',body=[])
+        t=Class(parser=self,name='',bases=[],body=[])
         self.expect('class')
         t.name=self.token.name
         self.expect(self.token.name)
+        if self.token=='(':
+            self.expect('(')
+            t.bases.append(self.expression())
+            while self.token==',':
+                self.expect(',')
+                t.bases.append(self.expression())
+            self.expect(')')
         self.expect(':')
         t.body=[self.unkown()]
         return t
@@ -298,7 +313,7 @@ class Parser:
     @compileandrun
     def primary_expression(self):
         t = None
-        if self.token.name.isalpha():
+        if self.is_name(self.token.name):
             t = Name(id=self.token.name, mode='load',parser=self)
             self.expect(self.token.name)
         elif self.token.name.isalnum():
@@ -336,3 +351,14 @@ class Parser:
                     t.values.append(self.expression())
             self.expect('}')
         return t
+
+    def is_name(self,s):
+        '''
+        是标识符
+        '''
+        if not s[0].isalpha():
+            return False
+        for i in range(1,len(s)):
+            if not(s[i].isalpha() or s[i].isalnum() or s[i]=='_'):
+                return False
+        return True
