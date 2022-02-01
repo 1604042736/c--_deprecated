@@ -30,16 +30,16 @@ class Lexer:
                        r'[0-9]+\.[0-9]+',  # 小数
                         r'[0-9]+',  # 整数
                         r'>=|<=|>|<|==|!=',  # 长度大于1的符号
-                        r"'.+'|\".+\"", #字符串
+                        r"'.+'|\".+\"",  # 字符串
                         r'( |\t)+',  # 缩进
                         r'.+?',  # 匹配剩余字符
                         ])
 
-    def __init__(self, lines, filename, startlineno=0,endlineno=-1):
+    def __init__(self, lines, filename, startlineno=0, endlineno=-1):
         self.lines = lines  # 以行为单位的代码
         self.filename = filename
         self.lineno = startlineno  # 行(开始)
-        self.endlineno=endlineno if endlineno!=-1 else len(lines)   #结束位置
+        self.endlineno = endlineno if endlineno != -1 else len(lines)  # 结束位置
         self.tokens = None  # 当前行所有的token
         self.tokenindex = 0  # 索引
         self.eof = False  # 代码是否结束
@@ -128,7 +128,8 @@ class Lexer:
 
     def expect(self, expected):
         if expected not in (self.token.name, self.token.type):
-            raise SyntaxException(self.filename,self.lines[self.lineno],self.lineno,f'期望得到{expected},实际得到{self.token}')
+            raise SyntaxException(
+                self.filename, self.lines[self.lineno], self.lineno, f'期望得到{expected},实际得到{self.token}')
         return self.get_token()
 
     def skip_block(self):
@@ -138,7 +139,7 @@ class Lexer:
         startline = self.lineno
         indent = self.get_indent(self.lines[self.lineno])  # 获取当前缩进
         self.lineno += 1
-        #print(self.lines,self.lineno)
+        # print(self.lines,self.lineno)
         while (self.lineno) < self.endlineno and indent in self.get_indent(self.lines[self.lineno]):
             self.lineno += 1
         endline = self.lineno

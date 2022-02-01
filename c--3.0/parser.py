@@ -1,4 +1,3 @@
-from ast import ExceptHandler
 from syntaxtree import Assign, Attribute, BinOp, BoolOp, Break, Call, Class, Compare, Constant, Continue, Dict, ExceptionHandle, Expr, FunctionDef, If, Import, List, Name, Namespace, Return, Sentence, Subscript, SyntaxTree, Try, Unkown, While, compileandrun
 
 
@@ -25,7 +24,7 @@ class Parser:
         return line
 
     def start(self):
-        t = Namespace(body=self.body(),parser=self)
+        t = Namespace(body=self.body(), parser=self)
         return t
 
     def body(self, indent=''):
@@ -49,12 +48,12 @@ class Parser:
             t = self.funcdef_sentence()
         elif self.token == 'return':
             t = self.return_sentence()
-        elif self.token=='try':
-            t=self.try_sentence()
-        elif self.token=='class':
-            t=self.class_sentence()
-        elif self.token=='import':
-            t=self.import_sentence()
+        elif self.token == 'try':
+            t = self.try_sentence()
+        elif self.token == 'class':
+            t = self.class_sentence()
+        elif self.token == 'import':
+            t = self.import_sentence()
         else:
             t = self.expression_sentence()
         return t
@@ -62,57 +61,58 @@ class Parser:
     def unkown(self):
         startline, endline, indent = self.skip_block()
         # 先不解析代码块
-        t = Unkown(parser=self, indent=indent, startlineno=startline, endlineno=endline)
+        t = Unkown(parser=self, indent=indent,
+                   startlineno=startline, endlineno=endline)
         return t
 
     @compileandrun
     def import_sentence(self):
         self.expect('import')
-        t=Import(name=self.expression(),parser=self)
+        t = Import(name=self.expression(), parser=self)
         return t
 
     @compileandrun
     def class_sentence(self):
-        t=Class(parser=self,name='',bases=[],body=[])
+        t = Class(parser=self, name='', bases=[], body=[])
         self.expect('class')
-        t.name=self.token.name
+        t.name = self.token.name
         self.expect(self.token.name)
-        if self.token=='(':
+        if self.token == '(':
             self.expect('(')
             t.bases.append(self.expression())
-            while self.token==',':
+            while self.token == ',':
                 self.expect(',')
                 t.bases.append(self.expression())
             self.expect(')')
         self.expect(':')
-        t.body=[self.unkown()]
+        t.body = [self.unkown()]
         return t
 
     @compileandrun
     def try_sentence(self):
-        t=Try(parser=self,body=[],handles=[])
+        t = Try(parser=self, body=[], handles=[])
         self.expect('try')
         self.expect(':')
-        t.body=[self.unkown()]
-        while self.token=='except':
+        t.body = [self.unkown()]
+        while self.token == 'except':
             t.handles.append(self.except_sentence())
         return t
 
     def except_sentence(self):
-        t=ExceptionHandle(parser=self,type=None,body=[])
+        t = ExceptionHandle(parser=self, type=None, body=[])
         self.expect('except')
-        if self.token==':':
+        if self.token == ':':
             self.expect(':')
-            t.body=[self.unkown()]
+            t.body = [self.unkown()]
         else:
-            t.type=self.expression()
+            t.type = self.expression()
             self.expect(':')
-            t.body=[self.unkown()]
+            t.body = [self.unkown()]
         return t
 
     @compileandrun
     def if_sentence(self):
-        t=If(exp=None,body=[],elses=[],parser=self)
+        t = If(exp=None, body=[], elses=[], parser=self)
         self.expect('if')
         t.exp = self.expression()
         self.expect(':')
@@ -127,7 +127,7 @@ class Parser:
 
     @compileandrun
     def while_sentence(self):
-        t = While(exp=None, body=[],parser=self)
+        t = While(exp=None, body=[], parser=self)
         self.expect('while')
         t.exp = self.expression()
         self.expect(':')
@@ -136,7 +136,7 @@ class Parser:
 
     @compileandrun
     def funcdef_sentence(self):
-        t = FunctionDef(name=None, args=None, body=[],parser=self)
+        t = FunctionDef(name=None, args=None, body=[], parser=self)
         self.expect('def')
         t.name = self.token.name
         self.expect(self.token.name)
@@ -149,7 +149,7 @@ class Parser:
 
     @compileandrun
     def return_sentence(self):
-        t = Return(value=None,parser=self)
+        t = Return(value=None, parser=self)
         self.expect('return')
         t.value = self.expression()
         return t
@@ -158,7 +158,7 @@ class Parser:
     def expression_sentence(self):
         t = self.expression()
         if not isinstance(t, Sentence):
-            t = Expr(exp=t,parser=self)
+            t = Expr(exp=t, parser=self)
         return t
 
     @compileandrun
@@ -167,7 +167,7 @@ class Parser:
         if self.token == '=':
             self.expect('=')
             t.mode = 'store'
-            p = Assign(targets=[t], value=self.expression(),parser=self)
+            p = Assign(targets=[t], value=self.expression(), parser=self)
             t = p
         return t
 
@@ -179,7 +179,7 @@ class Parser:
     def logical_or_expression(self):
         t = self.logical_and_expression()
         if self.token == 'or':
-            p = BoolOp(op='or', values=[t],parser=self)
+            p = BoolOp(op='or', values=[t], parser=self)
             t = p
             while self.token == 'or':
                 self.expect('or')
@@ -190,7 +190,7 @@ class Parser:
     def logical_and_expression(self):
         t = self.inclusive_or_expression()
         if self.token == 'and':
-            p = BoolOp(op='and', values=[t],parser=self)
+            p = BoolOp(op='and', values=[t], parser=self)
             t = p
             while self.token == 'and':
                 self.expect('and')
@@ -202,7 +202,8 @@ class Parser:
         t = self.exclusive_or_expression()
         while self.token == '|':
             self.expect('|')
-            p = BinOp(left=t, op='|', right=self.inclusive_or_expression(),parser=self)
+            p = BinOp(left=t, op='|',
+                      right=self.inclusive_or_expression(), parser=self)
             t = p
         return t
 
@@ -211,7 +212,7 @@ class Parser:
         t = self.and_expression()
         while self.token == '^':
             self.expect('^')
-            p = BinOp(left=t, op='^', right=self.and_expression(),parser=self)
+            p = BinOp(left=t, op='^', right=self.and_expression(), parser=self)
             t = p
         return t
 
@@ -220,7 +221,8 @@ class Parser:
         t = self.relational_expression()
         while self.token == '&':
             self.expect('&')
-            p = BinOp(left=t, op='&', right=self.relational_expression(),parser=self)
+            p = BinOp(left=t, op='&',
+                      right=self.relational_expression(), parser=self)
             t = p
         return t
 
@@ -230,7 +232,7 @@ class Parser:
         if self.token.name in ('>=', '<=', '==', '!=', '>', '<'):
             b = self.compares()
             p = Compare(left=t, ops=[i for i, j in b],
-                        comparators=[j for i, j in b],parser=self)
+                        comparators=[j for i, j in b], parser=self)
             t = p
         return t
 
@@ -246,7 +248,7 @@ class Parser:
     def shift_expression(self):
         t = self.additive_expression()
         while self.token == '>>' or self.token == '<<':
-            p = BinOp(left=t, op=self.token.name,parser=self)
+            p = BinOp(left=t, op=self.token.name, parser=self)
             self.expect(self.token.name)
             p.__dict__['right'] = self.additive_expression()
             t = p
@@ -256,7 +258,7 @@ class Parser:
     def additive_expression(self):
         t = self.multiplicative_expression()
         while self.token.name in ('+', '-'):
-            p = BinOp(left=t, op=self.token.name,parser=self)
+            p = BinOp(left=t, op=self.token.name, parser=self)
             self.expect(self.token.name)
             p.__dict__['right'] = self.multiplicative_expression()
             t = p
@@ -266,7 +268,7 @@ class Parser:
     def multiplicative_expression(self):
         t = self.cast_expression()
         while self.token.name in ('*', '/', '%'):
-            p = BinOp(left=t, op=self.token.name,parser=self)
+            p = BinOp(left=t, op=self.token.name, parser=self)
             self.expect(self.token.name)
             p.__dict__['right'] = self.cast_expression()
             t = p
@@ -284,17 +286,19 @@ class Parser:
         while self.token.name in ('[', '(', '.'):
             if self.token == '[':
                 self.expect('[')
-                p = Subscript(value=t, slice=self.expression(), mode='load',parser=self)
+                p = Subscript(value=t, slice=self.expression(),
+                              mode='load', parser=self)
                 self.expect(']')
                 t = p
             elif self.token == '(':
                 self.expect('(')
-                p = Call(func=t, args=self.argument_expression_list(),parser=self)
+                p = Call(func=t, args=self.argument_expression_list(), parser=self)
                 self.expect(')')
                 t = p
             elif self.token == '.':
                 self.expect('.')
-                p = Attribute(value=t, attr=self.token.name, mode='load',parser=self)
+                p = Attribute(value=t, attr=self.token.name,
+                              mode='load', parser=self)
                 self.expect(self.token.name)
                 t = p
         return t
@@ -314,13 +318,13 @@ class Parser:
     def primary_expression(self):
         t = None
         if self.is_name(self.token.name):
-            t = Name(id=self.token.name, mode='load',parser=self)
+            t = Name(id=self.token.name, mode='load', parser=self)
             self.expect(self.token.name)
         elif self.token.name.isalnum():
-            t = Constant(value=int(self.token.name),parser=self)
+            t = Constant(value=int(self.token.name), parser=self)
             self.expect(self.token.name)
         elif self.token.name[0] in ('"', "'"):
-            t = Constant(value=self.token.name[1:-1],parser=self)
+            t = Constant(value=self.token.name[1:-1], parser=self)
             self.expect(self.token.name)
         elif self.token == '(':
             self.expect('(')
@@ -328,7 +332,7 @@ class Parser:
                 t = self.expression()
             self.expect(')')
         elif self.token == '[':
-            t = List(list=[],parser=self)
+            t = List(list=[], parser=self)
             self.expect('[')
             if self.token != ']':
                 val = self.expression()
@@ -338,7 +342,7 @@ class Parser:
                     t.list.append(self.expression())
             self.expect(']')
         elif self.token == '{':
-            t = Dict(keys=[], values=[],parser=self)
+            t = Dict(keys=[], values=[], parser=self)
             self.expect('{')
             if self.token != '}':
                 t.keys.append(self.expression())
@@ -352,13 +356,13 @@ class Parser:
             self.expect('}')
         return t
 
-    def is_name(self,s):
+    def is_name(self, s):
         '''
         是标识符
         '''
         if not s[0].isalpha():
             return False
-        for i in range(1,len(s)):
-            if not(s[i].isalpha() or s[i].isalnum() or s[i]=='_'):
+        for i in range(1, len(s)):
+            if not(s[i].isalpha() or s[i].isalnum() or s[i] == '_'):
                 return False
         return True
