@@ -114,7 +114,7 @@ class Frame:
                         callarg.insert(0, self.stack.pop())
                     if type(func).__name__ == 'ByteCode':
                         callframe = Frame()
-                        callframe.globals = self.globals | self.locals  # 被调用函数的globals为调用方的globals和locals的合集
+                        callframe.globals = dict(self.globals,**self.locals)  # 被调用函数的globals为调用方的globals和locals的合集
                         callframe.callarg = callarg
                         self.stack.append(callframe.eval(func))
                     else:  # 如果是内置函数
@@ -171,7 +171,7 @@ class Frame:
                 elif args[0] == 'LEN':
                     self.stack.append(len(self.stack.pop()))
                 elif args[0] == 'MERGE':  # 合并
-                    self.locals |= self.stack.pop().locals
+                    self.locals = dict(self.locals,**self.stack.pop().locals)
             except Exception as e:
                 self.exception = [type(e).__name__ + ': ' + str(e), args[-1]]
                 if self.tryop:  # 有对应的异常处理语句

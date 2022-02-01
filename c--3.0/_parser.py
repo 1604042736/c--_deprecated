@@ -1,4 +1,4 @@
-from syntaxtree import Assign, Attribute, BinOp, BoolOp, Break, Call, Class, Compare, Constant, Continue, Dict, ExceptionHandle, Expr, FunctionDef, If, Import, List, Name, Namespace, Return, Sentence, Subscript, SyntaxTree, Try, Unkown, While, compileandrun
+from syntaxtree import Assign, Attribute, BinOp, BoolOp, Break, Call, Class, Compare, Constant, Continue, Dict, ExceptionHandle, Expr, FunctionDef, If, Import, List, Name, Namespace, Return, Sentence, Subscript, Try, Unkown, While
 
 
 class Parser:
@@ -33,7 +33,6 @@ class Parser:
             t.append(self.sentence())
         return t
 
-    @compileandrun
     def sentence(self):
         t = None
         if self.token == 'if':
@@ -45,7 +44,7 @@ class Parser:
         elif self.token == 'continue':
             t = Continue(parser=self)
         elif self.token == 'def':
-            t = self.funcdef_sentence()
+            t = self.def_sentence()
         elif self.token == 'return':
             t = self.return_sentence()
         elif self.token == 'try':
@@ -56,6 +55,7 @@ class Parser:
             t = self.import_sentence()
         else:
             t = self.expression_sentence()
+        t.run()
         return t
 
     def unkown(self):
@@ -65,13 +65,11 @@ class Parser:
                    startlineno=startline, endlineno=endline)
         return t
 
-    @compileandrun
     def import_sentence(self):
         self.expect('import')
         t = Import(name=self.expression(), parser=self)
         return t
 
-    @compileandrun
     def class_sentence(self):
         t = Class(parser=self, name='', bases=[], body=[])
         self.expect('class')
@@ -88,7 +86,6 @@ class Parser:
         t.body = [self.unkown()]
         return t
 
-    @compileandrun
     def try_sentence(self):
         t = Try(parser=self, body=[], handles=[])
         self.expect('try')
@@ -110,7 +107,6 @@ class Parser:
             t.body = [self.unkown()]
         return t
 
-    @compileandrun
     def if_sentence(self):
         t = If(exp=None, body=[], elses=[], parser=self)
         self.expect('if')
@@ -125,7 +121,6 @@ class Parser:
             t.elses.append(p)
         return t
 
-    @compileandrun
     def while_sentence(self):
         t = While(exp=None, body=[], parser=self)
         self.expect('while')
@@ -134,8 +129,7 @@ class Parser:
         t.body = [self.unkown()]
         return t
 
-    @compileandrun
-    def funcdef_sentence(self):
+    def def_sentence(self):
         t = FunctionDef(name=None, args=None, body=[], parser=self)
         self.expect('def')
         t.name = self.token.name
@@ -147,21 +141,18 @@ class Parser:
         t.body = [self.unkown()]
         return t
 
-    @compileandrun
     def return_sentence(self):
         t = Return(value=None, parser=self)
         self.expect('return')
         t.value = self.expression()
         return t
 
-    @compileandrun
     def expression_sentence(self):
         t = self.expression()
         if not isinstance(t, Sentence):
             t = Expr(exp=t, parser=self)
         return t
 
-    @compileandrun
     def expression(self):
         t = self.conditional_expression()
         if self.token == '=':
@@ -171,11 +162,9 @@ class Parser:
             t = p
         return t
 
-    @compileandrun
     def conditional_expression(self):
         return self.logical_or_expression()
 
-    @compileandrun
     def logical_or_expression(self):
         t = self.logical_and_expression()
         if self.token == 'or':
@@ -186,7 +175,6 @@ class Parser:
                 t.values.append(self.logical_and_expression())
         return t
 
-    @compileandrun
     def logical_and_expression(self):
         t = self.inclusive_or_expression()
         if self.token == 'and':
@@ -197,7 +185,6 @@ class Parser:
                 t.values.append(self.inclusive_or_expression())
         return t
 
-    @compileandrun
     def inclusive_or_expression(self):
         t = self.exclusive_or_expression()
         while self.token == '|':
@@ -207,7 +194,6 @@ class Parser:
             t = p
         return t
 
-    @compileandrun
     def exclusive_or_expression(self):
         t = self.and_expression()
         while self.token == '^':
@@ -216,7 +202,6 @@ class Parser:
             t = p
         return t
 
-    @compileandrun
     def and_expression(self):
         t = self.relational_expression()
         while self.token == '&':
@@ -226,7 +211,6 @@ class Parser:
             t = p
         return t
 
-    @compileandrun
     def relational_expression(self):
         t = self.shift_expression()
         if self.token.name in ('>=', '<=', '==', '!=', '>', '<'):
@@ -244,7 +228,6 @@ class Parser:
             result.append((name, self.shift_expression()))
         return result
 
-    @compileandrun
     def shift_expression(self):
         t = self.additive_expression()
         while self.token == '>>' or self.token == '<<':
@@ -254,7 +237,6 @@ class Parser:
             t = p
         return t
 
-    @compileandrun
     def additive_expression(self):
         t = self.multiplicative_expression()
         while self.token.name in ('+', '-'):
@@ -264,7 +246,6 @@ class Parser:
             t = p
         return t
 
-    @compileandrun
     def multiplicative_expression(self):
         t = self.cast_expression()
         while self.token.name in ('*', '/', '%'):
@@ -280,7 +261,6 @@ class Parser:
     def unary_expression(self):
         return self.postfix_expression()
 
-    @compileandrun
     def postfix_expression(self):
         t = self.primary_expression()
         while self.token.name in ('[', '(', '.'):
@@ -314,7 +294,6 @@ class Parser:
                 t.append(p)
         return t
 
-    @compileandrun
     def primary_expression(self):
         t = None
         if self.is_name(self.token.name):

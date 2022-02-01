@@ -1,17 +1,14 @@
 import argparse
-from ast import arg
-import sys
 from syntaxtree import _compile
 
 parser = argparse.ArgumentParser(description='c--3.0')
 parser.add_argument("filename")
 parser.add_argument("-d", "--debug", help="显示调试信息", action='store_true')
 parser.add_argument("-v", "--version", help="显示版本信息", action='store_true')
-
+args=parser.parse_args()
 
 def main():
-    global parser
-    args = parser.parse_args()
+    global args
     if args.version:
         print("c-- 3.0")
         return

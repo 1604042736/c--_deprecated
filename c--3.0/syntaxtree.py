@@ -50,7 +50,8 @@ class SyntaxTree:
         self.envir = kwargs['parser'].envir
         self.lineno = kwargs['parser'].lexer.lineno
         self.lexer = kwargs['parser'].lexer
-        self.__dict__ |= kwargs
+        #为了兼容旧版本python所以不使用 | 运算符
+        self.__dict__ = dict(self.__dict__, **kwargs)
 
     def print(self, space=0):
         '''
@@ -364,7 +365,7 @@ class Unkown(SyntaxTree):
     @haverun
     def run(self, pt, l, i):
         from lexer import Lexer
-        from parser import Parser
+        from _parser import Parser
         filename = self.lexer.filename
         lexer = Lexer(
             self.lexer.lines, filename, startlineno=self.startlineno, endlineno=self.endlineno)
@@ -442,7 +443,8 @@ class FunctionDef(Sentence):
         self.load_val(self)
         self.store_name(self.name)
         self.runcount = 0
-        self._values = self.envir.curframe.globals | self.envir.curframe.locals  # 函数所在作用域的全局变量和局部变量
+        self._values = dict(self.envir.curframe.globals, **
+                            self.envir.curframe.locals)  # 函数所在作用域的全局变量和局部变量
 
     def __call__(self, arglen):
         # print(self.envir,self.envir.frames)
@@ -537,17 +539,18 @@ class Class(Sentence):
         for base in self.bases:
             base.run()
             _class = self.pop()
-            self.__dict__ |= _class.get_attr()
+            self.__dict__ = dict(self.__dict__, **_class.get_attr())
 
         frame = Frame()
-        frame.globals = self.envir.curframe.globals | self.envir.curframe.locals
+        frame.globals = dict(self.envir.curframe.globals,
+                             **self.envir.curframe.locals)
         self.envir.add_frame(frame)
         self.run_list(self.body)
         # 去除一些不必要的东西
         frame.locals.pop('globals')
         frame.locals.pop('stack')
         frame.locals.pop('builtins')
-        self.__dict__ |= frame.locals
+        self.__dict__ = dict(self.__dict__, **frame.locals)
         self.envir.pop_frame()
 
     def get_attr(self):
@@ -591,6 +594,7 @@ class Import(Sentence):
     def import_fromnamespace(self, name):
         try:
             name.run()
+            self.store_name(self.name.attr)
         except NameNotFoundException as e:
             namespace_name = e.name  # 锁定namespace的内容
             # 解析
@@ -600,15 +604,14 @@ class Import(Sentence):
             # 加载
             name.run()
             self.store_name(self.name.attr)
-            # 删除
-            self.envir.curframe.locals.pop(namespace_name)
 
     def import_namespace(self, name):
         '''
         包含一个namespace
         '''
         frame = Frame()
-        frame.globals = self.envir.curframe.globals | self.envir.curframe.locals
+        frame.globals = dict(self.envir.curframe.globals,
+                             **self.envir.curframe.locals)
         self.envir.add_frame(frame)
         _, namespace = _compile(name+'.txt', _envir=self.envir)
         self.envir.pop_frame()
@@ -617,28 +620,15 @@ class Import(Sentence):
         frame.locals.pop('globals')
         frame.locals.pop('stack')
         frame.locals.pop('builtins')
-        namespace.__dict__ |= frame.locals
+        namespace.__dict__ = dict(namespace.__dict__, **frame.locals)
         # print(namespace.envir,namespace.envir.frames,envir,envir.frames,self.envir.frames)
         return namespace
-
-
-def compileandrun(func):
-    '''
-    编译后运行语法树
-    '''
-    def wrap(*args):
-        tree = func(*args)
-        if isinstance(tree, Sentence):  # 是语句并且可以运行
-            tree.run()
-        return tree
-    return wrap
-
 
 def _compile(filename, debug=False, _envir=None):
     from environment import Environment
     from exception import CException
     from lexer import Lexer
-    from parser import Parser
+    from _parser import Parser
     with open(filename, encoding='utf-8')as file:
         lines = file.readlines()
         envir = _envir if _envir else Environment()
