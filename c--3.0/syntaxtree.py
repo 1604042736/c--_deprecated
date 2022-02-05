@@ -1,16 +1,13 @@
 import operator
 from frame import Frame
 from exception import NameNotFoundException, ReturnException, BreakException, ContinueException, JumpException
-
+import pysnooper
 
 def haverun(func):
     '''
     已经运行过
     '''
     def wrap(*args):
-        if args[0].runcount == -1:
-            args[0].runcount = 1
-            return
         try:
             a = func(*args)
         except Exception as e:
@@ -19,7 +16,6 @@ def haverun(func):
         args[0].runcount += 1
         return a
     return wrap
-
 
 class SyntaxTree:
     '''

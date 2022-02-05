@@ -1,4 +1,2 @@
-import test2.f1
-print(f1(10))
-import test2.f2
-f2(10)
+import test2
+print(test2.f1(10))
