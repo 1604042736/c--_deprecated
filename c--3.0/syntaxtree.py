@@ -1,6 +1,7 @@
 import operator
 from frame import Frame
-from exception import NameNotFoundException, ReturnException, BreakException, ContinueException, JumpException
+from exception import NameNotFoundException, ReturnException, BreakException, ContinueException, JumpException, SyntaxException
+import pysnooper
 
 class SyntaxTree:
     '''
@@ -40,7 +41,7 @@ class SyntaxTree:
         print('  '*space, end='')
         print(self.__class__.__name__)
         for key, val in self.__dict__.items():
-            if key in ('_values', '_class', 'envir', 'lineno', 'runcount', '_attr', 'lexer', 'parser'):
+            if key in ('_values', '_class', 'envir', 'lineno', 'runcount', '_attr', 'lexer', 'parser','target','instance'):
                 continue
             print('  '*(space+1), end='')
             print(key, end='')
@@ -71,14 +72,16 @@ class SyntaxTree:
         运行
         '''
 
-    def run_list(self, l):
+    def run_list(self, l,run=True):
         '''
         运行列表
         '''
-        for i, t in enumerate(l):
+        for i,t in enumerate(l):
             if isinstance(t, Unkown):
                 t.run(self, l, i)
-            else:
+                #一般情况下,Unkown永远是列表的最后一个
+                break
+            elif run:
                 t.run()
 
     def load_const(self, a):
@@ -91,7 +94,7 @@ class SyntaxTree:
         '''
         加载变量
         '''
-        # print(self.envir.curframe)
+        #print(a,self.envir.frames)
         try:
             self.envir.curframe.stack.append(self.envir.curframe.locals[a])
         except KeyError:
@@ -174,22 +177,11 @@ class SyntaxTree:
         return_val = None
         # print(self.envir.curframe)
         # print(self.envir)
-        if isinstance(func, FunctionDef):  # 不是内置函数
-            try:
-                args = []
-                for i in range(a):
-                    args.append(self.pop())
-                args = args[::-1]
-                func(*args)
-            except ReturnException:
-                return_val = self.pop()
-            self.envir.pop_frame()
-        else:  # 是内置函数或者类
-            args = []
-            for i in range(a):
-                args.append(self.pop())
-            args = args[::-1]
-            return_val = func(*args)
+        args = []
+        for i in range(a):
+            args.append(self.pop())
+        args = args[::-1]
+        return_val = func(*args)
         return return_val
 
     def load_attr(self, a):
@@ -197,7 +189,12 @@ class SyntaxTree:
         获取属性
         '''
         val = self.pop()
-        self.load_val(getattr(val, a))
+        attr=getattr(val, a)
+        try:
+            attr.gotattr()
+        except AttributeError:
+            pass
+        self.load_val(attr)
 
     def store_attr(self, a):
         '''
@@ -225,11 +222,15 @@ class SyntaxTree:
             d[self.pop()] = self.pop()
         self.load_val(d)
 
+    def gotattr(self,*args):
+        '''
+        被获取attr
+        '''
+
 
 class Namespace(SyntaxTree):
     def run(self):
-        for t in self.body:
-            t.run()
+        self.run_list(self.body)
 
 
 class Expr(SyntaxTree):
@@ -240,9 +241,12 @@ class Expr(SyntaxTree):
 
 class Assign(SyntaxTree):
     def run(self):
+        l=len(self.envir.curframe.stack)
         self.value.run()
+        vals=self.envir.curframe.stack[l:]  #获取新增的值
         for t in self.targets:
             t.run()
+        self.envir.curframe.stack+=vals
 
 
 class BoolOp(SyntaxTree):
@@ -342,14 +346,14 @@ class Unkown(SyntaxTree):
             msg = (lexer.filename, global_lineno)
             try:
                 p = parser.sentence()
-                if msg not in SyntaxTree.memory:  # 没有保存
-                    l.insert(i, p)  # 将语句添加到语法树对应的列表中
-                    SyntaxTree.memory.append(msg)
+                if p!=None:
+                    if msg not in SyntaxTree.memory:  # 没有保存
+                        l.insert(i, p)  # 将语句添加到语法树对应的列表中
+                        SyntaxTree.memory.append(msg)
             except JumpException as e:
                 if msg not in SyntaxTree.memory:
                     l.insert(i, e.ast)
                     SyntaxTree.memory.append(msg)
-                e.ast.runcount = 1  # 因为之前已经运行过一次
                 # 全部解析完
                 if self.startlineno+1 >= self.endlineno and isinstance(l[-1], Unkown):
                     l.pop()
@@ -359,7 +363,7 @@ class Unkown(SyntaxTree):
             i += 1
             # print(lexer.lineno,self.endlineno)
             # pt.print()
-        l.pop(i)  # 全部解析完了
+        l.pop()  # 全部解析完了
 
     def get_lineno(self, lines, lineno):
         '''
@@ -429,7 +433,24 @@ class FunctionDef(SyntaxTree):
                     self.load_val(args[i])
                 self.store_name(arg.id)
         # print(self.envir.curframe)
-        self.run_list(self.body)
+        try:
+            self.run_list(self.body)
+        except ReturnException:
+            pass
+        if not self.envir.curframe.stack:
+            val=None #默认返回None
+        else:
+            val=self.pop()
+        self.envir.pop_frame()
+        return val
+
+    def gotattr(self,*args):
+        '''
+        被获取attr
+        '''
+        for t in self.prefix:
+            if 'attr'in t.times:
+                t.run(*args)
 
 
 class Return(SyntaxTree):
@@ -585,6 +606,7 @@ def _compile(filename, debug=False, _envir=None):
         parser = Parser(lexer, envir)
         try:
             t = parser.start()
+            t.run()
             if debug:
                 t.print()
             return envir, t
