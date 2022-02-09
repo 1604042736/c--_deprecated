@@ -19,6 +19,8 @@ class Token:
     def __str__(self):
         return f'Token(file="{self.filename}",name="{self.name}",lineno={self.lineno},linepos={self.linepos},type={self.type})'
 
+    def __hash__(self) -> int:
+        return str.__hash__(self.name)
     __repr__ = __str__
 
 

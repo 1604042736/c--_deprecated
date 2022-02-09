@@ -1,21 +1,6 @@
 import operator
 from frame import Frame
 from exception import NameNotFoundException, ReturnException, BreakException, ContinueException, JumpException
-import pysnooper
-
-def haverun(func):
-    '''
-    已经运行过
-    '''
-    def wrap(*args):
-        try:
-            a = func(*args)
-        except Exception as e:
-            args[0].runcount += 1
-            raise e
-        args[0].runcount += 1
-        return a
-    return wrap
 
 class SyntaxTree:
     '''
@@ -42,7 +27,6 @@ class SyntaxTree:
     memory = []
 
     def __init__(self, *args, **kwargs):
-        self.runcount = 0
         self.envir = kwargs['parser'].envir
         self.lineno = kwargs['parser'].lexer.lineno
         self.lexer = kwargs['parser'].lexer
@@ -192,7 +176,11 @@ class SyntaxTree:
         # print(self.envir)
         if isinstance(func, FunctionDef):  # 不是内置函数
             try:
-                func(a)
+                args = []
+                for i in range(a):
+                    args.append(self.pop())
+                args = args[::-1]
+                func(*args)
             except ReturnException:
                 return_val = self.pop()
             self.envir.pop_frame()
@@ -238,28 +226,19 @@ class SyntaxTree:
         self.load_val(d)
 
 
-class Sentence(SyntaxTree):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.runcount = -2  # 语句在解析时就已运行,设置成-2防止重复运行
-
-
 class Namespace(SyntaxTree):
-    @haverun
     def run(self):
         for t in self.body:
             t.run()
 
 
-class Expr(Sentence):
-    @haverun
+class Expr(SyntaxTree):
     def run(self):
         self.exp.run()
         self.pop()
 
 
-class Assign(Sentence):
-    @haverun
+class Assign(SyntaxTree):
     def run(self):
         self.value.run()
         for t in self.targets:
@@ -267,7 +246,6 @@ class Assign(Sentence):
 
 
 class BoolOp(SyntaxTree):
-    @haverun
     def run(self):
         self.values[0].run()
         for i in range(1, len(self.values)):
@@ -276,7 +254,6 @@ class BoolOp(SyntaxTree):
 
 
 class BinOp(SyntaxTree):
-    @haverun
     def run(self):
         self.left.run()
         self.right.run()
@@ -284,13 +261,11 @@ class BinOp(SyntaxTree):
 
 
 class Constant(SyntaxTree):
-    @haverun
     def run(self):
         self.load_const(self.value)
 
 
 class Name(SyntaxTree):
-    @haverun
     def run(self):
         if self.mode == 'load':
             self.load_name(self.id)
@@ -299,7 +274,6 @@ class Name(SyntaxTree):
 
 
 class Compare(SyntaxTree):
-    @haverun
     def run(self):
         self.left.run()
         for i in range(len(self.ops)):
@@ -317,7 +291,6 @@ class Compare(SyntaxTree):
 
 
 class Subscript(SyntaxTree):
-    @haverun
     def run(self):
         self.slice.run()
         self.value.run()
@@ -328,7 +301,6 @@ class Subscript(SyntaxTree):
 
 
 class Call(SyntaxTree):
-    @haverun
     def run(self):
         for t in self.args:
             t.run()
@@ -337,7 +309,6 @@ class Call(SyntaxTree):
 
 
 class Attribute(SyntaxTree):
-    @haverun
     def run(self):
         self.value.run()
         if self.mode == 'load':
@@ -346,8 +317,7 @@ class Attribute(SyntaxTree):
             self.store_attr(self.attr)
 
 
-class If(Sentence):
-    @haverun
+class If(SyntaxTree):
     def run(self):
         self.exp.run()
         if self.is_true():
@@ -358,7 +328,6 @@ class If(Sentence):
 
 
 class Unkown(SyntaxTree):
-    @haverun
     def run(self, pt, l, i):
         from lexer import Lexer
         from _parser import Parser
@@ -403,8 +372,7 @@ class Unkown(SyntaxTree):
         return newlineno
 
 
-class While(Sentence):
-    @haverun
+class While(SyntaxTree):
     def run(self):
         self.exp.run()
         while self.is_true():
@@ -417,24 +385,21 @@ class While(Sentence):
             self.exp.run()
 
 
-class Break(Sentence):
-    @haverun
+class Break(SyntaxTree):
     def run(self):
         raise BreakException(self, 'break不应该在这里出现')
 
 
-class Continue(Sentence):
-    @haverun
+class Continue(SyntaxTree):
     def run(self):
         raise ContinueException(self, 'continue不应该在这里出现')
 
 
-class FunctionDef(Sentence):
+class FunctionDef(SyntaxTree):
     def __init__(self, *args, **kwargs):
         self.type = 'normal'  # 函数类型(普通函数,方法)
         super().__init__(*args, **kwargs)
 
-    @haverun
     def run(self):
         self.load_val(self)
         self.store_name(self.name)
@@ -442,15 +407,11 @@ class FunctionDef(Sentence):
         self._values = dict(self.envir.curframe.globals, **
                             self.envir.curframe.locals)  # 函数所在作用域的全局变量和局部变量
 
-    def __call__(self, arglen):
+    def __call__(self, *args):
         # print(self.envir,self.envir.frames)
-        args = []
         # self.print()
         # print(self.envir.curframe)
         # print(self.envir)
-        for i in range(arglen):
-            args.append(self.pop())
-        args = args[::-1]
         frame = Frame()
         frame.globals = self._values
         # print(frame.globals)
@@ -471,15 +432,13 @@ class FunctionDef(Sentence):
         self.run_list(self.body)
 
 
-class Return(Sentence):
-    @haverun
+class Return(SyntaxTree):
     def run(self):
         self.value.run()
         raise ReturnException(self, 'return不应该在这里出现')
 
 
 class List(SyntaxTree):
-    @haverun
     def run(self):
         for i in self.list:
             i.run()
@@ -487,7 +446,6 @@ class List(SyntaxTree):
 
 
 class Dict(SyntaxTree):
-    @haverun
     def run(self):
         for i in range(len(self.keys)):
             self.keys[i].run()
@@ -495,8 +453,7 @@ class Dict(SyntaxTree):
         self.make_dict(len(self.keys))
 
 
-class Try(Sentence):
-    @haverun
+class Try(SyntaxTree):
     def run(self):
         try:
             self.run_list(self.body)
@@ -509,7 +466,6 @@ class Try(Sentence):
 
 
 class ExceptionHandle(SyntaxTree):
-    @haverun
     def run(self, e):
         if self.type == None:
             self.run_list(self.body)
@@ -521,11 +477,9 @@ class ExceptionHandle(SyntaxTree):
         return False
 
 
-class Class(Sentence):
-    @haverun
+class Class(SyntaxTree):
     def run(self):
         # self.print()
-        self.runcount = 1
         self.load_val(self)
         self.store_name(self.name)
         # 运行类,获取类的属性
@@ -577,8 +531,7 @@ class Class(Sentence):
         return instance
 
 
-class Import(Sentence):
-    @haverun
+class Import(SyntaxTree):
     def run(self):
         if isinstance(self.name, Name):
             namespace = self.import_namespace(self.name.id)

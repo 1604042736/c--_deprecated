@@ -1,2 +1,5 @@
-import test2
-print(test2.f1(10))
+def f1(n):
+    if n==1 or n==2:
+        return 1
+    return f1(n-1)+f1(n-2)
+print(f1(10))

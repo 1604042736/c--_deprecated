@@ -1,4 +1,4 @@
-from syntaxtree import Assign, Attribute, BinOp, BoolOp, Break, Call, Class, Compare, Constant, Continue, Dict, ExceptionHandle, Expr, FunctionDef, If, Import, List, Name, Namespace, Return, Sentence, Subscript, Try, Unkown, While
+from syntaxtree import *
 
 
 class Parser:
@@ -11,6 +11,18 @@ class Parser:
         self.lexer = lexer
         self.token = self.lexer.token
         self.indent = self.lexer.indent
+
+        self.sentences={    #token对应的语句
+            'if':self.if_sentence,
+            'while':self.while_sentence,
+            'try':self.try_sentence,
+            'def':self.def_sentence,
+            'class':self.class_sentence,
+            'break':self.break_sentence,
+            'continue':self.continue_sentence,
+            'import':self.import_sentence,
+            'return':self.return_sentence
+        }
 
     def expect(self, expected):
         self.token = self.lexer.expect(expected)
@@ -35,28 +47,18 @@ class Parser:
 
     def sentence(self):
         t = None
-        if self.token == 'if':
-            t = self.if_sentence()
-        elif self.token == 'while':
-            t = self.while_sentence()
-        elif self.token == 'break':
-            t = Break(parser=self)
-        elif self.token == 'continue':
-            t = Continue(parser=self)
-        elif self.token == 'def':
-            t = self.def_sentence()
-        elif self.token == 'return':
-            t = self.return_sentence()
-        elif self.token == 'try':
-            t = self.try_sentence()
-        elif self.token == 'class':
-            t = self.class_sentence()
-        elif self.token == 'import':
-            t = self.import_sentence()
+        if self.token in self.sentences:
+            t=self.sentences[self.token]()
         else:
-            t = self.expression_sentence()
+            t=self.expression_sentence()
         t.run()
         return t
+
+    def break_sentence(self):
+        return Break(parser=self)
+
+    def continue_sentence(self):
+        return Continue(parser=self)
 
     def unkown(self):
         startline, endline, indent = self.skip_block()
@@ -149,7 +151,7 @@ class Parser:
 
     def expression_sentence(self):
         t = self.expression()
-        if not isinstance(t, Sentence):
+        if not isinstance(t, Assign):
             t = Expr(exp=t, parser=self)
         return t
 
