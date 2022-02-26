@@ -833,7 +833,7 @@ class GeneratedParser(Parser):
         self._reset(mark)
         return None
 
-    KEYWORDS = ('else', 'and', 'break', 'while', 'continue', 'elif', 'return', 'def', 'if', 'or')
+    KEYWORDS = ('break', 'else', 'while', 'and', 'continue', 'return', 'def', 'if', 'elif', 'or')
     SOFT_KEYWORDS = ()
 
 

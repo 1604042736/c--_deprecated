@@ -1,0 +1,134 @@
+@subheader"""
+from syntaxtree import *
+"""
+
+start: a=[statement] ENDMARKER {Program(body=a)}
+
+body: NEWLINE INDENT a=statement DEDENT {a}
+
+statement:sentences*
+
+sentences:
+    | a=sentence NEWLINE {a}
+    | sentence
+
+sentence:
+    | &'if' if_sentence
+    | &'while' while_sentence
+    | call
+    | function
+    | var_def
+    | return_sentence
+    | assign_sentence
+
+return_sentence:
+    | 'return' a=expression {Return(value=a)}
+
+function:
+    | a=type b=NAME '(' c=[arg_exp_list] ')' ':' d=body {Function(type=a,name=b.string,args=c if c else [],body=d)}
+    | a=type b=NAME '(' c=[arg_exp_list] ')' {Function(type=a,name=b.string,args=c if c else [])}
+
+if_sentence:
+    | 'if' a=expression ':' b=body c=[elif_sentence+] {If(exp=a,body=b,elses=c if c else [])}
+
+elif_sentence:
+    | 'elif' a=expression ':' b=body c=[elif_sentence] {If(exp=a,body=b,elses=c if c else [])}
+    | else_sentence
+
+else_sentence:'else' ':' body
+
+while_sentence:
+    | 'while' a=expression ':' b=body {While(exp=a,body=b)}
+
+assign_sentence:a=expression '=' b=expression {Assign(targets=[a],value=b)}
+
+var_def:a=type b=(NAME ['=' expression] [','])+ {VarDef(type=a,**get_var_defs(b))}
+
+basic_type:
+    | 'int' {IntType()}
+    | 'char' {CharType()}
+    | 'float' {FloatType()}
+
+pointer_type:
+    | a=basic_type '*'+ {Pointer(type=a)}
+
+var_type:
+    | pointer_type
+    | basic_type
+
+array_type:
+    | a=var_type b=('[' NUMBER ']')+ {Array(type=a,level=[i.string for _,i,__ in b])}
+
+type:
+    | array_type
+    | var_type
+
+expression:
+    | var_def
+    | or_exp
+
+or_exp:
+    | a=and_exp b=('or' and_exp)+ {BoolOp(op=Or(),values=[a]+[i[1]for i in b])}
+    | and_exp
+
+and_exp:
+    | a=bitor_exp b=('and' bitor_exp)+ {BoolOp(op=And(),values=[a]+[i[1] for i in b])}
+    | bitor_exp
+
+bitor_exp:
+    | a=bitor_exp '|' b=bitxor_exp {BinOp(left=a,op=BitOr(),right=b)}
+    | bitxor_exp
+
+bitxor_exp:
+    | a=bitxor_exp '^' b=bitand_exp {BinOp(left=a,op=BitXor(),right=b)}
+    | bitand_exp
+
+bitand_exp:
+    | a=bitand_exp '&' b=compare_exp {BinOp(left=a,op=BitAnd(),right=b)}
+    | compare_exp
+
+compare_exp:
+    | a=shift_exp b=compares {Compare(left=a,ops=[i for i,j in b],comparators=[j for i,j in b])}
+    | shift_exp
+
+compares:compare+
+
+compare:
+    | '<' a=shift_exp {(Lt(),a)}
+    | '<=' a=shift_exp {(Leq(),a)}
+    | '>' a=shift_exp {(Gt(),a)}
+    | '>=' a=shift_exp {(Geq(),a)}
+    | '==' a=shift_exp {(Eq(),a)}
+    | '!=' a=shift_exp {(Neq(),a)}
+
+shift_exp:
+    | a=shift_exp '<<' b=add_exp {BinOp(left=a,op=RShift(),right=b)}
+    | a=shift_exp '>>' b=add_exp {BinOp(left=a,op=LShift(),right=b)}
+    | add_exp
+
+add_exp:
+    | a=add_exp '+' b=mul_exp {BinOp(left=a,op=Add(),right=b)}
+    | a=add_exp '-' b=mul_exp {BinOp(left=a,op=Sub(),right=b)}
+    | mul_exp
+
+mul_exp:
+    | a=mul_exp '*' b=postfix_exp {BinOp(left=a,op=Mul(),right=b)}
+    | a=mul_exp '/' b=postfix_exp {BinOp(left=a,op=Div(),right=b)}
+    | a=mul_exp '%' b=postfix_exp {BinOp(left=a,op=Mod(),right=b)}
+    | postfix_exp
+
+postfix_exp:
+    | a=postfix_exp '[' b=expression ']' {Subscript(value=a,slice=b,mode=Load())}
+    | call
+    | postfix_exp '.' NAME {Attribute(value=a,attr=b.string,mode=Load())}
+    | primary_exp
+
+call:a=NAME '(' b=[arg_exp_list] ')' {Call(func=a.string,args=b if b else [])}
+
+arg_exp_list:a=[expression (',' expression)*] {get_args(a)}
+
+primary_exp:
+    | NAME {Name(id=name.string,mode=Load())}
+    | STRING {String(value=string.string)}
+    | NUMBER {Num(value=number.string)}
+    | '(' a=expression ')' {a}

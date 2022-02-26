@@ -1,0 +1,2 @@
+int _main():
+    _printf("Hello,World")
