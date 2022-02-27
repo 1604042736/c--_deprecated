@@ -16,7 +16,7 @@ def main():
             objname=filename+'.o'
             exename=filename+'.exe'
             order(f'main.py Test\\{fullname}')
-            order(f'nasm Test\\{asmname} -f elf 32')
+            order(f'nasm Test\\{asmname} -f elf32')
             order(f'gcc Test\\{objname} -o Test\\{exename}')
             order(f'Test\\{exename}')
 

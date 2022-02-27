@@ -1,8 +1,6 @@
 int _main():
     int[10] a
-    int b,i
-    b=10
-    i=0
+    int b=10,i=0
     while i<b:
         a[i]=i
         i=i+1

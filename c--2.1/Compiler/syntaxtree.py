@@ -158,7 +158,7 @@ class Array(SyntaxTree):
         ins='sub'
         if self.var.offset<0:
             ins='add'
-        return ArrayInfo(iter=iter(self.level),level=self.level[0],basicsize=self.basesize,count=len(self.level)-1,ins=ins)
+        return ArrayInfo(levels=self.level,size=self.size,basicsize=self.basesize,count=len(self.level)-1,ins=ins)
 
     def gen(self,var):
         if var.flag==1:
@@ -174,18 +174,31 @@ class ArrayInfo:
     数组信息
     '''
     def __init__(self,**kwargs) -> None:
-        self.iter=None  #迭代器
-        self.level=0    #当前维数
+        self.levels=[]    #维数
+        self.level=0
+        self.index=0
         self.basicsize=0    #数组单位大小
+        self.size=0
         self.count=0
         self.ins='' #指令
         self.__dict__|=kwargs
-        assert self.iter
         assert self.basicsize
+        assert self.size
+        self.level=self.levels[self.index]
 
     def next(self):
-        self.level=next(self.iter)
-        self.count-=1
+        self.index+=1
+        if self.index<len(self.levels):
+            self.level=self.levels[self.index]
+            self.count-=1
+            leftlevel=self.levels[self.index+1:]    #剩下的level
+            self.size=1
+            for i in leftlevel:
+                self.size*=i
+            self.size*=self.basicsize
+        else:
+            self.level=0
+            self.size=self.basicsize
 
 
 class VarDef(SyntaxTree):
@@ -202,6 +215,12 @@ class VarDef(SyntaxTree):
     def set_symtab(self):
         for name,value in zip(self.names,self.values):
             self.type.set_symtab(name)
+
+    def gen(self):
+        for name,value in zip(self.names,self.values):
+            if value:
+                value.gen()
+                Name(id=name,mode=Store()).gen()
 
 
 class Or(SyntaxTree):
@@ -533,7 +552,9 @@ class Subscript(SyntaxTree):
         return info
 
     def get_size(self):
-        return self.value.get_size()
+        info= self.value.get_array_info()
+        info.next()
+        return info.size
 
 class Call(SyntaxTree):
     def __init__(self, *args, **kwargs) -> None:
