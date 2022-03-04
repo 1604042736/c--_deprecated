@@ -1,5 +1,5 @@
 @subheader"""
-from syntaxtree import *
+from SyntaxTrees import *
 """
 
 start: a=[statement] ENDMARKER {Program(body=a)}
@@ -125,7 +125,7 @@ postfix_exp:
 
 call:a=NAME '(' b=[arg_exp_list] ')' {Call(func=a.string,args=b if b else [])}
 
-arg_exp_list:a=[expression (',' expression)*] {get_args(a)}
+arg_exp_list:a=(expression (',' expression)*) {get_args(a)}
 
 primary_exp:
     | NAME {Name(id=name.string,mode=Load())}

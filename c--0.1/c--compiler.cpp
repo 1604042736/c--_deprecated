@@ -156,16 +156,27 @@ typedef struct
 
 typedef struct
 {
-	FILE* out;
-	Symtab* symtab;
-	char* way;
-	int realway;
-	char* cway;
-	int temp;
+	char* name;
+	int way;
 	int params;
-	char* filename;
-	int freturn;
-}Coder;
+}cod;
+
+typedef struct 
+{
+	int emitLoc;
+	int highEmitLoc;
+	FILE* out;
+	int traceCode;
+	int tmpOffset;
+	Symtab* symtab;
+	vector<cod> func;
+	vector<cod> call;
+	vector<cod> param;
+	vector<cod> array;
+	char* nowfunc;
+	int params;
+	int arrays;
+} Coder;
 
 void lexer_init(Lexer* lexer, FILE* source,char *filename) 
 {
@@ -1305,7 +1316,7 @@ static TreeNode* include_stmt(Parser* parser)
 		match(parser,LT);
 		t->attr.name = copyString(parser->lexer->tokenString);
 		char buf[1024];
-		sprintf(buf,"E:/王永健/王永健的文件夹/信息学/程序/随意/其他/C--/include/%s.c--",t->attr.name);
+		sprintf(buf,"E:/王永健/王永健的文件夹/信息学/程序/随意/其他/c--1.0.0.1/include/%s.c--",t->attr.name);
 		t->child[0]=compiler(buf);
 		match(parser,ID);
 		match(parser,GT);
@@ -1787,266 +1798,603 @@ void typeCheck(Analyzer* analyzer, TreeNode* syntaxTree)
 	traverse(analyzer, syntaxTree, nullProc, checkNode);
 }
 
-void coder_init(Coder* coder,FILE* out,Symtab* symtab,char* filename)
+void coder_init(Coder* coder,FILE* out, Symtab* symtab,int traceCode);
+void emitRO(Coder* coder,char* op, int r, int s, int t, char* c);
+void emitRM(Coder* coder, char* op, int r, int d, int s, char* c);
+int emitSkip(Coder* coder, int howMany);
+void emitBackup(Coder* coder, int loc);
+void emitRestore(Coder* coder);
+void emitComment(Coder* coder, char* c);
+void emitRM_Abs(Coder* coder, char* op, int r, int a, char* c);
+
+void coder_init(Coder* coder, FILE* out, Symtab* symtab, int traceCode) 
 {
-	coder->out=out;
-	coder->symtab=symtab;
-	coder->way=(char*)"L1";
-	coder->realway=1;
-	coder->cway=(char*)"L1:";
-	coder->temp=1024;
-	coder->params=1024;
-	coder->filename=filename;
-	coder->freturn=1;
+	coder->emitLoc = 0;
+	coder->highEmitLoc = 0;
+	coder->out = out;
+	coder->traceCode = traceCode;
+	coder->tmpOffset = 0;
+	coder->symtab = symtab;
+	coder->params=0;
+	coder->arrays=0;
 }
 
-void opcode_one(Coder* coder,char* first)
+void emitRO(Coder* coder, char* op, int r, int s, int t, char* c) 
 {
-	fprintf(coder->out,"%s\n",first);
-}
-
-void opcode_two(Coder* coder,char* first,char* second)
-{
-	fprintf(coder->out,"\t%s\t%s\n",first,second);
-}
-
-void opcode_three(Coder* coder,char* first,char* second,char* third)
-{
-	fprintf(coder->out,"\t%s\t%s,%s\n",first,second,third);
-}
-
-void way_add(Coder* coder)
-{
-	char buf[1024];
-	char buff[1024];
-	coder->realway++;
-	sprintf(buf,"L%d",coder->realway);
-	coder->way=buf;
-	sprintf(buff,"L%d:",coder->realway);
-	coder->cway=buff;
-}
-
-void way_sub(Coder* coder)
-{
-	char buf[1024];
-	char buff[1024];
-	coder->realway--;
-	sprintf(buf,"L%d",coder->realway);
-	coder->way=buf;
-	sprintf(buff,"L%d:",coder->realway);
-	coder->cway=buff;
-}
-
-void cGen(Coder* coder,TreeNode* tree);
-
-void gen_stmt(Coder* coder,TreeNode* tree)
-{
-	char buf[1024];
-	int loc;
-	switch(tree->kind.stmt)
+	fprintf(coder->out, "%3d:  %5s  %d,%d,%d", coder->emitLoc++, op, r, s, t);
+	if (coder->traceCode) 
 	{
-		case IfK:
-			cGen(coder,tree->child[0]);
-			cGen(coder,tree->child[1]);
-			way_add(coder);
-			opcode_two(coder,(char*)"jmp",coder->way);
-			way_sub(coder);
-			opcode_one(coder,coder->cway);
-			way_add(coder);
-			cGen(coder,tree->child[2]);
-			opcode_one(coder,coder->cway);
-			way_add(coder);
-			break;
-		case ElseK:
-			cGen(coder,tree->child[0]);
-			break;
-		case WhileK:
-			opcode_one(coder,coder->cway);
-			way_add(coder);
-			cGen(coder,tree->child[0]);
-			cGen(coder,tree->child[1]);
-			way_sub(coder);
-			opcode_two(coder,(char*)"jmp",coder->way);
-			way_add(coder);
-			opcode_one(coder,coder->cway);
-			way_add(coder);
-			break;
-		case DoWhileK:
-			opcode_one(coder,coder->cway);
-			way_add(coder);
-			cGen(coder,tree->child[0]);
-			cGen(coder,tree->child[1]);
-			way_sub(coder);
-			opcode_two(coder,(char*)"jmp",coder->way);
-			way_add(coder);
-			opcode_one(coder,coder->cway);
-			way_add(coder);
-			break;
-		case AssignK:
-			cGen(coder,tree->child[0]);
-			loc=st_lookup(coder->symtab,tree->attr.name);
-			sprintf(buf,"dword ptr [%d]",loc);
-			opcode_three(coder,(char*)"mov",buf,(char*)"%edx");
-			break;
-		case ReadK:
-			loc=st_lookup(coder->symtab,tree->attr.name);
-			opcode_three(coder,(char*)"mov",(char*)"ah",(char*)"01h");
-			opcode_two(coder,(char*)"int",(char*)"21h");
-			sprintf(buf,"dword ptr [%d]",loc);
-			opcode_three(coder,(char*)"mov",buf,(char*)"al");
-			break;
-		case InputK:
-			cGen(coder,tree->child[0]);
-			break;
-		case WriteK:
-			cGen(coder,tree->child[0]);
-			opcode_three(coder,(char*)"mov",(char*)"dl",(char*)"%edx");
-			opcode_three(coder,(char*)"mov",(char*)"ah",(char*)"02h");
-			opcode_two(coder,(char*)"int",(char*)"21h");
-			break;
-		case PrintK:
-			cGen(coder,tree->child[0]);
-			break;
-		case ReturnK:
-			cGen(coder,tree->child[0]);
-			opcode_one(coder,(char*)"\tret");
-			coder->freturn=0;
-			break;
-		case FuncK:
-			sprintf(buf,"%s:",tree->attr.name);
-			opcode_one(coder,buf);
-			opcode_two(coder,(char*)"push",(char*)"%ebp");
-			opcode_three(coder,(char*)"mov",(char*)"%ebp",(char*)"%esp");
-			cGen(coder,tree->child[0]);
-			cGen(coder,tree->child[1]);
-			if(coder->freturn)
-			{
-				opcode_one(coder,(char*)"\tret");
-			}
-			coder->params=1024;
-			break;
-		case ParamK:
-			sprintf(buf,"word ptr [%d]",coder->params--);
-			opcode_two(coder,(char*)"push",(char*)"%esp");
-			opcode_three(coder,(char*)"mov",buf,(char*)"%esp");
-			break;
-		case CallParamK:
-			cGen(coder,tree->child[0]);
-			opcode_three(coder,(char*)"mov",(char*)"%ecx",(char*)"%edx");
-			opcode_two(coder,(char*)"push",(char*)"%ecx");
-			break;
-		case CallK:
-			cGen(coder,tree->child[0]);
-			opcode_two(coder,(char*)"call",tree->attr.name);
-			break;
-		case IncludeK:
-			char buf[1024];
-			sprintf(buf,"\"%s\"",tree->attr.name);
-			opcode_two(coder,(char*)".file",buf);
-			cGen(coder,tree->child[0]);
-			break;
+		//fprintf(coder->out, "\t%s", c);
+	}
+	fprintf(coder->out, "\n");
+	if (coder->highEmitLoc < coder->emitLoc) 
+	{
+		coder->highEmitLoc = coder->emitLoc;
 	}
 }
 
-void gen_exp(Coder* coder,TreeNode* tree)
+void emitRM(Coder* coder, char* op, int r, int d, int s, char* c) 
 {
-	char buf[1024];
-	int loc;
-	switch(tree->kind.exp)
+	fprintf(coder->out, "%3d:  %5s  %d,%d(%d)", coder->emitLoc++, op, r, d, s);
+	if (coder->traceCode) 
 	{
-		case ConstK:
-			sprintf(buf,"$%d",tree->attr.val);
-			opcode_three(coder,(char*)"mov",(char*)"%edx",buf);
-			break;
-		case IdK:
-			loc=st_lookup(coder->symtab,tree->attr.name);
-			sprintf(buf,"dword ptr [%d]",loc);
-			opcode_three(coder,(char*)"mov",(char*)"%edx",buf);
-			break;
-		case StringK:
-			break;
-		case OpK:
-			cGen(coder,tree->child[0]);
-			sprintf(buf,"dword ptr [%d]",coder->temp--);
-			opcode_three(coder,(char*)"mov",buf,(char*)"%edx");
-			cGen(coder,tree->child[1]);
-			sprintf(buf,"dword ptr [%d]",++coder->temp);
-			opcode_three(coder,(char*)"mov",(char*)"%ebx",buf);
-			switch(tree->attr.op)
-			{
-				case PLUS:
-					opcode_three(coder,(char*)"add",(char*)"%edx",(char*)"%ebx");
-					break;
-				case MINUS:
-					opcode_three(coder,(char*)"sub",(char*)"%edx",(char*)"%ebx");
-					break;
-				case TIMES:
-					opcode_three(coder,(char*)"imul",(char*)"%edx",(char*)"%ebx");
-					break;
-				case OVER:
-					opcode_three(coder,(char*)"idiv",(char*)"%edx",(char*)"%ebx");
-					break;
-				case EQ:
-					opcode_three(coder,(char*)"cmp",(char*)"%edx",(char*)"%ebx");
-					opcode_two(coder,(char*)"jeq",coder->way);
-					break;
-				case GT:
-					opcode_three(coder,(char*)"cmp",(char*)"%edx",(char*)"%ebx");
-					opcode_two(coder,(char*)"jgt",coder->way);
-					break;
-				case LT:
-					opcode_three(coder,(char*)"cmp",(char*)"%edx",(char*)"%ebx");
-					opcode_two(coder,(char*)"jlt",coder->way);
-					break;
-				case GTD:
-					opcode_three(coder,(char*)"cmp",(char*)"%edx",(char*)"%ebx");
-					opcode_two(coder,(char*)"jge",coder->way);
-					break;
-				case LTD:
-					opcode_three(coder,(char*)"cmp",(char*)"%edx",(char*)"%ebx");
-					opcode_two(coder,(char*)"jle",coder->way);
-					break;
-				case NOTD:
-					opcode_three(coder,(char*)"cmp",(char*)"%edx",(char*)"%ebx");
-					opcode_two(coder,(char*)"jne",coder->way);
-					break;
-				case AND:
-					opcode_three(coder,(char*)"CMP",(char*)"%edx",(char*)"%ebx");
-					opcode_two(coder,(char*)"and",coder->way);
-					break;
-				case OR:
-					opcode_three(coder,(char*)"CMP",(char*)"%edx",(char*)"%ebx");
-					opcode_two(coder,(char*)"or",coder->way);
-					break;
-			}
-			break;
+		//fprintf(coder->out, "\t%s", c);
+	}
+	fprintf(coder->out, "\n");
+	if (coder->highEmitLoc < coder->emitLoc) 
+	{
+		coder->highEmitLoc = coder->emitLoc;
 	}
 }
 
-void cGen(Coder* coder,TreeNode* tree)
+int emitSkip(Coder* coder, int howMany) 
 {
-	if(tree!=NULL)
+	int i = coder->emitLoc;
+	coder->emitLoc += howMany;
+	if (coder->highEmitLoc < coder->emitLoc) 
 	{
-		switch(tree->nodekind)
+		coder->highEmitLoc = coder->emitLoc;
+	}
+	return i;
+}
+
+void emitBackup(Coder* coder, int loc) 
+{
+	if (loc > coder->highEmitLoc) 
+	{
+		emitComment(coder,(char*)"BUG in emitBackup");
+	}
+	coder->emitLoc = loc;
+}
+
+void emitRestore(Coder* coder) 
+{
+	coder->emitLoc = coder->highEmitLoc;
+}
+
+void emitComment(Coder* coder, char* c) 
+{
+	if (coder->traceCode) 
+	{
+		//fprintf(coder->out, "* %s\n", c);
+	}
+}
+
+void emitRM_Abs(Coder* coder, char* op, int r, int a, char* c) 
+{
+	fprintf(coder->out, "%3d:  %5s  %d,%d(%d)", coder->emitLoc, op, r, a - (coder->emitLoc + 1), pc);
+	coder->emitLoc++;
+	if (coder->traceCode) 
+	{
+		//fprintf(coder->out, "\t%s", c);
+	}
+	fprintf(coder->out, "\n");
+	if (coder->highEmitLoc < coder->emitLoc) 
+	{
+		coder->highEmitLoc = coder->emitLoc;
+	}
+}
+
+static void cGen(Coder* coder, TreeNode* tree);
+
+int param_lookup(Coder* coder,char* name)
+{
+	int i=coder->param.size()-1;
+	while(i>=0)
+	{
+		if(!strcmp(name, coder->param[i].name))
 		{
-			case StmtK:
-				gen_stmt(coder,tree);
-				break;
-			case ExpK:
-				gen_exp(coder,tree);
-				break;
+			return coder->param[i].params;
+		}
+		i-=1;
+	}
+	return -1;
+}
+
+int func_lookup(Coder* coder,char* name)
+{
+	int i=0;
+	while(i<coder->func.size())
+	{
+		if(!strcmp(name, coder->func[i].name))
+		{
+			return i;
+		}
+		i+=1;
+	}
+	return -1;
+}
+
+int call_lookup(Coder* coder,char* name)
+{
+	int i=0;
+	while(i<coder->call.size())
+	{
+		if(!strcmp(name,coder->call[i].name))
+		{
+			return i;
+		}
+		i+=1;
+	}
+	return -1;
+}
+
+int array_lookup(Coder* coder,char* name)
+{
+	int i=0;
+	while(i<coder->array.size())
+	{
+		if(!strcmp(name,coder->array[i].name))
+		{
+			return coder->array[i].params;
+		}
+		i+=1;
+	}
+	return -1;
+}
+
+static void genStmt(Coder* coder, TreeNode* tree) 
+{
+	TreeNode *p1, *p2, *p3;
+	int savedLoc1, savedLoc2, currentLoc;
+	int loc;
+	int a;
+	switch (tree->kind.stmt) 
+	{
+	case IfK:
+		if (coder->traceCode) 
+		{
+			emitComment(coder, (char*)"-> if");
+		}
+		p1 = tree->child[0];
+		p2 = tree->child[1];
+		p3 = tree->child[2];
+		/* generate code for test expression */
+		cGen(coder, p1);
+		savedLoc1 = emitSkip(coder, 1);
+		emitComment(coder, (char*)"if: jump to else belongs here");
+		/* recurse on then part */
+		cGen(coder, p2);
+		savedLoc2 = emitSkip(coder, 1);
+		emitComment(coder, (char*)"if: jump to end belongs here");
+		currentLoc = emitSkip(coder, 0);
+		emitBackup(coder, savedLoc1);
+		emitRM_Abs(coder, (char*)"JEQ", ac, currentLoc, (char*)"if: jmp to else");
+		emitRestore(coder);
+		/* recurse on else part */
+		cGen(coder,p3);
+		currentLoc = emitSkip(coder, 0);
+		emitBackup(coder, savedLoc2);
+		emitRM_Abs(coder, (char*)"LDA", pc, currentLoc, (char*)"jmp to end");
+		emitRestore(coder);
+		if (coder->traceCode)  emitComment(coder, (char*)"<- if");
+		break; /* if_k */
+	case WhileK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> while");
+		p1 = tree->child[0];
+		p2 = tree->child[1];
+		savedLoc1 = emitSkip(coder, 0);
+		cGen(coder, p1);
+		savedLoc2 = emitSkip(coder, 1);
+		emitComment(coder,(char*) "while: jump to end belongs here");
+		cGen(coder, p2);
+		currentLoc = emitSkip(coder, 0);
+		emitRM_Abs(coder, (char*)"LDA", pc, savedLoc1, (char*)"jmp back to loop");
+		emitBackup(coder,savedLoc2);
+		emitRM_Abs(coder,(char*)"JEQ", ac, currentLoc+1, (char*)"while: jmp to end");
+		emitRestore(coder);
+		if (coder->traceCode)  emitComment(coder, (char*)"<- while");
+		break; /* while_k */
+	case DoWhileK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> dowhile");
+		p1 = tree->child[0];
+		p2 = tree->child[1];
+		savedLoc1 = emitSkip(coder, 0);
+		cGen(coder, p1);
+		cGen(coder, p2);
+		emitComment(coder,(char*) "dowhile: jump to end belongs here");
+		emitRM(coder,(char*) "JEQ", ac, 1, pc,(char*) "dowhile: jmp to end");
+		emitRM_Abs(coder, (char*)"LDA", pc, savedLoc1, (char*)"jmp back to loop");
+		emitRestore(coder);
+		if (coder->traceCode)  emitComment(coder, (char*)"<- dowhile");
+		break;
+	case AssignK:
+		if (coder->traceCode) emitComment(coder, (char*)"-> assign");
+		/* generate code for rhs */
+		cGen(coder, tree->child[0]);
+		/* now store value */
+		loc = param_lookup(coder, tree->attr.name);
+		if(loc!=-1)
+		{
+			emitRM(coder,(char*)"ASTP",ac,loc,gp,(char*)"assign: store value");
+		}
+		else
+		{
+			loc=st_lookup(coder->symtab,tree->attr.name);
+			emitRM(coder, (char*)"ST", ac, loc, gp, (char*)"assign: store value");
+		}
+		if (coder->traceCode)  emitComment(coder, (char*)"<- assign");
+		break; /* assign_k */
+	case ElseK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> else");
+		cGen(coder,tree->child[0]);
+		if(coder->traceCode) emitComment(coder,(char*) "<- else");
+		break;
+
+	case ReadK:
+		emitRO(coder, (char*)"IN", ac, 0, 0,(char*) "read integer value");
+		loc = st_lookup(coder->symtab, tree->attr.name);
+		emitRM(coder, (char*)"ST", ac, loc, gp,(char*) "read: store value");
+		break;
+	case InputK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> input");
+		cGen(coder,tree->child[0]);
+		if(coder->traceCode) emitComment(coder,(char*) "<- input");
+		break;
+	case WriteK:
+		/* generate code for expression to write */
+		cGen(coder, tree->child[0]);
+		/* now output it */
+		emitRO(coder, (char*)"OUT", ac, 0, 0,(char*) "write ac");
+		break;
+	case PrintK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> print");
+		cGen(coder,tree->child[0]);
+		if(coder->traceCode) emitComment(coder,(char*) "<- print");
+		break;
+	case IncludeK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> include");
+		cGen(coder, tree->child[0]);
+		if(coder->traceCode) emitComment(coder,(char*) "<- include");
+		break;
+	case ReturnK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> return");
+		cGen(coder,tree->child[0]);
+		a=func_lookup(coder,coder->nowfunc);
+		emitRM(coder,(char*)"RET",pc,coder->func[a].params,0,(char*)"return");
+		if(coder->traceCode) emitComment(coder,(char*) "<- return");
+		break;
+	case ParamK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> Param");
+		cod p;
+		p.name=tree->attr.name;
+		p.params=coder->params;
+		coder->param.push_back(p);
+		coder->params+=1;
+		if(coder->traceCode) emitComment(coder,(char*) "<- Param");
+		break;
+	case FuncK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> func");
+		p1 = tree->child[0];
+		p2 = tree->child[1];
+		savedLoc1 = emitSkip(coder, 1);
+		cGen(coder, p1);
+		a=call_lookup(coder,tree->attr.name);
+		if(a!=-1)
+		{
+			int currentLoc=coder->emitLoc;
+            emitBackup(coder,coder->call[a].way);
+            emitRM(coder,(char*)"CALL",pc,currentLoc,coder->params,(char*)"jmp to func");
+            emitRestore(coder);
+            coder->call.erase(coder->call.begin()+a);
+		}
+		if(func_lookup(coder,tree->attr.name)==-1)
+		{
+			cod f;
+			f.name=tree->attr.name;
+			f.way=savedLoc1;
+			f.params=coder->params;
+			coder->func.push_back(f);
+			coder->params=0;
+		}
+		coder->nowfunc=tree->attr.name;
+		savedLoc2 = emitSkip(coder, 0);
+		cGen(coder, p2);
+		a=func_lookup(coder,tree->attr.name);
+		emitRM(coder,(char*)"RET",pc,coder->func[a].params,0,(char*)"return func");
+		currentLoc = emitSkip(coder, 0);
+		emitBackup(coder,savedLoc1);
+		emitRM_Abs(coder, (char*)"LDA", pc, currentLoc, (char*)"jmp to end");
+		emitRestore(coder);
+		for(int i=0;i<coder->func[a].params;i++)
+		{
+			if(!coder->param.empty())
+			{
+				coder->param.pop_back();
+			}
+		}
+		if (coder->traceCode)  emitComment(coder, (char*)"<- func");
+		break; 
+	case CallParamK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> CallParam");
+		cGen(coder,tree->child[0]);
+		emitRM(coder,(char*)"STP",ac,0,0,(char*)"store param");
+		if(coder->traceCode) emitComment(coder,(char*) "<- CallParam");
+		break;
+	case CallK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> call");
+		cGen(coder,tree->child[0]);
+		currentLoc=func_lookup(coder,tree->attr.name);
+		if(currentLoc==-1)
+		{
+			savedLoc1=emitSkip(coder,1);
+			cod cl;
+			cl.name=tree->attr.name;
+			cl.way=savedLoc1;
+			coder->call.push_back(cl);
+		}
+		else
+		{
+			emitRM(coder,(char*)"CALL",pc,coder->func[currentLoc].way+1,coder->func[currentLoc].params,(char*)"jmp to func");
+		}
+		emitRestore(coder);
+		if(coder->traceCode) emitComment(coder,(char*) "<- call");
+		break;
+	case NoHandK:
+		cGen(coder,tree->child[0]);
+		break;
+	case ArrayNumK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> arraynum");
+		cGen(coder,tree->child[0]);
+		emitRM(coder,(char*)"STNA",ac,0,0,(char*)"array num");
+		if(coder->traceCode) emitComment(coder,(char*) "<- arraynum");
+		break;
+	case NewArrayK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> new array");
+		cGen(coder,tree->child[0]);
+		cod cd;
+		cd.name=tree->attr.name;
+		cd.params=coder->arrays;
+		coder->arrays++;
+		coder->array.push_back(cd);
+		emitRM(coder,(char*)"NEWA",ac,0,0,(char*)"new array");
+		if(coder->traceCode) emitComment(coder,(char*) "<- new array");
+		break;
+	case ArrayAssignK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> array assign");
+		cGen(coder,tree->child[0]);
+		cGen(coder,tree->child[1]);
+		loc=array_lookup(coder,tree->attr.name);
+		if(loc!=-1)
+		{
+			emitRM(coder,(char*)"STA",ac,loc,0,(char*)"store array");
+		}
+		if(coder->traceCode) emitComment(coder,(char*) "<- array assign");
+		break;
+	case ArrayK:
+		if(coder->traceCode) emitComment(coder,(char*) "-> array");
+		cGen(coder,tree->child[0]);
+		loc=array_lookup(coder,tree->attr.name);
+		if(loc!=-1)
+		{
+			emitRM(coder,(char*)"ALDA",ac,loc,0,(char*)"store array");
+		}
+		if(coder->traceCode) emitComment(coder,(char*) "<- array");
+		break;
+	default:
+		break;
+	}
+}
+
+/* Procedure genExp generates code at an expression node */
+static void genExp(Coder* coder,TreeNode * tree)
+{
+	int loc;
+	TreeNode * p1, *p2;
+	int pop;
+	switch (tree->kind.exp) 
+	{
+
+	case ConstK:
+		if (coder->traceCode) emitComment(coder,(char*)"-> Const");
+		/* gen code to load integer constant using LDC */
+		emitRM(coder,(char*)"LDC", ac, tree->attr.val, 0, (char*)"load const");
+		if (coder->traceCode)  emitComment(coder,(char*)"<- Const");
+		break; /* ConstK */
+
+	case IdK:
+		if (coder->traceCode) emitComment(coder,(char*)"-> Id");
+		loc = param_lookup(coder,tree->attr.name);
+		if(loc!=-1)
+		{
+			emitRM(coder,(char*)"LDP",ac,loc,gp,(char*)"ld param");
+		}
+		else
+		{
+			loc=st_lookup(coder->symtab,tree->attr.name);
+			emitRM(coder,(char*)"LD",ac,loc,gp,(char*)"load id value");
+		}
+		if (coder->traceCode)  emitComment(coder,(char*)"<- Id");
+		break; /* IdK */
+
+	case OpK:
+		if (coder->traceCode) emitComment(coder,(char*)"-> Op");
+		p1 = tree->child[0];
+		p2 = tree->child[1];
+		/* gen code for ac = left arg */
+		cGen(coder,p1);
+		/* gen code to push left operand */
+		pop=coder->tmpOffset;
+		emitRM(coder,(char*)"POP",ac,pop,mp,(char*)"pop");
+		emitRM(coder,(char*)"ST", ac, coder->tmpOffset--, mp, (char*)"op: push left");
+		/* gen code for ac = right operand */
+		cGen(coder,p2);
+		/* now load left operand */
+		emitRM(coder,(char*)"LD", ac1, ++coder->tmpOffset, mp, (char*)"op: load left");
+		switch (tree->attr.op) 
+		{
+		case PLUS:
+			emitRO(coder,(char*)"ADD", ac, ac1, ac,(char*) "op +");
+			break;
+		case MINUS:
+			emitRO(coder,(char*)"SUB", ac, ac1, ac, (char*)"op -");
+			break;
+		case TIMES:
+			emitRO(coder,(char*)"MUL", ac, ac1, ac,(char*) "op *");
+			break;
+		case OVER:
+			emitRO(coder,(char*)"DIV", ac, ac1, ac, (char*)"op /");
+			break;
+		case YTIMES:
+			emitRO(coder,(char*)"RDE",ac,ac1,ac,(char*)"op %");
+			break;
+		case LT:
+			emitRO(coder,(char*)"SUB", ac, ac1, ac, (char*)"op <");
+			emitRM(coder,(char*)"JLT", ac, 2, pc, (char*)"br if true");
+			emitRM(coder,(char*)"LDC", ac, 0, ac, (char*)"false case");
+			emitRM(coder,(char*)"LDA", pc, 1, pc, (char*)"unconditional jmp");
+			emitRM(coder,(char*)"LDC", ac, 1, ac, (char*)"true case");
+			break;
+		case GT:
+			emitRO(coder, (char*)"SUB", ac, ac1, ac, (char*)"op >");
+			emitRM(coder, (char*)"JGT", ac, 2, pc,(char*) "br if true");
+			emitRM(coder, (char*)"LDC", ac, 0, ac,(char*) "false case");
+			emitRM(coder,(char*) "LDA", pc, 1, pc,(char*) "unconditional jmp");
+			emitRM(coder,(char*) "LDC", ac, 1, ac,(char*) "true case");
+			break;
+		case EQ:
+			emitRO(coder,(char*) "SUB", ac, ac1, ac, (char*)"op ==");
+			emitRM(coder,(char*) "JEQ", ac, 2, pc,(char*) "br if true");
+			emitRM(coder, (char*)"LDC", ac, 0, ac, (char*)"false case");
+			emitRM(coder, (char*)"LDA", pc, 1, pc,(char*) "unconditional jmp");
+			emitRM(coder,(char*) "LDC", ac, 1, ac,(char*) "true case");
+			break;
+		case GTD:
+			emitRO(coder, (char*)"SUB", ac, ac1, ac, (char*)"op >=");
+			emitRM(coder, (char*)"JGE", ac, 2, pc,(char*) "br if true");
+			emitRM(coder, (char*)"LDC", ac, 0, ac,(char*) "false case");
+			emitRM(coder,(char*) "LDA", pc, 1, pc,(char*) "unconditional jmp");
+			emitRM(coder,(char*) "LDC", ac, 1, ac,(char*) "true case");
+			break;
+		case LTD:
+			emitRO(coder, (char*)"SUB", ac, ac1, ac, (char*)"op <=");
+			emitRM(coder, (char*)"JLE", ac, 2, pc,(char*) "br if true");
+			emitRM(coder, (char*)"LDC", ac, 0, ac,(char*) "false case");
+			emitRM(coder,(char*) "LDA", pc, 1, pc,(char*) "unconditional jmp");
+			emitRM(coder,(char*) "LDC", ac, 1, ac,(char*) "true case");
+			break;
+		case NOTD:
+			emitRO(coder, (char*)"SUB", ac, ac1, ac, (char*)"op !=");
+			emitRM(coder, (char*)"JNE", ac, 2, pc,(char*) "br if true");
+			emitRM(coder, (char*)"LDC", ac, 0, ac,(char*) "false case");
+			emitRM(coder,(char*) "LDA", pc, 1, pc,(char*) "unconditional jmp");
+			emitRM(coder,(char*) "LDC", ac, 1, ac,(char*) "true case");
+			break;
+		case AND:
+			emitRO(coder, (char*)"MUL", ac, ac1, ac, (char*)"op &&");
+			emitRM(coder, (char*)"AND", ac, 2, pc,(char*) "br if true");
+			emitRM(coder, (char*)"LDC", ac, 0, ac,(char*) "false case");
+			emitRM(coder,(char*) "LDA", pc, 1, pc,(char*) "unconditional jmp");
+			emitRM(coder,(char*) "LDC", ac, 1, ac,(char*) "true case");
+			break;
+		case OR:
+			emitRM(coder,(char*)"LDC",ord , 0, 0, (char*)"load const");
+			
+			emitRO(coder, (char*)"SUB", orp, ac1, ord, (char*)"op !=");
+			emitRM(coder, (char*)"JNE", orp, 2, pc,(char*) "br if true");
+			emitRM(coder, (char*)"LDC", ac1, 0, ac1,(char*) "false case");
+			emitRM(coder,(char*) "LDA", pc, 1, pc,(char*) "unconditional jmp");
+			emitRM(coder,(char*) "LDC", ac1, 1, ac1,(char*) "true case");
+			
+			emitRO(coder, (char*)"SUB", orp, ac, ord, (char*)"op !=");
+			emitRM(coder, (char*)"JNE", orp, 2, pc,(char*) "br if true");
+			emitRM(coder, (char*)"LDC", ac, 0, ac,(char*) "false case");
+			emitRM(coder,(char*) "LDA", pc, 1, pc,(char*) "unconditional jmp");
+			emitRM(coder,(char*) "LDC", ac, 1, ac,(char*) "true case");
+			
+			emitRO(coder, (char*)"ADD", ac, ac1, ac, (char*)"op ||");
+			emitRM(coder, (char*)"OR", ac, 2, pc,(char*) "br if true");
+			emitRM(coder, (char*)"LDC", ac, 0, ac,(char*) "false case");
+			emitRM(coder,(char*) "LDA", pc, 1, pc,(char*) "unconditional jmp");
+			emitRM(coder,(char*) "LDC", ac, 1, ac,(char*) "true case");
+			break;
+		default:
+			emitComment(coder, (char*)"BUG: Unknown operator");
+			break;
+		} /* case op */
+		emitRM(coder,(char*)"BACK",ac,pop,mp,(char*)"push");
+		if (coder->traceCode)  emitComment(coder,(char*) "<- Op");
+		break; /* OpK */
+
+	default:
+		break;
+	}
+} /* genExp */
+
+  /* Procedure cGen recursively generates code by
+  * tree traversal
+  */
+
+static void cGen(Coder* coder,TreeNode * tree)
+{
+	if (tree != NULL)
+	{
+		switch (tree->nodekind) 
+		{
+		case StmtK:
+			genStmt(coder,tree);
+			break;
+		case ExpK:
+			genExp(coder,tree);
+			break;
+		default:
+			break;
 		}
 		cGen(coder,tree->sibling);
 	}
 }
 
-void cgen_begin(Coder* coder,TreeNode* tree)
+/**********************************************/
+/* the primary function of the code generator */
+/**********************************************/
+/* Procedure codeGen generates code to a code
+* file by traversal of the syntax tree. The
+* second parameter (codefile) is the file name
+* of the code file, and is used to print the
+* file name as a comment in the code file
+*/
+
+void codeGen(Coder* coder, TreeNode* syntaxTree, char* codefile) 
 {
-	char buf[1024];
-	sprintf(buf,"\"%s\"",coder->filename);
-	opcode_two(coder,(char*)".file",buf);
-	cGen(coder,tree);
-	opcode_two(coder,(char*)"call",(char*)"main");
+	char * s = (char*)malloc(strlen(codefile) + 7);
+	strcpy(s, "File: ");
+	strcat(s, codefile);
+	emitComment(coder,(char*)"TINY Compilation to TM Code");
+	emitComment(coder, s);
+	/* generate standard prelude */
+	emitComment(coder, (char*)"Standard prelude:");
+	emitRM(coder,(char*) "LD", mp, 0, ac, (char*)"load maxaddress from location 0");
+	emitRM(coder,(char*) "ST", ac, 0, ac, (char*)"clear location 0");
+	emitComment(coder,(char*) "End of standard prelude.");
+	/* generate code for TINY program */
+	cGen(coder, syntaxTree);
+	
+	int currentLoc=func_lookup(coder,(char*)"main");
+    emitRM(coder,(char*)"CALL",pc,coder->func[currentLoc].way+1,coder->func[currentLoc].params,(char*)"jmp to func");
+    emitRestore(coder);
+	/* finish */
+	emitComment(coder, (char*)"End of execution.");
+	emitRO(coder,(char*) "HALT", 0, 0, 0, (char*)"");
 }
 
 TreeNode* compiler(char* filename)
@@ -2054,7 +2402,7 @@ TreeNode* compiler(char* filename)
 	FILE* source = fopen(filename, "r");
 	if (source == NULL) 
 	{
-		fprintf(stderr, "source code not found");
+		fprintf(stderr, "%s: source code not found",filename);
 		exit(1);
 	}
 	Lexer* lexer = (Lexer*)malloc(sizeof(Lexer));
@@ -2102,16 +2450,16 @@ int main(int argc, char * argv[])
 	printf("\n Checking Types...\n");
 	typeCheck(analyzer, syntaxTree);
 	printf("\n Type Checking Finished");
-	
-	Coder* coder=(Coder*)malloc(sizeof(Coder));
-	char* codefile = (char*)"in.s";
+
+	Coder* coder = (Coder*)malloc(sizeof(Coder));
+	char* codefile = (char*)"in.c--exe";
 	FILE* out = fopen(codefile, "w");
 	if (out == NULL) 
 	{
 		exit(1);
 	}
-	coder_init(coder,out,symtab,(char*)"in.c--");
-	cgen_begin(coder,syntaxTree);
+	coder_init(coder,out , symtab, TRUE);
+	codeGen(coder, syntaxTree, codefile);
 	fclose(out);
 
 	free(parser);

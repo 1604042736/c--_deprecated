@@ -109,11 +109,11 @@ class FunctionSym:
         self.argsize=self.get_arg_size()
 
     def add_arg(self):
-        import syntaxtree
+        import SyntaxTrees
         import globals  #warning
         symtab=globals.Globals.symtab
         for i in self.args:
-            if isinstance(i,syntaxtree.VarDef):
+            if isinstance(i,SyntaxTrees.VarDef):
                 c=0
                 for name in i.names:
                     if not c:
@@ -124,10 +124,10 @@ class FunctionSym:
                     c+=1
 
     def get_arg_size(self):
-        import syntaxtree
+        import SyntaxTrees
         size=0
         for i in self.args:
-            if isinstance(i,syntaxtree.VarDef):
+            if isinstance(i,SyntaxTrees.VarDef):
                 size+=(i.type.size)*len(i.names)
         return size
 
@@ -179,7 +179,7 @@ class VarSym:
     '''
     def __init__(self,name,type,offset=0,islocal=True,flag=1,address=False) -> None:
         self.name=name
-        self.offset=(offset)   #偏移量
+        self.offset=offset   #偏移量
         self.islocal=islocal    #是否为局部变量
         self.type=type  #类型
         self.address=address
