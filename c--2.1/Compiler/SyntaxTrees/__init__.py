@@ -44,6 +44,7 @@ from subscript import *
 from syntaxtree import *
 from vardef import *
 from while_ast import *
+from argdef import *
 
 def get_var_defs(a):
     result = {'names': [], 'values': []}

@@ -1,10 +1,10 @@
-from syntaxtree import *
+from expr import *
 
-class BinOp(SyntaxTree):
+class BinOp(Expr):
     def __init__(self, *args, **kwargs) -> None:
-        self.left: SyntaxTree = None
+        self.left: Expr = None
         self.op: SyntaxTree = None
-        self.right: SyntaxTree = None
+        self.right: Expr = None
         super().__init__(*args, **kwargs)
 
     def gen(self):
@@ -14,3 +14,7 @@ class BinOp(SyntaxTree):
 
     def get_size(self):
         return self.left.get_size()
+
+    def get_type(self):
+        self.type=self.left.get_type()
+        return self.type

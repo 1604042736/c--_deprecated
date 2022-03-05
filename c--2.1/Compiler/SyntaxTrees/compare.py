@@ -1,6 +1,6 @@
-from syntaxtree import *
+from expr import *
 
-class Compare(SyntaxTree):
+class Compare(Expr):
     def __init__(self, *args, **kwargs) -> None:
         self.left: SyntaxTree = None
         self.ops: list = []
@@ -32,3 +32,6 @@ class Compare(SyntaxTree):
 
     def get_size(self):
         return self.left.get_size()
+
+    def get_type(self):
+        return self.left.get_type()

@@ -27,6 +27,6 @@ class Function(SyntaxTree):
         if self.body:
             func=self.symtab.functions[self.name]
             self.symtab.enterfunc(func)
-            func.add_arg()
+            self.set_list_symtab(self.args)
             self.set_list_symtab(self.body)
             self.symtab.leavefunc()

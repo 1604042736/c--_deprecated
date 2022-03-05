@@ -1,4 +1,4 @@
-from syntaxtree import *
+from expr import *
 
-class RShift(SyntaxTree):
+class RShift(Expr):
     pass

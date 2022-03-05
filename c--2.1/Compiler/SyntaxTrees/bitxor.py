@@ -1,4 +1,4 @@
-from syntaxtree import *
+from expr import *
 
-class BitXor(SyntaxTree):
+class BitXor(Expr):
     pass

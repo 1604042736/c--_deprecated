@@ -1,6 +1,6 @@
-from syntaxtree import *
+from expr import *
 
-class BoolOp(SyntaxTree):
+class BoolOp(Expr):
     def __init__(self, *args, **kwargs) -> None:
         self.op: SyntaxTree = None
         self.values: list = []
@@ -25,3 +25,7 @@ class BoolOp(SyntaxTree):
 
     def get_size(self):
         return self.values[0].get_size()
+
+    def get_type(self):
+        self.type=self.values[0].get_type()
+        return self.type

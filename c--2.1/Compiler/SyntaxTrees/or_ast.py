@@ -1,6 +1,6 @@
-from syntaxtree import *
+from expr import *
 
-class Or(SyntaxTree):
+class Or(Expr):
     '''
     或
     '''

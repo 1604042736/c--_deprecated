@@ -1,6 +1,6 @@
-from syntaxtree import *
+from type import *
 
-class FloatType(SyntaxTree):
+class FloatType(Type):
     '''
     浮点型
     '''

@@ -1,6 +1,6 @@
-from syntaxtree import *
+from type import *
 
-class CharType(SyntaxTree):
+class CharType(Type):
     '''
     字符型
     '''

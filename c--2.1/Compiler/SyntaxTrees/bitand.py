@@ -1,4 +1,4 @@
-from syntaxtree import *
+from expr import *
 
-class BitAnd(SyntaxTree):
+class BitAnd(Expr):
     pass

@@ -1,4 +1,4 @@
-from syntaxtree import *
+from expr import *
 
-class Mod(SyntaxTree):
+class Mod(Expr):
     pass

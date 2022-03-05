@@ -1,6 +1,6 @@
-from syntaxtree import *
+from expr import *
 
-class Subscript(SyntaxTree):
+class Subscript(Expr):
     def __init__(self, *args, **kwargs) -> None:
         self.value: SyntaxTree = None
         self.slice: SyntaxTree = None

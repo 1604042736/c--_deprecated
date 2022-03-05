@@ -1,4 +1,4 @@
-from syntaxtree import *
+from expr import *
 
-class LShift(SyntaxTree):
+class LShift(Expr):
     pass

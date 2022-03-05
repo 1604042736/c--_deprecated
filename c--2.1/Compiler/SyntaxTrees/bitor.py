@@ -1,4 +1,4 @@
-from syntaxtree import *
+from expr import *
 
-class BitOr(SyntaxTree):
+class BitOr(Expr):
     pass

@@ -1,6 +1,6 @@
-from syntaxtree import *
+from type import *
 
-class IntType(SyntaxTree):
+class IntType(Type):
     '''
     整型
     '''
@@ -12,10 +12,10 @@ class IntType(SyntaxTree):
         self.symtab.add_offset(self.size)
 
     def gen(self,var):
-        if var.flag==1:
+        if var.offset>=0:
             self.genir.add_inst('sub','ecx',var.offset)
-        elif var.flag==-1:
-            self.genir.add_inst('add','ecx',var.offset+4)
+        else:
+            self.genir.add_inst('add','ecx',-var.offset+4)
 
     def get_size(self):
         return self.size

@@ -44,6 +44,8 @@ assign_sentence:a=expression '=' b=expression {Assign(targets=[a],value=b)}
 
 var_def:a=type b=(NAME ['=' expression] [','])+ {VarDef(type=a,**get_var_defs(b))}
 
+arg_def:a=type b=NAME {ArgDef(type=a,name=b.string)}
+
 basic_type:
     | 'int' {IntType()}
     | 'char' {CharType()}
@@ -64,7 +66,7 @@ type:
     | var_type
 
 expression:
-    | var_def
+    | arg_def
     | or_exp
 
 or_exp:
@@ -125,7 +127,7 @@ postfix_exp:
 
 call:a=NAME '(' b=[arg_exp_list] ')' {Call(func=a.string,args=b if b else [])}
 
-arg_exp_list:a=(expression (',' expression)*) {get_args(a)}
+arg_exp_list:a=[expression (',' expression)*] {get_args(a)}
 
 primary_exp:
     | NAME {Name(id=name.string,mode=Load())}

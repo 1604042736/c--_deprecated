@@ -1,6 +1,6 @@
-from syntaxtree import *
+from expr import *
 
-class Geq(SyntaxTree):
+class Geq(Expr):
     def gen(self):
         self.genir.add_inst('pop','ebx')
         self.genir.add_inst('pop','eax')

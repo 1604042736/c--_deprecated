@@ -108,21 +108,6 @@ class FunctionSym:
         self.locals={}  #局部变量表
         self.argsize=self.get_arg_size()
 
-    def add_arg(self):
-        import SyntaxTrees
-        import globals  #warning
-        symtab=globals.Globals.symtab
-        for i in self.args:
-            if isinstance(i,SyntaxTrees.VarDef):
-                c=0
-                for name in i.names:
-                    if not c:
-                        self.add_var(VarSym(name,i.type,offset=symtab.get_offset()+4,flag=-1))
-                    else:
-                        self.add_var(VarSym(name,i.type,offset=symtab.get_offset(),flag=-1))
-                    symtab.add_offset(i.type.size)
-                    c+=1
-
     def get_arg_size(self):
         import SyntaxTrees
         size=0

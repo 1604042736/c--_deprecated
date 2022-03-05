@@ -1,6 +1,6 @@
-from syntaxtree import *
+from expr import *
 
-class Call(SyntaxTree):
+class Call(Expr):
     def __init__(self, *args, **kwargs) -> None:
         self.func: str = ''
         self.args: list = []
@@ -21,3 +21,7 @@ class Call(SyntaxTree):
     def get_size(self):
         func=self.symtab.functions[self.func]
         return func.return_type.size
+
+    def get_type(self):
+        func=self.symtab.functions[self.func]
+        return func.return_type

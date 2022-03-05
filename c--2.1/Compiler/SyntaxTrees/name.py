@@ -1,6 +1,6 @@
-from syntaxtree import *
+from expr import *
 
-class Name(SyntaxTree):
+class Name(Expr):
     def __init__(self, *args, **kwargs) -> None:
         self.id: SyntaxTree = None
         self.mode: SyntaxTree = None
@@ -21,3 +21,8 @@ class Name(SyntaxTree):
     def get_array_info(self):
         name=self.symtab.get_var(self.id)
         return name.type.get_array_info()
+
+    def get_type(self):
+        name=self.symtab.get_var(self.id)
+        self.type=name.type
+        return self.type

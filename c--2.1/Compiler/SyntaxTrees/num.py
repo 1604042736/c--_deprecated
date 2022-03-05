@@ -1,7 +1,7 @@
-from syntaxtree import *
+from expr import *
 from inttype import *
 
-class Num(SyntaxTree):
+class Num(Expr):
     def __init__(self, *args, **kwargs) -> None:
         self.value = 0
         super().__init__(*args, **kwargs)

@@ -272,6 +272,19 @@ class GeneratedParser(Parser):
         return None
 
     @memoize
+    def arg_def(self) -> Optional[Any]:
+        # arg_def: type NAME
+        mark = self._mark()
+        if (
+            (a := self.type())
+            and
+            (b := self.name())
+        ):
+            return ArgDef ( type = a , name = b . string )
+        self._reset(mark)
+        return None
+
+    @memoize
     def basic_type(self) -> Optional[Any]:
         # basic_type: 'int' | 'char' | 'float'
         mark = self._mark()
@@ -352,12 +365,12 @@ class GeneratedParser(Parser):
 
     @memoize
     def expression(self) -> Optional[Any]:
-        # expression: var_def | or_exp
+        # expression: arg_def | or_exp
         mark = self._mark()
         if (
-            (var_def := self.var_def())
+            (arg_def := self.arg_def())
         ):
-            return var_def
+            return arg_def
         self._reset(mark)
         if (
             (or_exp := self.or_exp())
@@ -690,14 +703,13 @@ class GeneratedParser(Parser):
 
     @memoize
     def arg_exp_list(self) -> Optional[Any]:
-        # arg_exp_list: expression ((',' expression))*
+        # arg_exp_list: [expression ((',' expression))*]
+        # nullable=True
         mark = self._mark()
         if (
-            (expression := self.expression())
-            and
-            (_loop0_9 := self._loop0_9(),)
+            (a := self._tmp_9(),)
         ):
-            return [expression, _loop0_9]
+            return get_args ( a )
         self._reset(mark)
         return None
 
@@ -836,17 +848,17 @@ class GeneratedParser(Parser):
         return children
 
     @memoize
-    def _loop0_9(self) -> Optional[Any]:
-        # _loop0_9: (',' expression)
+    def _tmp_9(self) -> Optional[Any]:
+        # _tmp_9: expression ((',' expression))*
         mark = self._mark()
-        children = []
-        while (
-            (_tmp_14 := self._tmp_14())
+        if (
+            (expression := self.expression())
+            and
+            (_loop0_14 := self._loop0_14(),)
         ):
-            children.append(_tmp_14)
-            mark = self._mark()
+            return [expression, _loop0_14]
         self._reset(mark)
-        return children
+        return None
 
     @memoize
     def _tmp_10(self) -> Optional[Any]:
@@ -905,17 +917,17 @@ class GeneratedParser(Parser):
         return None
 
     @memoize
-    def _tmp_14(self) -> Optional[Any]:
-        # _tmp_14: ',' expression
+    def _loop0_14(self) -> Optional[Any]:
+        # _loop0_14: (',' expression)
         mark = self._mark()
-        if (
-            (literal := self.expect(','))
-            and
-            (expression := self.expression())
+        children = []
+        while (
+            (_tmp_16 := self._tmp_16())
         ):
-            return [literal, expression]
+            children.append(_tmp_16)
+            mark = self._mark()
         self._reset(mark)
-        return None
+        return children
 
     @memoize
     def _tmp_15(self) -> Optional[Any]:
@@ -930,7 +942,20 @@ class GeneratedParser(Parser):
         self._reset(mark)
         return None
 
-    KEYWORDS = ('while', 'else', 'int', 'return', 'float', 'elif', 'and', 'char', 'if', 'or')
+    @memoize
+    def _tmp_16(self) -> Optional[Any]:
+        # _tmp_16: ',' expression
+        mark = self._mark()
+        if (
+            (literal := self.expect(','))
+            and
+            (expression := self.expression())
+        ):
+            return [literal, expression]
+        self._reset(mark)
+        return None
+
+    KEYWORDS = ('char', 'int', 'and', 'if', 'return', 'float', 'else', 'elif', 'or', 'while')
     SOFT_KEYWORDS = ()
 
 

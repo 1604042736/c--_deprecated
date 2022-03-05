@@ -1,6 +1,6 @@
-from syntaxtree import *
+from expr import *
 
-class And(SyntaxTree):
+class And(Expr):
     '''
     与
     '''

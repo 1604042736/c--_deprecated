@@ -1,6 +1,6 @@
-from syntaxtree import *
+from expr import *
 
-class Gt(SyntaxTree):
+class Gt(Expr):
     def gen(self):
         self.genir.add_inst('pop','ebx')
         self.genir.add_inst('pop','eax')

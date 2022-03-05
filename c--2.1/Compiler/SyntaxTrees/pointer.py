@@ -1,6 +1,6 @@
-from syntaxtree import *
+from type import *
 
-class Pointer(SyntaxTree):
+class Pointer(Type):
     '''
     指针
     '''

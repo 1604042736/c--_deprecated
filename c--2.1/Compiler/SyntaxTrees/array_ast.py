@@ -1,6 +1,6 @@
-from syntaxtree import *
+from type import *
 
-class Array(SyntaxTree):
+class Array(Type):
     '''
     数组
     '''
@@ -36,6 +36,9 @@ class Array(SyntaxTree):
 
     def get_size(self):
         return self.basesize
+
+    def get_type(self):
+        return self.type
 
 class ArrayInfo:
     '''
