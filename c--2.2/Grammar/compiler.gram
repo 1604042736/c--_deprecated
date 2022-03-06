@@ -1,0 +1,167 @@
+@subheader"""
+from SyntaxTrees import *
+
+def get_var_def_list(a,b,c):
+    result={'names':[a],'values':[b if b else None]}
+    if c:
+        for i in c:
+            result['names'].append(i[0])
+            result['values'].append(i[1])
+    return result
+"""
+
+start :a=[sentences] ENDMARKER {Program(body=a if a else [])}
+
+body: NEWLINE INDENT a=sentences DEDENT {a}
+
+sentences:sentence*
+
+sentence:
+    | a=statement NEWLINE {a}
+    | statement
+
+statement:
+    | &'if' if_sentence
+    | &'while' while_sentence
+    | &'return' return_sentence
+    | &'extern' extern_sentence
+    | 'pass' {Pass()}
+    | function
+    | call
+    | assign
+    | var_def
+
+define:
+    | function_def
+    | var_def
+
+more_def:
+    | define+
+
+extern_sentence:
+    | 'extern' ':' a=more_def {Extern(extern=a)}
+    | 'extern' a=define {Extern(extern=[a])}
+
+return_sentence:'return' a=expression {Return(value=a)}
+
+while_sentence:'while' a=expression ':' b=body {While(exp=a,body=b)}
+
+function:
+    | a=type b=NAME '(' c=[arg_def_list] ')' ':' d=body {Function(type=a,name=b.string,args=c if c else [],body=d)}
+    | function_def
+
+function_def:a=type b=NAME '(' c=[arg_def_list] ')' {Function(type=a,name=b.string,args=c if c else [])}
+
+if_sentence:'if' a=expression ':' b=body c=[elif_sentence] {If(exp=a,body=b,orelse=c)}
+
+elif_sentence:
+    | 'elif' a=expression ':' b=body c=[elif_sentence] {If(exp=a,body=b,orelse=c)}
+    | else_sentence
+
+else_sentence:'else' ':' a=body {a}
+
+basic_type:
+    | 'int' {Int()}
+    | 'void' {Void()}
+
+pointer_type:a=basic_type b='*'+ {Pointer(type=a,level=len(b))}
+
+var_type:
+    | pointer_type
+    | basic_type
+
+array_type:a=var_type b=array_dimen+ {Array(type=a,dimen=b)}
+
+array_dimen:'[' a=NUMBER ']' {a.string}
+
+type:
+    | array_type
+    | var_type
+
+var_def:a=type b=NAME c=[default] d=var_def_more* {VarDef(type=a,**get_var_def_list(b.string,c,d))}
+
+var_def_more:',' a=NAME b=[default] {(a.string,b if b else None)}
+
+arg_def:
+    | a=type b=NAME c=[default] {ArgDef(type=a,name=b.string,default=c if c else None)}
+    | '...' {More()}
+
+default:'=' a=expression {a}
+
+assign:a=expression '=' c=expression {Assign(targets=[a],value=c)}
+
+assign_more:'=' a=expression {a}
+
+expression:or_exp
+
+or_exp:
+    | a=and_exp b=('or' and_exp)+ {BoolOp(op=Or(),values=[a]+[i[1]for i in b])}
+    | and_exp
+
+and_exp:
+    | a=bitor_exp b=('and' bitor_exp)+ {BoolOp(op=And(),values=[a]+[i[1] for i in b])}
+    | bitor_exp
+
+bitor_exp:
+    | a=bitor_exp '|' b=bitxor_exp {BinOp(left=a,op=BitOr(),right=b)}
+    | bitxor_exp
+
+bitxor_exp:
+    | a=bitxor_exp '^' b=bitand_exp {BinOp(left=a,op=BitXor(),right=b)}
+    | bitand_exp
+
+bitand_exp:
+    | a=bitand_exp '&' b=compare_exp {BinOp(left=a,op=BitAnd(),right=b)}
+    | compare_exp
+
+compare_exp:
+    | a=shift_exp b=compares {Compare(left=a,ops=[i for i,j in b],values=[j for i,j in b])}
+    | shift_exp
+
+compares:compare+
+
+compare:
+    | '<' a=shift_exp {(Lt(),a)}
+    | '<=' a=shift_exp {(Leq(),a)}
+    | '>' a=shift_exp {(Gt(),a)}
+    | '>=' a=shift_exp {(Geq(),a)}
+    | '==' a=shift_exp {(Eq(),a)}
+    | '!=' a=shift_exp {(Neq(),a)}
+
+shift_exp:
+    | a=shift_exp '<<' b=add_exp {BinOp(left=a,op=RShift(),right=b)}
+    | a=shift_exp '>>' b=add_exp {BinOp(left=a,op=LShift(),right=b)}
+    | add_exp
+
+add_exp:
+    | a=add_exp '+' b=mul_exp {BinOp(left=a,op=Add(),right=b)}
+    | a=add_exp '-' b=mul_exp {BinOp(left=a,op=Sub(),right=b)}
+    | mul_exp
+
+mul_exp:
+    | a=mul_exp '*' b=postfix_exp {BinOp(left=a,op=Mul(),right=b)}
+    | a=mul_exp '/' b=postfix_exp {BinOp(left=a,op=Div(),right=b)}
+    | a=mul_exp '%' b=postfix_exp {BinOp(left=a,op=Mod(),right=b)}
+    | postfix_exp
+
+postfix_exp:
+    | a=postfix_exp '[' b=expression ']' {Subscript(value=a,slice=b,mode=Load())}
+    | call
+    | a=postfix_exp '.' b=NAME {Attribute(value=a,attr=b.string,mode=Load())}
+    | primary_exp
+
+call:a=NAME '(' b=[arg_exp_list] ')' {Call(func=a.string,args=b if b else [])}
+
+arg_def_list:a=arg_def b=arg_def_more* {[a]+b if b else [a]}
+
+arg_def_more:',' a=arg_def {a}
+
+arg_exp_list:a=expression b=arg_exp_more* {[a]+b if b else [a]}
+
+arg_exp_more:',' a=expression {a}
+
+primary_exp:
+    | NAME {Name(id=name.string,mode=Load())}
+    | STRING {String(value=string.string[1:-1])}
+    | NUMBER {Num(value=number.string)}
+    | '(' a=expression ')' {a}
