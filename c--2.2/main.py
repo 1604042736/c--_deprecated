@@ -1,5 +1,12 @@
+import sys,os
+sys.path.append(os.path.dirname(__file__))
+
 from Compiler import *
-from build_parser import *
+try:
+    from build_parser import *
+except:
+    pass
+
 import argparse
 
 parser = argparse.ArgumentParser(description='c--2.1')
