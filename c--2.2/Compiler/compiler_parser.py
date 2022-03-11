@@ -84,7 +84,7 @@ class GeneratedParser(Parser):
 
     @memoize
     def statement(self) -> Optional[Any]:
-        # statement: &'if' if_sentence | &'while' while_sentence | &'return' return_sentence | &'extern' extern_sentence | 'pass' | function | call | assign | var_def
+        # statement: &'if' if_sentence | &'while' while_sentence | &'return' return_sentence | &'extern' extern_sentence | 'pass' | function | call | assign | define
         mark = self._mark()
         if (
             self.positive_lookahead(self.expect, 'if')
@@ -135,16 +135,21 @@ class GeneratedParser(Parser):
             return assign
         self._reset(mark)
         if (
-            (var_def := self.var_def())
+            (define := self.define())
         ):
-            return var_def
+            return define
         self._reset(mark)
         return None
 
     @memoize
-    def define(self) -> Optional[Any]:
-        # define: function_def | var_def
+    def defs(self) -> Optional[Any]:
+        # defs: struct_def | function_def | var_def
         mark = self._mark()
+        if (
+            (struct_def := self.struct_def())
+        ):
+            return struct_def
+        self._reset(mark)
         if (
             (function_def := self.function_def())
         ):
@@ -158,8 +163,26 @@ class GeneratedParser(Parser):
         return None
 
     @memoize
-    def more_def(self) -> Optional[Any]:
-        # more_def: define+
+    def define(self) -> Optional[Any]:
+        # define: defs NEWLINE | defs
+        mark = self._mark()
+        if (
+            (a := self.defs())
+            and
+            (_newline := self.expect('NEWLINE'))
+        ):
+            return a
+        self._reset(mark)
+        if (
+            (defs := self.defs())
+        ):
+            return defs
+        self._reset(mark)
+        return None
+
+    @memoize
+    def defines(self) -> Optional[Any]:
+        # defines: define+
         mark = self._mark()
         if (
             (_loop1_2 := self._loop1_2())
@@ -169,15 +192,32 @@ class GeneratedParser(Parser):
         return None
 
     @memoize
+    def def_list(self) -> Optional[Any]:
+        # def_list: NEWLINE INDENT defines DEDENT
+        mark = self._mark()
+        if (
+            (_newline := self.expect('NEWLINE'))
+            and
+            (_indent := self.expect('INDENT'))
+            and
+            (a := self.defines())
+            and
+            (_dedent := self.expect('DEDENT'))
+        ):
+            return a
+        self._reset(mark)
+        return None
+
+    @memoize
     def extern_sentence(self) -> Optional[Any]:
-        # extern_sentence: 'extern' ':' more_def | 'extern' define
+        # extern_sentence: 'extern' ':' def_list | 'extern' define
         mark = self._mark()
         if (
             (literal := self.expect('extern'))
             and
             (literal_1 := self.expect(':'))
             and
-            (a := self.more_def())
+            (a := self.def_list())
         ):
             return Extern ( extern = a )
         self._reset(mark)
@@ -343,10 +383,10 @@ class GeneratedParser(Parser):
 
     @memoize
     def pointer_type(self) -> Optional[Any]:
-        # pointer_type: basic_type '*'+
+        # pointer_type: single_type '*'+
         mark = self._mark()
         if (
-            (a := self.basic_type())
+            (a := self.single_type())
             and
             (b := self._loop1_3())
         ):
@@ -355,8 +395,24 @@ class GeneratedParser(Parser):
         return None
 
     @memoize
-    def var_type(self) -> Optional[Any]:
-        # var_type: pointer_type | basic_type
+    def single_type(self) -> Optional[Any]:
+        # single_type: basic_type | struct_type
+        mark = self._mark()
+        if (
+            (basic_type := self.basic_type())
+        ):
+            return basic_type
+        self._reset(mark)
+        if (
+            (struct_type := self.struct_type())
+        ):
+            return struct_type
+        self._reset(mark)
+        return None
+
+    @memoize
+    def mult_type(self) -> Optional[Any]:
+        # mult_type: pointer_type | single_type
         mark = self._mark()
         if (
             (pointer_type := self.pointer_type())
@@ -364,18 +420,18 @@ class GeneratedParser(Parser):
             return pointer_type
         self._reset(mark)
         if (
-            (basic_type := self.basic_type())
+            (single_type := self.single_type())
         ):
-            return basic_type
+            return single_type
         self._reset(mark)
         return None
 
     @memoize
     def array_type(self) -> Optional[Any]:
-        # array_type: var_type array_dimen+
+        # array_type: mult_type array_dimen+
         mark = self._mark()
         if (
-            (a := self.var_type())
+            (a := self.mult_type())
             and
             (b := self._loop1_4())
         ):
@@ -399,8 +455,21 @@ class GeneratedParser(Parser):
         return None
 
     @memoize
+    def struct_type(self) -> Optional[Any]:
+        # struct_type: 'struct' NAME
+        mark = self._mark()
+        if (
+            (literal := self.expect('struct'))
+            and
+            (a := self.name())
+        ):
+            return Struct ( name = a . string )
+        self._reset(mark)
+        return None
+
+    @memoize
     def type(self) -> Optional[Any]:
-        # type: array_type | var_type
+        # type: array_type | mult_type
         mark = self._mark()
         if (
             (array_type := self.array_type())
@@ -408,9 +477,26 @@ class GeneratedParser(Parser):
             return array_type
         self._reset(mark)
         if (
-            (var_type := self.var_type())
+            (mult_type := self.mult_type())
         ):
-            return var_type
+            return mult_type
+        self._reset(mark)
+        return None
+
+    @memoize
+    def struct_def(self) -> Optional[Any]:
+        # struct_def: 'struct' NAME ':' body
+        mark = self._mark()
+        if (
+            (literal := self.expect('struct'))
+            and
+            (a := self.name())
+            and
+            (literal_1 := self.expect(':'))
+            and
+            (b := self.body())
+        ):
+            return StructDef ( name = a . string , defs = b )
         self._reset(mark)
         return None
 
@@ -481,10 +567,10 @@ class GeneratedParser(Parser):
 
     @memoize
     def assign(self) -> Optional[Any]:
-        # assign: expression '=' expression
+        # assign: assign_exp '=' expression
         mark = self._mark()
         if (
-            (a := self.expression())
+            (a := self.assign_exp())
             and
             (literal := self.expect('='))
             and
@@ -508,6 +594,119 @@ class GeneratedParser(Parser):
         return None
 
     @memoize
+    def assign_exp(self) -> Optional[Any]:
+        # assign_exp: '*'+ assign_exp | t_primary '[' expression ']' !t_lookahead | t_primary '.' NAME !t_lookahead | call !t_lookahead | NAME
+        mark = self._mark()
+        tok = self._tokenizer.peek()
+        start_lineno, start_col_offset = tok.start
+        if (
+            (a := self._loop1_6())
+            and
+            (b := self.assign_exp())
+        ):
+            tok = self._tokenizer.get_last_non_whitespace_token()
+            end_lineno, end_col_offset = tok.end
+            return UnpackRef ( exp = b , level = len ( a ) , lineno=start_lineno, col_offset=start_col_offset, end_lineno=end_lineno, end_col_offset=end_col_offset )
+        self._reset(mark)
+        if (
+            (a := self.t_primary())
+            and
+            (literal := self.expect('['))
+            and
+            (b := self.expression())
+            and
+            (literal_1 := self.expect(']'))
+            and
+            self.negative_lookahead(self.t_lookahead, )
+        ):
+            tok = self._tokenizer.get_last_non_whitespace_token()
+            end_lineno, end_col_offset = tok.end
+            return Subscript ( value = a , slice = b , mode = Store ( ) , lineno=start_lineno, col_offset=start_col_offset, end_lineno=end_lineno, end_col_offset=end_col_offset )
+        self._reset(mark)
+        if (
+            (a := self.t_primary())
+            and
+            (literal := self.expect('.'))
+            and
+            (b := self.name())
+            and
+            self.negative_lookahead(self.t_lookahead, )
+        ):
+            return Attribute ( value = a , attr = b . string , mode = Store ( ) )
+        self._reset(mark)
+        if (
+            (call := self.call())
+            and
+            self.negative_lookahead(self.t_lookahead, )
+        ):
+            return call
+        self._reset(mark)
+        if (
+            (a := self.name())
+        ):
+            return Name ( id = a . string , mode = Store ( ) )
+        self._reset(mark)
+        return None
+
+    @memoize_left_rec
+    def t_primary(self) -> Optional[Any]:
+        # t_primary: t_primary '.' NAME &t_lookahead | t_primary '[' expression ']' &t_lookahead | NAME &t_lookahead
+        mark = self._mark()
+        if (
+            (a := self.t_primary())
+            and
+            (literal := self.expect('.'))
+            and
+            (b := self.name())
+            and
+            self.positive_lookahead(self.t_lookahead, )
+        ):
+            return Attribute ( value = a , attr = b . string , mode = Load ( ) )
+        self._reset(mark)
+        if (
+            (a := self.t_primary())
+            and
+            (literal := self.expect('['))
+            and
+            (b := self.expression())
+            and
+            (literal_1 := self.expect(']'))
+            and
+            self.positive_lookahead(self.t_lookahead, )
+        ):
+            return Subscript ( value = a , slice = b , mode = Load ( ) )
+        self._reset(mark)
+        if (
+            (a := self.name())
+            and
+            self.positive_lookahead(self.t_lookahead, )
+        ):
+            return Name ( id = a . string , mode = Load ( ) )
+        self._reset(mark)
+        return None
+
+    @memoize
+    def t_lookahead(self) -> Optional[Any]:
+        # t_lookahead: '(' | '[' | '.'
+        mark = self._mark()
+        if (
+            (literal := self.expect('('))
+        ):
+            return literal
+        self._reset(mark)
+        if (
+            (literal := self.expect('['))
+        ):
+            return literal
+        self._reset(mark)
+        if (
+            (literal := self.expect('.'))
+        ):
+            return literal
+        self._reset(mark)
+        return None
+
+    @memoize
     def expression(self) -> Optional[Any]:
         # expression: or_exp
         mark = self._mark()
@@ -525,7 +724,7 @@ class GeneratedParser(Parser):
         if (
             (a := self.and_exp())
             and
-            (b := self._loop1_6())
+            (b := self._loop1_7())
         ):
             return BoolOp ( op = Or ( ) , values = [a] + [i [1] for i in b] )
         self._reset(mark)
@@ -543,7 +742,7 @@ class GeneratedParser(Parser):
         if (
             (a := self.bitor_exp())
             and
-            (b := self._loop1_7())
+            (b := self._loop1_8())
         ):
             return BoolOp ( op = And ( ) , values = [a] + [i [1] for i in b] )
         self._reset(mark)
@@ -637,9 +836,9 @@ class GeneratedParser(Parser):
         # compares: compare+
         mark = self._mark()
         if (
-            (_loop1_8 := self._loop1_8())
+            (_loop1_9 := self._loop1_9())
         ):
-            return _loop1_8
+            return _loop1_9
         self._reset(mark)
         return None
 
@@ -751,14 +950,14 @@ class GeneratedParser(Parser):
 
     @memoize_left_rec
     def mul_exp(self) -> Optional[Any]:
-        # mul_exp: mul_exp '*' postfix_exp | mul_exp '/' postfix_exp | mul_exp '%' postfix_exp | postfix_exp
+        # mul_exp: mul_exp '*' prefix_exp | mul_exp '/' prefix_exp | mul_exp '%' prefix_exp | prefix_exp
         mark = self._mark()
         if (
             (a := self.mul_exp())
             and
             (literal := self.expect('*'))
             and
-            (b := self.postfix_exp())
+            (b := self.prefix_exp())
         ):
             return BinOp ( left = a , op = Mul ( ) , right = b )
         self._reset(mark)
@@ -767,7 +966,7 @@ class GeneratedParser(Parser):
             and
             (literal := self.expect('/'))
             and
-            (b := self.postfix_exp())
+            (b := self.prefix_exp())
         ):
             return BinOp ( left = a , op = Div ( ) , right = b )
         self._reset(mark)
@@ -776,9 +975,38 @@ class GeneratedParser(Parser):
             and
             (literal := self.expect('%'))
             and
-            (b := self.postfix_exp())
+            (b := self.prefix_exp())
         ):
             return BinOp ( left = a , op = Mod ( ) , right = b )
+        self._reset(mark)
+        if (
+            (prefix_exp := self.prefix_exp())
+        ):
+            return prefix_exp
+        self._reset(mark)
+        return None
+
+    @memoize
+    def prefix_exp(self) -> Optional[Any]:
+        # prefix_exp: '&' postfix_exp | '*'+ postfix_exp | postfix_exp
+        mark = self._mark()
+        tok = self._tokenizer.peek()
+        start_lineno, start_col_offset = tok.start
+        if (
+            (literal := self.expect('&'))
+            and
+            (a := self.postfix_exp())
+        ):
+            return Address ( exp = a )
+        self._reset(mark)
+        if (
+            (a := self._loop1_10())
+            and
+            (b := self.postfix_exp())
+        ):
+            tok = self._tokenizer.get_last_non_whitespace_token()
+            end_lineno, end_col_offset = tok.end
+            return UnpackRef ( exp = b , level = len ( a ) , lineno=start_lineno, col_offset=start_col_offset, end_lineno=end_lineno, end_col_offset=end_col_offset )
         self._reset(mark)
         if (
             (postfix_exp := self.postfix_exp())
@@ -791,6 +1019,8 @@ class GeneratedParser(Parser):
     def postfix_exp(self) -> Optional[Any]:
         # postfix_exp: postfix_exp '[' expression ']' | call | postfix_exp '.' NAME | primary_exp
         mark = self._mark()
+        tok = self._tokenizer.peek()
+        start_lineno, start_col_offset = tok.start
         if (
             (a := self.postfix_exp())
             and
@@ -800,7 +1030,9 @@ class GeneratedParser(Parser):
             and
             (literal_1 := self.expect(']'))
         ):
-            return Subscript ( value = a , slice = b , mode = Load ( ) )
+            tok = self._tokenizer.get_last_non_whitespace_token()
+            end_lineno, end_col_offset = tok.end
+            return Subscript ( value = a , slice = b , mode = Load ( ) , lineno=start_lineno, col_offset=start_col_offset, end_lineno=end_lineno, end_col_offset=end_col_offset )
         self._reset(mark)
         if (
             (call := self.call())
@@ -827,6 +1059,8 @@ class GeneratedParser(Parser):
     def call(self) -> Optional[Any]:
         # call: NAME '(' arg_exp_list? ')'
         mark = self._mark()
+        tok = self._tokenizer.peek()
+        start_lineno, start_col_offset = tok.start
         if (
             (a := self.name())
             and
@@ -836,7 +1070,9 @@ class GeneratedParser(Parser):
             and
             (literal_1 := self.expect(')'))
         ):
-            return Call ( func = a . string , args = b if b else [] )
+            tok = self._tokenizer.get_last_non_whitespace_token()
+            end_lineno, end_col_offset = tok.end
+            return Call ( func = a . string , args = b if b else [] , lineno=start_lineno, col_offset=start_col_offset, end_lineno=end_lineno, end_col_offset=end_col_offset )
         self._reset(mark)
         return None
 
@@ -847,7 +1083,7 @@ class GeneratedParser(Parser):
         if (
             (a := self.arg_def())
             and
-            (b := self._loop0_9(),)
+            (b := self._loop0_11(),)
         ):
             return [a] + b if b else [a]
         self._reset(mark)
@@ -873,7 +1109,7 @@ class GeneratedParser(Parser):
         if (
             (a := self.expression())
             and
-            (b := self._loop0_10(),)
+            (b := self._loop0_12(),)
         ):
             return [a] + b if b else [a]
         self._reset(mark)
@@ -989,33 +1225,46 @@ class GeneratedParser(Parser):
 
     @memoize
     def _loop1_6(self) -> Optional[Any]:
-        # _loop1_6: ('or' and_exp)
+        # _loop1_6: '*'
         mark = self._mark()
         children = []
         while (
-            (_tmp_11 := self._tmp_11())
+            (literal := self.expect('*'))
         ):
-            children.append(_tmp_11)
+            children.append(literal)
             mark = self._mark()
         self._reset(mark)
         return children
 
     @memoize
     def _loop1_7(self) -> Optional[Any]:
-        # _loop1_7: ('and' bitor_exp)
+        # _loop1_7: ('or' and_exp)
         mark = self._mark()
         children = []
         while (
-            (_tmp_12 := self._tmp_12())
+            (_tmp_13 := self._tmp_13())
         ):
-            children.append(_tmp_12)
+            children.append(_tmp_13)
             mark = self._mark()
         self._reset(mark)
         return children
 
     @memoize
     def _loop1_8(self) -> Optional[Any]:
-        # _loop1_8: compare
+        # _loop1_8: ('and' bitor_exp)
+        mark = self._mark()
+        children = []
+        while (
+            (_tmp_14 := self._tmp_14())
+        ):
+            children.append(_tmp_14)
+            mark = self._mark()
+        self._reset(mark)
+        return children
+
+    @memoize
+    def _loop1_9(self) -> Optional[Any]:
+        # _loop1_9: compare
         mark = self._mark()
         children = []
         while (
@@ -1027,8 +1276,21 @@ class GeneratedParser(Parser):
         return children
 
     @memoize
-    def _loop0_9(self) -> Optional[Any]:
-        # _loop0_9: arg_def_more
+    def _loop1_10(self) -> Optional[Any]:
+        # _loop1_10: '*'
+        mark = self._mark()
+        children = []
+        while (
+            (literal := self.expect('*'))
+        ):
+            children.append(literal)
+            mark = self._mark()
+        self._reset(mark)
+        return children
+
+    @memoize
+    def _loop0_11(self) -> Optional[Any]:
+        # _loop0_11: arg_def_more
         mark = self._mark()
         children = []
         while (
@@ -1040,8 +1302,8 @@ class GeneratedParser(Parser):
         return children
 
     @memoize
-    def _loop0_10(self) -> Optional[Any]:
-        # _loop0_10: arg_exp_more
+    def _loop0_12(self) -> Optional[Any]:
+        # _loop0_12: arg_exp_more
         mark = self._mark()
         children = []
         while (
@@ -1053,8 +1315,8 @@ class GeneratedParser(Parser):
         return children
 
     @memoize
-    def _tmp_11(self) -> Optional[Any]:
-        # _tmp_11: 'or' and_exp
+    def _tmp_13(self) -> Optional[Any]:
+        # _tmp_13: 'or' and_exp
         mark = self._mark()
         if (
             (literal := self.expect('or'))
@@ -1066,8 +1328,8 @@ class GeneratedParser(Parser):
         return None
 
     @memoize
-    def _tmp_12(self) -> Optional[Any]:
-        # _tmp_12: 'and' bitor_exp
+    def _tmp_14(self) -> Optional[Any]:
+        # _tmp_14: 'and' bitor_exp
         mark = self._mark()
         if (
             (literal := self.expect('and'))
@@ -1078,7 +1340,7 @@ class GeneratedParser(Parser):
         self._reset(mark)
         return None
 
-    KEYWORDS = ('else', 'while', 'void', 'elif', 'if', 'pass', 'extern', 'or', 'int', 'and', 'return')
+    KEYWORDS = ('or', 'else', 'and', 'int', 'pass', 'while', 'void', 'struct', 'extern', 'return', 'if', 'elif')
     SOFT_KEYWORDS = ()
 
 

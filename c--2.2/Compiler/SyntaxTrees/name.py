@@ -16,5 +16,5 @@ class Name(Expr):
         name=self.symtab.get_var(self.id)
         self.genir.add_inst('mov','ecx','ebp')
         name.type.gen(name)
-        self.mode.gen(name.type)
+        self.mode.gen(self.type)
         self.genir.comment('<-Name '+self.id)

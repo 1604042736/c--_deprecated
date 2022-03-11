@@ -32,3 +32,6 @@ class Type(SyntaxTree):
         '''存储变量'''
         self.genir.add_inst('pop','eax')
         self.genir.add_inst('mov','[ecx]','eax')
+
+    def get_attr(self,name):
+        '''获得属性'''

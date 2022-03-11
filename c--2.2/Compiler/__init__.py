@@ -1,6 +1,5 @@
 import os
 import sys
-from black import err
 sys.path.append(os.path.dirname(__file__))
 
 from pegen.parser import *
@@ -10,12 +9,13 @@ from globals import *
 
 def compile(filename):
     with open(filename,encoding='utf-8')as file:
+        Globals.code=file.readlines()   #记录代码
+        Globals.filename=filename
+        file.seek(0)
         tokengen = tokenize.generate_tokens(file.readline)
         tokenizer = Tokenizer(tokengen)
         parser = GeneratedParser(tokenizer)
         tree = parser.start()
-        if tree==None:
-            error('语法错误!')
         tree.analyse()
         tree.gen()
         Globals.symtab.gen_data()

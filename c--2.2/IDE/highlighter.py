@@ -12,8 +12,8 @@ class Highlighter(QSyntaxHighlighter):
 
         self.initializeFormats()
 
-        KEYWORDS = ["and", "elif", "else", "if", "or",
-                    "pass", "return", "while", "int", "void","extern"]
+        KEYWORDS = ['or', 'else', 'and', 'int', 'pass', 'while',
+                    'void', 'struct', 'extern', 'return', 'if', 'elif']
 
         Highlighter.Rules.append((QRegExp(
             "|".join([r"\b%s\b" % keyword for keyword in KEYWORDS])),

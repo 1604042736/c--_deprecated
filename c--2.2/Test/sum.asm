@@ -119,7 +119,7 @@ add esp,4
 push eax
 push constant0
 call _printf
-add esp,6
+add esp,4
 mov esp,ebp
 pop ebp
 ret 

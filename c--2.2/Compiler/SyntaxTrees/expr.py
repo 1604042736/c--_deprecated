@@ -23,3 +23,7 @@ class Expr(SyntaxTree):
     def analyse(self):
         self.analyse_type()
         return super().analyse()
+
+    def get_attr(self,name):
+        '''获得属性'''
+        return self.type.get_attr(name)

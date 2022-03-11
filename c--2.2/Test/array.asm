@@ -164,7 +164,7 @@ mov eax,[ecx]
 push eax
 push constant0
 call _printf
-add esp,7
+add esp,4
 ;->Name i
 mov ecx,ebp
 sub ecx,44

@@ -29,17 +29,24 @@ statement:
     | function
     | call
     | assign
-    | var_def
+    | define
 
-define:
+defs:
+    | struct_def
     | function_def
     | var_def
 
-more_def:
-    | define+
+define:
+    | a=defs NEWLINE {a}
+    | defs
+
+defines:define+
+
+def_list:
+    | NEWLINE INDENT a=defines DEDENT {a}
 
 extern_sentence:
-    | 'extern' ':' a=more_def {Extern(extern=a)}
+    | 'extern' ':' a=def_list {Extern(extern=a)}
     | 'extern' a=define {Extern(extern=[a])}
 
 return_sentence:'return' a=expression {Return(value=a)}
@@ -64,19 +71,27 @@ basic_type:
     | 'int' {Int()}
     | 'void' {Void()}
 
-pointer_type:a=basic_type b='*'+ {Pointer(type=a,level=len(b))}
+pointer_type:a=single_type b='*'+ {Pointer(type=a,level=len(b))}
 
-var_type:
-    | pointer_type
+single_type:
     | basic_type
+    | struct_type
 
-array_type:a=var_type b=array_dimen+ {Array(type=a,dimen=b)}
+mult_type:
+    | pointer_type
+    | single_type
+
+array_type:a=mult_type b=array_dimen+ {Array(type=a,dimen=b)}
 
 array_dimen:'[' a=NUMBER ']' {a.string}
 
+struct_type:'struct' a=NAME {Struct(name=a.string)}
+
 type:
     | array_type
-    | var_type
+    | mult_type
+
+struct_def:'struct' a=NAME ':' b=body {StructDef(name=a.string,defs=b)}
 
 var_def:a=type b=NAME c=[default] d=var_def_more* {VarDef(type=a,**get_var_def_list(b.string,c,d))}
 
@@ -88,9 +103,23 @@ arg_def:
 
 default:'=' a=expression {a}
 
-assign:a=expression '=' c=expression {Assign(targets=[a],value=c)}
+assign:a=assign_exp '=' c=expression {Assign(targets=[a],value=c)}
 
 assign_more:'=' a=expression {a}
+
+assign_exp:
+    | a='*'+ b=assign_exp {UnpackRef(exp=b,level=len(a),LOCATIONS)}
+    | a=t_primary '[' b=expression ']' !t_lookahead{Subscript(value=a,slice=b,mode=Store(),LOCATIONS)}
+    | a=t_primary '.' b=NAME !t_lookahead{Attribute(value=a,attr=b.string,mode=Store())}
+    | call !t_lookahead
+    | a=NAME {Name(id=a.string,mode=Store())}
+
+t_primary:
+    | a=t_primary '.' b=NAME &t_lookahead {Attribute(value=a,attr=b.string,mode=Load())}
+    | a=t_primary '[' b=expression ']' &t_lookahead {Subscript(value=a,slice=b,mode=Load())}
+    | a=NAME &t_lookahead {Name(id=a.string,mode=Load())}
+
+t_lookahead: '(' | '[' | '.'
 
 expression:or_exp
 
@@ -139,18 +168,23 @@ add_exp:
     | mul_exp
 
 mul_exp:
-    | a=mul_exp '*' b=postfix_exp {BinOp(left=a,op=Mul(),right=b)}
-    | a=mul_exp '/' b=postfix_exp {BinOp(left=a,op=Div(),right=b)}
-    | a=mul_exp '%' b=postfix_exp {BinOp(left=a,op=Mod(),right=b)}
+    | a=mul_exp '*' b=prefix_exp {BinOp(left=a,op=Mul(),right=b)}
+    | a=mul_exp '/' b=prefix_exp {BinOp(left=a,op=Div(),right=b)}
+    | a=mul_exp '%' b=prefix_exp {BinOp(left=a,op=Mod(),right=b)}
+    | prefix_exp
+
+prefix_exp:
+    | '&' a=postfix_exp {Address(exp=a)}
+    | a='*'+ b=postfix_exp {UnpackRef(exp=b,level=len(a),LOCATIONS)}
     | postfix_exp
 
 postfix_exp:
-    | a=postfix_exp '[' b=expression ']' {Subscript(value=a,slice=b,mode=Load())}
+    | a=postfix_exp '[' b=expression ']' {Subscript(value=a,slice=b,mode=Load(),LOCATIONS)}
     | call
     | a=postfix_exp '.' b=NAME {Attribute(value=a,attr=b.string,mode=Load())}
     | primary_exp
 
-call:a=NAME '(' b=[arg_exp_list] ')' {Call(func=a.string,args=b if b else [])}
+call:a=NAME '(' b=[arg_exp_list] ')' {Call(func=a.string,args=b if b else [],LOCATIONS)}
 
 arg_def_list:a=arg_def b=arg_def_more* {[a]+b if b else [a]}
 

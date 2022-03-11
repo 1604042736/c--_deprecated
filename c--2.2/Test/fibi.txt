@@ -1,4 +1,4 @@
-extern void _printf(...)
+#include<stdio.ext>
 
 int f(int n):
     if n==1 or n==2:

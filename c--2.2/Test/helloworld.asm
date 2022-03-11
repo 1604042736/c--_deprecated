@@ -8,7 +8,7 @@ mov ebp,esp
 sub esp,0
 push constant0
 call _printf
-add esp,11
+add esp,0
 mov esp,ebp
 pop ebp
 ret 

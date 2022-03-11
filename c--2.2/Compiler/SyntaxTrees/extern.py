@@ -7,7 +7,8 @@ class Extern(SyntaxTree):
         super().__init__(**kwargs)
 
     def analyse(self):
-        self.symtab.cursym=[]
+        self.symtab.cursym.append([])
         super().analyse()
-        for i in self.symtab.cursym:
+        for i in self.symtab.cursym[-1]:
             i.isextern=True
+        self.symtab.cursym.pop()

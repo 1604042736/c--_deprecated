@@ -2,6 +2,7 @@ from void import *
 from expr import *
 from more import *
 from argdef import *
+from error import *
 
 
 class Call(Expr):
@@ -22,10 +23,10 @@ class Call(Expr):
         if func.isextern:
             #外部函数
             self.genir.add_extern(self.func)
-        funcargs=list(func.args)
-        if len(self.args)>=len(funcargs):   #实参比形参多
-            if not isinstance(funcargs[-1],More):
-                pass #TODO 报错
+        funcargs=list(func.args)    #形参
+        if len(self.args)>len(funcargs):   #实参比形参多
+            if (len(funcargs)==0 and len(self.args)>0) or not isinstance(funcargs[-1],More):
+                error('实参数量比形参多',self.location)
             else:
                 self.complete(funcargs,self.args,More())
         else:

@@ -8,8 +8,6 @@ class Assign(SyntaxTree):
         self.targets: list[Expr] = []
         self.value: Expr = None
         super().__init__(**kwargs)
-        for i in self.targets:
-            i.mode=Store()
 
     def gen(self):
         self.value.gen()

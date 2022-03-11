@@ -20,7 +20,7 @@ push eax
 ;<-Name a
 push constant0
 call _printf
-add esp,13
+add esp,8
 mov esp,ebp
 pop ebp
 ret 

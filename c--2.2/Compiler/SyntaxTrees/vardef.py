@@ -12,12 +12,12 @@ class VarDef(SyntaxTree):
         super().__init__(**kwargs)
 
     def analyse(self):
+        super().analyse()
         for name,value in zip(self.names,self.values):
             self.type.set_val(name)
-        return super().analyse()
 
     def gen(self):
         for name,value in zip(self.names,self.values):
             if value:
                 value.gen()
-                Name(id=name,mode=Store()).gen()
+                Name(id=name,mode=Store(),type=self.type).gen()

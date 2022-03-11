@@ -12,7 +12,7 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                "Test\\array.txt"
+                "Test\\structarray.txt"
             ]
         }
     ]

@@ -8,11 +8,18 @@ class Symtab:
         self.constant = {}  # 常数
         self.constnum = 0  # 计数
         self.functions={}   #函数
-        self.cursym=[]    #操作过的符号
+        self.struct={}  #结构体
+        self.cursym=[[]]    #操作过的符号
+
+    def add_struct(self,struct):
+        self.struct[struct.name]=struct
+
+    def get_struct(self,name):
+        return self.struct[name]
 
     def add_func(self,func):
         self.functions[func.name]=func
-        self.cursym.append(func)
+        self.cursym[-1].append(func)
 
     def get_func(self,name):
         return self.functions[name]
@@ -36,7 +43,7 @@ class Symtab:
             self.curfunc[-1].add_var(var)
         else:
             self.globals[var.name] = var
-        self.cursym.append(var)
+        self.cursym[-1].append(var)
 
     def get_var(self, name):
         '''获得变量'''
@@ -72,8 +79,21 @@ class Symtab:
         Globals.genir.set_cursec(sec)
 
     def print(self):
-        for key,val in self.__dict__.items():
-            print(f'{key}={val}')
+        vars={}
+        attr=['name','return_type','isextern']
+        print('\t'.join(attr))
+        for _,val in self.functions.items():
+            vars|=val.locals
+            for i in attr:
+                print(val.__dict__[i],end='\t')
+            print()
+
+        attr=['name','type','offset','islocal','isextern']
+        print('\t'.join(attr))
+        for _,val in vars.items():
+            for i in attr:
+                print(val.__dict__[i],end='\t')
+            print()
 
     def get_offset(self):
         if self.offset:
@@ -131,3 +151,15 @@ class VarSym:
 
     def __repr__(self) -> str:
         return f'VarSym({",".join([f"{key}={val}"for key,val in self.__dict__.items()])})'
+
+class StructSym:
+    '''结构体符号'''
+    def __init__(self, name) -> None:
+        self.name=name
+        self.member={}  #成员
+
+    def add_var(self, var):
+        self.member[var.name] = var
+
+    def get_var(self, name):
+        return self.member[name]

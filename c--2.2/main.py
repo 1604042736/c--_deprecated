@@ -1,11 +1,13 @@
 import sys,os
 sys.path.append(os.path.dirname(__file__))
 
-from Compiler import *
 try:
     from build_parser import *
 except:
     pass
+
+from Compiler import *
+from Preprocessor import *
 
 import argparse
 
@@ -19,6 +21,7 @@ def main():
         print("c-- 2.2")
         return
     filename = args.filename
+    filename=preprocess(filename)
     compile(filename)
 
 if __name__=='__main__':
