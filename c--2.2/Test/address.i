@@ -1,5 +1,5 @@
 extern:
-    void _printf(...)
+    void _printf(char* format,...)
 
 void f1(int a):
     a=1

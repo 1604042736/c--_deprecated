@@ -49,4 +49,5 @@ class GenIR:
         '''
         注释
         '''
+        return
         self.section[self.cursec].append(f';{msg}')

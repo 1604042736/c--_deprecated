@@ -1,0 +1,15 @@
+#include<stdio.ext>
+#define PI 3
+#undef PI
+
+#define THREE 1
+
+int _main():
+    _printf("%d ",PI)
+#ifdef ONE
+    _printf("%d ",1)
+#elif TWO
+    _printf("%d ",2)
+#else
+    _printf("%d ",3)
+#endif

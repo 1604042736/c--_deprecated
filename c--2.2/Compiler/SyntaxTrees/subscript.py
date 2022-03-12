@@ -27,7 +27,7 @@ class Subscript(Expr):
                 self.type=self.type.type
                 self.nowdimen=0
         else:
-            error(f'{self.type}不能索引',self.location)
+            self.error(f'{self.type}不能索引')
 
     def gen(self):
         self.slice.gen()

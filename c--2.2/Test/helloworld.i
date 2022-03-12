@@ -1,5 +1,5 @@
 extern:
-    void _printf(...)
+    void _printf(char* format,...)
 
 int _main():
     _printf("Hello,World")

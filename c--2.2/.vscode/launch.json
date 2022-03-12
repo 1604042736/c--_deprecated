@@ -12,8 +12,14 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                "Test\\structarray.txt"
+                "Test\\helloworld.txt"
             ]
+        },
+        {
+            "name": "Launch Microsoft Edge and open the Edge DevTools",
+            "request": "launch",
+            "type": "vscode-edge-devtools.debug",
+            "url": "https://www.baidu.com.cn" // Provide your project's url to finish configuring
         }
     ]
 }

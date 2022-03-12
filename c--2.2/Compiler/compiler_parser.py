@@ -367,7 +367,7 @@ class GeneratedParser(Parser):
 
     @memoize
     def basic_type(self) -> Optional[Any]:
-        # basic_type: 'int' | 'void'
+        # basic_type: 'int' | 'void' | 'char'
         mark = self._mark()
         if (
             (literal := self.expect('int'))
@@ -378,6 +378,11 @@ class GeneratedParser(Parser):
             (literal := self.expect('void'))
         ):
             return Void ( )
+        self._reset(mark)
+        if (
+            (literal := self.expect('char'))
+        ):
+            return Char ( )
         self._reset(mark)
         return None
 
@@ -1340,7 +1345,7 @@ class GeneratedParser(Parser):
         self._reset(mark)
         return None
 
-    KEYWORDS = ('or', 'else', 'and', 'int', 'pass', 'while', 'void', 'struct', 'extern', 'return', 'if', 'elif')
+    KEYWORDS = ('else', 'return', 'pass', 'void', 'while', 'struct', 'extern', 'if', 'int', 'char', 'elif', 'or', 'and')
     SOFT_KEYWORDS = ()
 
 

@@ -1,1 +1,1 @@
-void _printf(...)
+void _printf(char* format,...)

@@ -1,4 +1,5 @@
 from globals import *
+from error import *
 
 
 class SyntaxTree:
@@ -37,3 +38,6 @@ class SyntaxTree:
         for i in l:
             if isinstance(i, SyntaxTree):
                 i.gen()
+
+    def error(self,msg):
+        error(msg,self.location)

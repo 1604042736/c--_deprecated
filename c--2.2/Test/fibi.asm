@@ -6,12 +6,10 @@ f:
 push ebp
 mov ebp,esp
 sub esp,4
-;->Name n
 mov ecx,ebp
 add ecx,8
 mov eax,[ecx]
 push eax
-;<-Name n
 push 1
 pop edx
 push edx
@@ -32,12 +30,10 @@ jmp _2
 _3:
 push 0
 _2:
-;->Name n
 mov ecx,ebp
 add ecx,8
 mov eax,[ecx]
 push eax
-;<-Name n
 push 2
 pop edx
 push edx
@@ -89,12 +85,10 @@ ret
 jmp _14
 _13:
 _14:
-;->Name n
 mov ecx,ebp
 add ecx,8
 mov eax,[ecx]
 push eax
-;<-Name n
 push 1
 pop ebx
 pop eax
@@ -103,12 +97,10 @@ push eax
 call f
 add esp,4
 push eax
-;->Name n
 mov ecx,ebp
 add ecx,8
 mov eax,[ecx]
 push eax
-;<-Name n
 push 2
 pop ebx
 pop eax

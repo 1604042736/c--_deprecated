@@ -25,3 +25,4 @@ def compile(filename):
 
         root,ext=os.path.splitext(filename)
         Globals.genir.write(root+'.asm')
+        return root+'.asm'

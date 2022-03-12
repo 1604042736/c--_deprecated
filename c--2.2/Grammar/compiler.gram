@@ -70,6 +70,7 @@ else_sentence:'else' ':' a=body {a}
 basic_type:
     | 'int' {Int()}
     | 'void' {Void()}
+    | 'char' {Char()}
 
 pointer_type:a=single_type b='*'+ {Pointer(type=a,level=len(b))}
 

@@ -26,7 +26,7 @@ class Call(Expr):
         funcargs=list(func.args)    #形参
         if len(self.args)>len(funcargs):   #实参比形参多
             if (len(funcargs)==0 and len(self.args)>0) or not isinstance(funcargs[-1],More):
-                error('实参数量比形参多',self.location)
+                self.error('实参数量比形参多')
             else:
                 self.complete(funcargs,self.args,More())
         else:

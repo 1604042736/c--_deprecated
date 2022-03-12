@@ -11,12 +11,14 @@ class ArgDef(SyntaxTree):
         super().__init__(**kwargs)
 
     def gen(self,arg):
-        if arg:
+        if arg: #传参数
             arg.gen()
             return arg.type.size
-        else:
+        elif self.default:  #没有参数传默认值
             self.default.gen()
             return self.default.type.size
+        else:   #都没有说明缺少位置参数
+            self.error('缺少参数')
 
     def analyse(self):
         self.type.set_val(self.name)

@@ -17,9 +17,9 @@ class UnpackRef(Expr):
             if self.type.level==0:
                 self.type=self.exp.type.type
             elif self.type.level<0:
-                error('无法解这么多引用',self.location)
+                self.error('无法解这么多引用')
         else:
-            error(f'{self.type}不能解引用',self.location)
+            self.error(f'{self.type}不能解引用')
         self.type.analyse()
 
     def gen(self):
