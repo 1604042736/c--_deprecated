@@ -1,0 +1,8 @@
+build/
+*.o
+*.exe
+.vs/
+Debug/
+.idea/
+__pycache__/
+Release/

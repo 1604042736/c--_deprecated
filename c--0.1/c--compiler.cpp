@@ -1316,7 +1316,7 @@ static TreeNode* include_stmt(Parser* parser)
 		match(parser,LT);
 		t->attr.name = copyString(parser->lexer->tokenString);
 		char buf[1024];
-		sprintf(buf,"E:/ÍõÓÀ½¡/ÍõÓÀ½¡µÄÎÄ¼þ¼Ð/ÐÅÏ¢Ñ§/³ÌÐò/ËæÒâ/ÆäËû/c--1.0.0.1/include/%s.c--",t->attr.name);
+		sprintf(buf,"E:/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½/ï¿½ï¿½Ï¢Ñ§/ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½/c--1.0.0.1/include/%s.c--",t->attr.name);
 		t->child[0]=compiler(buf);
 		match(parser,ID);
 		match(parser,GT);
@@ -1541,7 +1541,7 @@ void st_init(Symtab* symtab)
 	}
 }
 
-static int hash(char* key) 
+static int _hash(char* key) 
 {
 	int temp = 0;
 	int i = 0;
@@ -1555,7 +1555,7 @@ static int hash(char* key)
 
 void st_insert(Symtab* symtab, char* name, int lineno, int loc) 
 {
-	int h = hash(name);
+	int h = _hash(name);
 	BucketList l = symtab->hashTable[h];
 	while (l != NULL && strcmp(name, l->name) != 0) 
 	{
@@ -1586,7 +1586,7 @@ void st_insert(Symtab* symtab, char* name, int lineno, int loc)
 }
 int st_lookup(Symtab* symtab, char* name) 
 {
-	int h = hash(name);
+	int h = _hash(name);
 	BucketList l = symtab->hashTable[h];
 	while (l != NULL && strcmp(name, l->name) != 0) 
 	{

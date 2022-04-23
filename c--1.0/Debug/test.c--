@@ -1,8 +1,0 @@
-function f(a)
-{
-	a=[]
-}
-b=[1]
-print(b)
-f(b)
-print(b)
