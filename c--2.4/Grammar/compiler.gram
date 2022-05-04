@@ -1,0 +1,144 @@
+@subheader"""
+from Compiler.Types import *
+from Compiler.ASTs import *
+"""
+
+start:
+    | ENDMARKER {Program(body=None)}
+    | a=compound_stmt ENDMARKER {Program(body=a)}
+
+compound_stmt:
+    | a=statement+ {Compound(body=a)}
+    | &'}' {Compound(body=[])}
+
+statement:
+    | if_stmt
+    | 'return' a=exp ';' {Return(exp=a)}
+    | a=call ';' {a}
+    | funcdef
+    | a=vardef ';' {a}
+    | exp_stmt
+    | '{' a=compound_stmt '}' {a}
+
+if_stmt:
+    | 'if' a=exp b=statement 'else' c=statement {If(exp=a,body=b,orelse=c)}
+    | 'if' a=exp b=statement {If(exp=a,body=b,orelse=None)}
+
+exp_stmt:
+    | a=exp ';' {ExpStmt(exp=a)}
+
+exp:or_exp
+
+or_exp:
+    | a=and_exp b=('or' and_exp)+ {BoolOp(op=Or(),values=[a]+[i[1]for i in b])}
+    | and_exp
+
+and_exp:
+    | a=assign b=('and' assign)+ {BoolOp(op=And(),values=[a]+[i[1] for i in b])}
+    | assign
+
+assign:
+    | a=assign_exp '=' b=exp {Assign(targets=[a],value=b)}
+    | bitor_exp
+assign_exp:
+    | a='*'+ b=assign_exp {UnpackRef(exp=b,level=len(a))}
+    | a=t_primary '[' b=exp ']' !t_lookahead{Subscript(value=a,slice=b,mode=Store())}
+    | a=t_primary '.' b=NAME !t_lookahead{Attribute(value=a,attr=b.string,mode=Store())}
+    | call !t_lookahead
+    | a=NAME {Name(id=a.string,mode=Store())}
+t_primary:
+    | a=t_primary '.' b=NAME &t_lookahead {Attribute(value=a,attr=b.string,mode=Load())}
+    | a=t_primary '[' b=exp ']' &t_lookahead {Subscript(value=a,slice=b,mode=Load())}
+    | a=NAME &t_lookahead {Name(id=a.string,mode=Load())}
+t_lookahead: '(' | '[' | '.'
+
+bitor_exp:
+    | a=bitor_exp '|' b=bitxor_exp {BinOp(left=a,op=BitOr(),right=b)}
+    | bitxor_exp
+
+bitxor_exp:
+    | a=bitxor_exp '^' b=bitand_exp {BinOp(left=a,op=BitXor(),right=b)}
+    | bitand_exp
+
+bitand_exp:
+    | a=bitand_exp '&' b=compare_exp {BinOp(left=a,op=BitAnd(),right=b)}
+    | compare_exp
+
+compare_exp:
+    | a=shift_exp b=compares {Compare(left=a,ops=[i for i,j in b],values=[j for i,j in b])}
+    | shift_exp
+
+compares:compare+
+
+compare:
+    | '<' a=shift_exp {(Lt(),a)}
+    | '<=' a=shift_exp {(Leq(),a)}
+    | '>' a=shift_exp {(Gt(),a)}
+    | '>=' a=shift_exp {(Geq(),a)}
+    | '==' a=shift_exp {(Eq(),a)}
+    | '!=' a=shift_exp {(Neq(),a)}
+
+shift_exp:
+    | a=shift_exp '<<' b=add_exp {BinOp(left=a,op=RShift(),right=b)}
+    | a=shift_exp '>>' b=add_exp {BinOp(left=a,op=LShift(),right=b)}
+    | add_exp
+
+add_exp:
+    | a=add_exp '+' b=mul_exp {BinOp(left=a,op=Add(),right=b)}
+    | a=add_exp '-' b=mul_exp {BinOp(left=a,op=Sub(),right=b)}
+    | mul_exp
+
+mul_exp:
+    | a=mul_exp '*' b=prefix_exp {BinOp(left=a,op=Mul(),right=b)}
+    | a=mul_exp '/' b=prefix_exp {BinOp(left=a,op=Div(),right=b)}
+    | a=mul_exp '%' b=prefix_exp {BinOp(left=a,op=Mod(),right=b)}
+    | prefix_exp
+
+prefix_exp:
+    | '&' a=postfix_exp {Address(exp=a)}
+    | a='*'+ b=postfix_exp {UnpackRef(exp=b,level=len(a),LOCATIONS)}
+    | postfix_exp
+
+postfix_exp:
+    | a=postfix_exp '[' b=exp ']' {Subscript(value=a,slice=b,mode=Load(),LOCATIONS)}
+    | call
+    | a=postfix_exp '.' b=NAME {Attribute(value=a,attr=b.string,mode=Load())}
+    | primary_exp
+
+call:a=NAME '(' b=[arg_exp_list] ')' {Call(func=a.string,args=b if b else [],LOCATIONS)}
+arg_exp_list:a=exp b=arg_exp_more* {[a]+b if b else [a]}
+arg_exp_more:',' a=exp {a}
+
+primary_exp:
+    | NAME {Name(id=name.string,mode=Load())}
+    | STRING {String(str=string.string[1:-1])}
+    | NUMBER {Num(num=number.string)}
+    | '(' a=exp ')' {a}
+
+atom_type:
+    | 'int' {Int()}
+
+pointer_type:
+    | a=atom_type b='*'+ {Pointer(base_type=a,level=len(b))}
+
+array_type:
+    | a=atom_type b=('[' NUMBER ']')+ {Array(base_type=a,dim=[i[1] for i in b])}
+
+type:
+    | array_type
+    | pointer_type
+    | atom_type
+
+vardef:
+    | a=type b=vardef_list {VarDef(type=a,vars=b[0],defaults=b[1])}
+vardef_atom:
+    | a=NAME '=' b=exp {(a.string,b)}
+    | a=NAME {(a.string,None)}
+vardef_list:
+    | a=vardef_atom b=(',' vardef_atom)* {([a[0]]+[i[1][0] for i in b],[a[1]]+[i[1][1] for i in b])}
+
+funcdef:
+    | a=type b=NAME '(' c=[arg_def_list] ')' d=statement {FuncDef(return_type=a,name=b.string,args=c if c else [],body=d)}
+    | a=type b=NAME '(' c=[arg_def_list] ')' {FuncDef(return_type=a,name=b.string,args=c if c else [])}
+arg_def_list:a=vardef b=arg_def_more* {[a]+b if b else [a]}
+arg_def_more:',' a=vardef {a}

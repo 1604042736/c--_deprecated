@@ -1345,7 +1345,7 @@ class GeneratedParser(Parser):
         self._reset(mark)
         return None
 
-    KEYWORDS = ('int', 'elif', 'and', 'while', 'or', 'pass', 'extern', 'char', 'return', 'if', 'void', 'struct', 'else')
+    KEYWORDS = ('elif', 'while', 'char', 'or', 'else', 'struct', 'and', 'extern', 'return', 'pass', 'if', 'void', 'int')
     SOFT_KEYWORDS = ()
 
 
