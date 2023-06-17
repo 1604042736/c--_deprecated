@@ -16,6 +16,5 @@ class Call(Expr):
         arg_len = 0
         for i in self.args:
             i.gen()
-            i.print()
             arg_len += i.type.size
         self._genir.add_code('CALL', self.func, arg_len)

@@ -1,0 +1,23 @@
+#define PI 3
+printf("PI")
+printf(PI)
+#undef PI
+printf("PI")
+#include "a.txt"
+//fdas
+/*
+fdasfdsafdsa
+*/
+
+#define A 1
+
+#ifudef A
+a
+printf("#")
+#elif B
+b
+printf("##")
+#else
+c
+printf("###")
+#endif
