@@ -6,3 +6,4 @@ Debug/
 .idea/
 __pycache__/
 Release/
+.vscode/
